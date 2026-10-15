@@ -234,27 +234,38 @@ export default function ProductDetailClient({
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 pb-24 sm:pb-12">
-      {/* Breadcrumb Navigation */}
-      <nav className="flex items-center gap-2 text-xs text-gray-500 mb-8">
-        <Link href="/" className="hover:text-gray-900">
+      {/* Breadcrumb Navigation - Clean single line with horizontal scroll on mobile */}
+      <nav className="flex items-center gap-1.5 text-xs text-gray-500 mb-4 sm:mb-6 overflow-x-auto whitespace-nowrap scrollbar-none py-1">
+        <Link href="/" className="hover:text-gray-900 transition-colors shrink-0">
           Home
         </Link>
-        <ChevronRight className="w-3.5 h-3.5" />
-        <Link href="/products" className="hover:text-gray-900">
+        <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+        <Link href="/products" className="hover:text-gray-900 transition-colors shrink-0">
           Products
         </Link>
-        <ChevronRight className="w-3.5 h-3.5" />
+        <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0" />
         <Link
           href={`/products?category=${product.category.slug}`}
-          className="hover:text-gray-900 font-medium text-amber-700"
+          className="hover:text-amber-800 font-semibold text-amber-700 transition-colors shrink-0"
         >
           {product.category.name}
         </Link>
-        <ChevronRight className="w-3.5 h-3.5" />
-        <span className="text-gray-900 font-medium truncate max-w-xs">
+        <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+        <span className="text-gray-900 font-medium truncate max-w-[180px] sm:max-w-xs shrink-0">
           {product.name}
         </span>
       </nav>
+
+      {/* Mobile-Only Product Header: Displays category, SKU, and full title prominently at the top */}
+      <div className="lg:hidden mb-4">
+        <div className="flex items-center justify-between text-xs font-semibold text-amber-700 tracking-wider uppercase mb-1">
+          <span>{product.category.name}</span>
+          <span className="font-mono text-gray-400 font-normal text-[11px]">SKU: {product.sku}</span>
+        </div>
+        <h1 className="font-serif text-2xl font-bold text-gray-900 leading-snug">
+          {product.name}
+        </h1>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
         {/* LEFT: Enhanced Infographic Product Showcase */}
@@ -446,16 +457,16 @@ export default function ProductDetailClient({
 
         {/* RIGHT: Product Details & Purchase Actions */}
         <div className="flex flex-col">
-          {/* Category & SKU */}
-          <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
+          {/* Category & SKU (Desktop only, already visible on mobile at top) */}
+          <div className="hidden lg:flex items-center justify-between text-xs text-gray-500 mb-2">
             <span className="font-semibold uppercase tracking-wider text-amber-700">
               {product.category.name}
             </span>
             <span className="font-mono text-gray-500">SKU: {product.sku}</span>
           </div>
 
-          {/* Title */}
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mb-4 leading-tight">
+          {/* Title (Desktop only, already visible on mobile at top) */}
+          <h1 className="hidden lg:block font-serif text-3xl sm:text-4xl font-bold text-gray-900 mb-4 leading-tight">
             {product.name}
           </h1>
 
