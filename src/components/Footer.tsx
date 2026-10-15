@@ -186,7 +186,7 @@ export default function Footer({ settings }: FooterProps) {
               </li>
               <li>
                 <Link
-                  href="/products?search=Churidar"
+                  href="/products?category=churidar-leggings"
                   className="hover:text-white transition-colors"
                 >
                   Churidar Cotton Leggings
@@ -194,7 +194,7 @@ export default function Footer({ settings }: FooterProps) {
               </li>
               <li>
                 <Link
-                  href="/products?search=Cycling"
+                  href="/products?category=cycling-shorts"
                   className="hover:text-white transition-colors"
                 >
                   Cycling & Active Shorts

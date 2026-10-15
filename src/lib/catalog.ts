@@ -49,11 +49,11 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "isFeatured": true,
     "isNewArrival": true,
     "isBestSeller": true,
-    "categoryId": "cat-bottom-wear",
+    "categoryId": "cat-churidar-leggings",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Ethnic Leggings & Bottom Wear",
-      "slug": "womens-bottom-wear"
+      "name": "Women's Churidar Leggings",
+      "slug": "churidar-leggings"
     },
     "images": [
       {
@@ -138,11 +138,11 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "isFeatured": true,
     "isNewArrival": true,
     "isBestSeller": false,
-    "categoryId": "cat-bottom-wear",
+    "categoryId": "cat-cycling-shorts",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Ethnic Leggings & Bottom Wear",
-      "slug": "womens-bottom-wear"
+      "name": "Women's Cotton Cycling Shorts",
+      "slug": "cycling-shorts"
     },
     "images": [
       {
@@ -241,11 +241,11 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "isFeatured": true,
     "isNewArrival": true,
     "isBestSeller": true,
-    "categoryId": "cat-bottom-wear",
+    "categoryId": "cat-cycling-shorts",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Ethnic Leggings & Bottom Wear",
-      "slug": "womens-bottom-wear"
+      "name": "Women's Cotton Cycling Shorts",
+      "slug": "cycling-shorts"
     },
     "images": [
       {
@@ -344,11 +344,11 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "isFeatured": true,
     "isNewArrival": true,
     "isBestSeller": false,
-    "categoryId": "cat-bottom-wear",
+    "categoryId": "cat-cycling-shorts",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Ethnic Leggings & Bottom Wear",
-      "slug": "womens-bottom-wear"
+      "name": "Women's Cotton Cycling Shorts",
+      "slug": "cycling-shorts"
     },
     "images": [
       {
@@ -447,11 +447,11 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "isFeatured": true,
     "isNewArrival": true,
     "isBestSeller": false,
-    "categoryId": "cat-bottom-wear",
+    "categoryId": "cat-cycling-shorts",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Ethnic Leggings & Bottom Wear",
-      "slug": "womens-bottom-wear"
+      "name": "Women's Cotton Cycling Shorts",
+      "slug": "cycling-shorts"
     },
     "images": [
       {
@@ -550,11 +550,11 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "isFeatured": true,
     "isNewArrival": true,
     "isBestSeller": false,
-    "categoryId": "cat-bottom-wear",
+    "categoryId": "cat-cycling-shorts",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Ethnic Leggings & Bottom Wear",
-      "slug": "womens-bottom-wear"
+      "name": "Women's Cotton Cycling Shorts",
+      "slug": "cycling-shorts"
     },
     "images": [
       {
@@ -653,11 +653,11 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "isFeatured": true,
     "isNewArrival": true,
     "isBestSeller": false,
-    "categoryId": "cat-bottom-wear",
+    "categoryId": "cat-cycling-shorts",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Ethnic Leggings & Bottom Wear",
-      "slug": "womens-bottom-wear"
+      "name": "Women's Cotton Cycling Shorts",
+      "slug": "cycling-shorts"
     },
     "images": [
       {
@@ -756,11 +756,11 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "isFeatured": true,
     "isNewArrival": true,
     "isBestSeller": false,
-    "categoryId": "cat-bottom-wear",
+    "categoryId": "cat-cycling-shorts",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Ethnic Leggings & Bottom Wear",
-      "slug": "womens-bottom-wear"
+      "name": "Women's Cotton Cycling Shorts",
+      "slug": "cycling-shorts"
     },
     "images": [
       {
@@ -859,11 +859,11 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "isFeatured": true,
     "isNewArrival": true,
     "isBestSeller": true,
-    "categoryId": "cat-bottom-wear",
+    "categoryId": "cat-cycling-shorts",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Ethnic Leggings & Bottom Wear",
-      "slug": "womens-bottom-wear"
+      "name": "Women's Cotton Cycling Shorts",
+      "slug": "cycling-shorts"
     },
     "images": [
       {
@@ -962,11 +962,11 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "isFeatured": true,
     "isNewArrival": true,
     "isBestSeller": false,
-    "categoryId": "cat-bottom-wear",
+    "categoryId": "cat-churidar-leggings",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Ethnic Leggings & Bottom Wear",
-      "slug": "womens-bottom-wear"
+      "name": "Women's Churidar Leggings",
+      "slug": "churidar-leggings"
     },
     "images": [
       {
@@ -1065,11 +1065,11 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "isFeatured": true,
     "isNewArrival": true,
     "isBestSeller": false,
-    "categoryId": "cat-bottom-wear",
+    "categoryId": "cat-churidar-leggings",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Ethnic Leggings & Bottom Wear",
-      "slug": "womens-bottom-wear"
+      "name": "Women's Churidar Leggings",
+      "slug": "churidar-leggings"
     },
     "images": [
       {
@@ -1168,11 +1168,11 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "isFeatured": true,
     "isNewArrival": true,
     "isBestSeller": true,
-    "categoryId": "cat-bottom-wear",
+    "categoryId": "cat-churidar-leggings",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Ethnic Leggings & Bottom Wear",
-      "slug": "womens-bottom-wear"
+      "name": "Women's Churidar Leggings",
+      "slug": "churidar-leggings"
     },
     "images": [
       {
@@ -1271,11 +1271,11 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "isFeatured": true,
     "isNewArrival": true,
     "isBestSeller": false,
-    "categoryId": "cat-bottom-wear",
+    "categoryId": "cat-churidar-leggings",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Ethnic Leggings & Bottom Wear",
-      "slug": "womens-bottom-wear"
+      "name": "Women's Churidar Leggings",
+      "slug": "churidar-leggings"
     },
     "images": [
       {
@@ -1374,11 +1374,11 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "isFeatured": true,
     "isNewArrival": true,
     "isBestSeller": false,
-    "categoryId": "cat-bottom-wear",
+    "categoryId": "cat-churidar-leggings",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Ethnic Leggings & Bottom Wear",
-      "slug": "womens-bottom-wear"
+      "name": "Women's Churidar Leggings",
+      "slug": "churidar-leggings"
     },
     "images": [
       {
@@ -1477,11 +1477,11 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "isFeatured": true,
     "isNewArrival": true,
     "isBestSeller": false,
-    "categoryId": "cat-bottom-wear",
+    "categoryId": "cat-churidar-leggings",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Ethnic Leggings & Bottom Wear",
-      "slug": "womens-bottom-wear"
+      "name": "Women's Churidar Leggings",
+      "slug": "churidar-leggings"
     },
     "images": [
       {
@@ -1580,11 +1580,11 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "isFeatured": true,
     "isNewArrival": true,
     "isBestSeller": false,
-    "categoryId": "cat-bottom-wear",
+    "categoryId": "cat-churidar-leggings",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Ethnic Leggings & Bottom Wear",
-      "slug": "womens-bottom-wear"
+      "name": "Women's Churidar Leggings",
+      "slug": "churidar-leggings"
     },
     "images": [
       {
@@ -1676,11 +1676,11 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "isFeatured": true,
     "isNewArrival": true,
     "isBestSeller": true,
-    "categoryId": "cat-bottom-wear",
+    "categoryId": "cat-churidar-leggings",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Ethnic Leggings & Bottom Wear",
-      "slug": "womens-bottom-wear"
+      "name": "Women's Churidar Leggings",
+      "slug": "churidar-leggings"
     },
     "images": [
       {

@@ -23,13 +23,22 @@ export interface CatalogProduct {
 
 export const fallbackCategories = [
   {
-    id: "cat-womens-bottom-wear",
-    name: "Women's Ethnic Leggings & Bottom Wear",
-    slug: "womens-bottom-wear",
-    description: "Premium 4-way stretch combed cotton lycra churidar leggings, ankle cuts, and cycling shorts tailored for supreme comfort and all-day elegance.",
+    id: "cat-churidar-leggings",
+    name: "Women's Churidar Leggings",
+    slug: "churidar-leggings",
+    description: "Premium 4-way stretch super-combed cotton lycra churidar leggings with authentic ankle gathers (churis), bio-washed softness, and non-sheer all-day comfort.",
     imageUrl: "/images/products/bbg-studio-hd-crimson-red.jpg",
     displayOrder: 1,
-    _count: { products: 16 }
+    _count: { products: 8 }
+  },
+  {
+    id: "cat-cycling-shorts",
+    name: "Women's Cotton Cycling Shorts",
+    slug: "cycling-shorts",
+    description: "Ultra-comfortable 4-way stretch combed cotton lycra mid-thigh cycling shorts with non-roll elastic waistband, tailored for gym, activewear, loungewear, and kurti innerwear.",
+    imageUrl: "/images/products/bbg-studio-hd-cs-white.jpg",
+    displayOrder: 2,
+    _count: { products: 8 }
   }
 ];
 
@@ -69,7 +78,7 @@ const rawProducts = [
       isFeatured: true,
       isNewArrival: true,
       isBestSeller: false,
-      categorySlug: "womens-bottom-wear",
+      categorySlug: "cycling-shorts",
       images: [
           {
                     "url": "/images/products/bbg-studio-hd-cs-white.jpg",
@@ -155,7 +164,7 @@ const rawProducts = [
       isFeatured: true,
       isNewArrival: true,
       isBestSeller: true,
-      categorySlug: "womens-bottom-wear",
+      categorySlug: "cycling-shorts",
       images: [
           {
                     "url": "/images/products/bbg-studio-hd-cycling-grey.jpg",
@@ -241,7 +250,7 @@ const rawProducts = [
       isFeatured: true,
       isNewArrival: true,
       isBestSeller: false,
-      categorySlug: "womens-bottom-wear",
+      categorySlug: "cycling-shorts",
       images: [
           {
                     "url": "/images/products/bbg-studio-hd-cs-beige.jpg",
@@ -327,7 +336,7 @@ const rawProducts = [
       isFeatured: true,
       isNewArrival: true,
       isBestSeller: false,
-      categorySlug: "womens-bottom-wear",
+      categorySlug: "cycling-shorts",
       images: [
           {
                     "url": "/images/products/bbg-studio-hd-cs-teal.jpg",
@@ -413,7 +422,7 @@ const rawProducts = [
       isFeatured: true,
       isNewArrival: true,
       isBestSeller: false,
-      categorySlug: "womens-bottom-wear",
+      categorySlug: "cycling-shorts",
       images: [
           {
                     "url": "/images/products/bbg-studio-hd-cs-red.jpg",
@@ -499,7 +508,7 @@ const rawProducts = [
       isFeatured: true,
       isNewArrival: true,
       isBestSeller: false,
-      categorySlug: "womens-bottom-wear",
+      categorySlug: "cycling-shorts",
       images: [
           {
                     "url": "/images/products/bbg-studio-hd-cs-royal-blue.jpg",
@@ -585,7 +594,7 @@ const rawProducts = [
       isFeatured: true,
       isNewArrival: true,
       isBestSeller: false,
-      categorySlug: "womens-bottom-wear",
+      categorySlug: "cycling-shorts",
       images: [
           {
                     "url": "/images/products/bbg-studio-hd-cs-maroon.jpg",
@@ -671,7 +680,7 @@ const rawProducts = [
       isFeatured: true,
       isNewArrival: true,
       isBestSeller: true,
-      categorySlug: "womens-bottom-wear",
+      categorySlug: "cycling-shorts",
       images: [
           {
                     "url": "/images/products/bbg-studio-hd-cs-black.jpg",
@@ -757,7 +766,7 @@ const rawProducts = [
       isFeatured: true,
       isNewArrival: true,
       isBestSeller: false,
-      categorySlug: "womens-bottom-wear",
+      categorySlug: "churidar-leggings",
       images: [
           {
                     "url": "/images/products/bbg-studio-hd-peacock-teal.jpg",
@@ -843,7 +852,7 @@ const rawProducts = [
       isFeatured: true,
       isNewArrival: true,
       isBestSeller: false,
-      categorySlug: "womens-bottom-wear",
+      categorySlug: "churidar-leggings",
       images: [
           {
                     "url": "/images/products/bbg-studio-hd-heather-grey.jpg",
@@ -929,7 +938,7 @@ const rawProducts = [
       isFeatured: true,
       isNewArrival: true,
       isBestSeller: true,
-      categorySlug: "womens-bottom-wear",
+      categorySlug: "churidar-leggings",
       images: [
           {
                     "url": "/images/products/bbg-studio-hd-pure-white.jpg",
@@ -1015,7 +1024,7 @@ const rawProducts = [
       isFeatured: true,
       isNewArrival: true,
       isBestSeller: false,
-      categorySlug: "womens-bottom-wear",
+      categorySlug: "churidar-leggings",
       images: [
           {
                     "url": "/images/products/bbg-studio-hd-beige-cream.jpg",
@@ -1101,7 +1110,7 @@ const rawProducts = [
       isFeatured: true,
       isNewArrival: true,
       isBestSeller: false,
-      categorySlug: "womens-bottom-wear",
+      categorySlug: "churidar-leggings",
       images: [
           {
                     "url": "/images/products/bbg-studio-hd-jet-black.jpg",
@@ -1187,7 +1196,7 @@ const rawProducts = [
       isFeatured: true,
       isNewArrival: true,
       isBestSeller: false,
-      categorySlug: "womens-bottom-wear",
+      categorySlug: "churidar-leggings",
       images: [
           {
                     "url": "/images/products/bbg-studio-hd-royal-blue.jpg",
@@ -1273,7 +1282,7 @@ const rawProducts = [
       isFeatured: true,
       isNewArrival: true,
       isBestSeller: false,
-      categorySlug: "womens-bottom-wear",
+      categorySlug: "churidar-leggings",
       images: [
           {
                     "url": "/images/products/bbg-studio-hd-deep-maroon.jpg",
@@ -1353,7 +1362,7 @@ const rawProducts = [
       isFeatured: true,
       isNewArrival: true,
       isBestSeller: true,
-      categorySlug: "womens-bottom-wear",
+      categorySlug: "churidar-leggings",
       images: [
           {
                     "url": "/images/products/bbg-studio-hd-crimson-red.jpg",
@@ -1442,12 +1451,18 @@ export const fallbackProducts: CatalogProduct[] = rawProducts.map((p: any, idx: 
   isFeatured: p.isFeatured ?? false,
   isNewArrival: p.isNewArrival ?? false,
   isBestSeller: p.isBestSeller ?? false,
-  categorySlug: p.categorySlug,
-  category: {
-    id: "cat-womens-bottom-wear",
-    name: "Women's Ethnic Leggings & Bottom Wear",
-    slug: "womens-bottom-wear"
-  },
+  categorySlug: p.slug.includes("cycling-shorts") ? "cycling-shorts" : "churidar-leggings",
+  category: p.slug.includes("cycling-shorts")
+    ? {
+        id: "cat-cycling-shorts",
+        name: "Women's Cotton Cycling Shorts",
+        slug: "cycling-shorts",
+      }
+    : {
+        id: "cat-churidar-leggings",
+        name: "Women's Churidar Leggings",
+        slug: "churidar-leggings",
+      },
   images: (p.images || []).map((img: any, imgIdx: number) => ({
     id: "img-" + idx + "-" + imgIdx,
     url: img.url,

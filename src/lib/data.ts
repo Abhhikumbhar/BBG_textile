@@ -122,9 +122,15 @@ export async function getProducts(options: GetProductsOptions = {}) {
     }
 
     if (options.category) {
-      where.category = {
-        OR: [{ slug: options.category }, { id: options.category }],
-      };
+      if (options.category === "womens-bottom-wear") {
+        where.category = {
+          slug: { in: ["churidar-leggings", "cycling-shorts", "womens-bottom-wear"] },
+        };
+      } else {
+        where.category = {
+          OR: [{ slug: options.category }, { id: options.category }],
+        };
+      }
     }
 
     if (options.minPrice !== undefined || options.maxPrice !== undefined) {
@@ -186,12 +192,24 @@ export async function getProducts(options: GetProductsOptions = {}) {
   }
 
   if (options.category) {
-    filtered = filtered.filter(
-      (p) =>
-        p.categorySlug === options.category ||
-        p.category?.slug === options.category ||
-        p.category?.id === options.category
-    );
+    if (options.category === "womens-bottom-wear") {
+      filtered = filtered.filter(
+        (p) =>
+          p.categorySlug === "churidar-leggings" ||
+          p.categorySlug === "cycling-shorts" ||
+          p.categorySlug === "womens-bottom-wear" ||
+          p.category?.slug === "churidar-leggings" ||
+          p.category?.slug === "cycling-shorts" ||
+          p.category?.slug === "womens-bottom-wear"
+      );
+    } else {
+      filtered = filtered.filter(
+        (p) =>
+          p.categorySlug === options.category ||
+          p.category?.slug === options.category ||
+          p.category?.id === options.category
+      );
+    }
   }
 
   if (options.minPrice !== undefined) {

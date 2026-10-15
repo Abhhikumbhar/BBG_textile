@@ -31,13 +31,13 @@ export default async function CategoriesPage() {
             <h1 className="font-serif text-3xl sm:text-5xl font-bold text-gray-900 mb-4">
               Explore by Textile Category
             </h1>
-            <p className="text-gray-500 text-base leading-relaxed">
-              From high-count combed cottons to wrinkle-free corporate suitings and heavy-duty institutional drills, discover fabrics woven to exacting standards.
+            <p className="text-gray-600 text-base leading-relaxed">
+              Discover our signature bottom wear collections: Premium 4-Way Stretch Churidar Leggings and Super Combed Cotton Cycling Shorts, crafted for supreme comfort and elegance.
             </p>
           </div>
 
           {/* Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 max-w-5xl mx-auto gap-8">
             {categories.map((cat) => (
               <Link
                 key={cat.id}
