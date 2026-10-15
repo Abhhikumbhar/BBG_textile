@@ -40,9 +40,13 @@ interface Product {
 
 export default function ProductsClient({
   categories,
+  initialProducts = [],
+  initialPagination = { page: 1, limit: 12, total: 0, totalPages: 1 },
   whatsappNumber,
 }: {
   categories: Category[];
+  initialProducts?: Product[];
+  initialPagination?: { page: number; limit: number; total: number; totalPages: number };
   whatsappNumber?: string;
 }) {
   const searchParams = useSearchParams();
@@ -57,13 +61,31 @@ export default function ProductsClient({
   const [bestSellerOnly, setBestSellerOnly] = useState(searchParams.get("bestSeller") === "true");
   const [page, setPage] = useState(parseInt(searchParams.get("page") || "1"));
 
-  const [products, setProducts] = useState<Product[]>([]);
-  const [pagination, setPagination] = useState({ page: 1, limit: 12, total: 0, totalPages: 1 });
-  const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState<Product[]>(initialProducts);
+  const [pagination, setPagination] = useState(initialPagination);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const isFirstMount = React.useRef(true);
 
   // Fetch products when filters change
   useEffect(() => {
+    // If it's the very first render and we have initial products with default query, skip fetch!
+    if (isFirstMount.current) {
+      isFirstMount.current = false;
+      const isDefaultQuery =
+        !search &&
+        !selectedCategory &&
+        sort === "newest" &&
+        !featuredOnly &&
+        !newArrivalOnly &&
+        !bestSellerOnly &&
+        page === 1;
+
+      if (isDefaultQuery && initialProducts.length > 0) {
+        return;
+      }
+    }
+
     let ignore = false;
     setLoading(true);
     setError(null);

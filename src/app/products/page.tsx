@@ -2,8 +2,10 @@ import React, { Suspense } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductsClient from "./ProductsClient";
-import { getSiteSettings, getCategories } from "@/lib/data";
+import { getSiteSettings, getCategories, getProducts } from "@/lib/data";
 import { Loader2 } from "lucide-react";
+
+export const revalidate = 60;
 
 export const metadata = {
   title: "All Fabrics & Products | BBG Textile Sangli",
@@ -12,9 +14,10 @@ export const metadata = {
 };
 
 export default async function ProductsPage() {
-  const [settings, categories] = await Promise.all([
+  const [settings, categories, initialData] = await Promise.all([
     getSiteSettings(),
     getCategories(),
+    getProducts({ page: 1, limit: 12 }),
   ]);
 
   return (
@@ -31,6 +34,8 @@ export default async function ProductsPage() {
         >
           <ProductsClient
             categories={categories}
+            initialProducts={initialData.products}
+            initialPagination={initialData.pagination}
             whatsappNumber={settings?.whatsappNumber}
           />
         </Suspense>

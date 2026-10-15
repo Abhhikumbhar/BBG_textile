@@ -52,7 +52,7 @@ interface ProductDetailProps {
     isFeatured: boolean;
     isNewArrival: boolean;
     isBestSeller: boolean;
-    category: { id: string; name: string; slug: string };
+    category?: { id?: string; name: string; slug: string } | null;
     images: ProductImage[];
     variants: Variant[];
   };
@@ -245,10 +245,10 @@ export default function ProductDetailClient({
         </Link>
         <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0" />
         <Link
-          href={`/products?category=${product.category.slug}`}
+          href={`/products?category=${product.category?.slug || "womens-bottom-wear"}`}
           className="hover:text-amber-800 font-semibold text-amber-700 transition-colors shrink-0"
         >
-          {product.category.name}
+          {product.category?.name || "Bottom Wear"}
         </Link>
         <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0" />
         <span className="text-gray-900 font-medium truncate max-w-[180px] sm:max-w-xs shrink-0">
@@ -259,7 +259,7 @@ export default function ProductDetailClient({
       {/* Mobile-Only Product Header: Displays category, SKU, and full title prominently at the top */}
       <div className="lg:hidden mb-4">
         <div className="flex items-center justify-between text-xs font-semibold text-amber-700 tracking-wider uppercase mb-1">
-          <span>{product.category.name}</span>
+          <span>{product.category?.name || "Bottom Wear"}</span>
           <span className="font-mono text-gray-400 font-normal text-[11px]">SKU: {product.sku}</span>
         </div>
         <h1 className="font-serif text-2xl font-bold text-gray-900 leading-snug">
@@ -460,7 +460,7 @@ export default function ProductDetailClient({
           {/* Category & SKU (Desktop only, already visible on mobile at top) */}
           <div className="hidden lg:flex items-center justify-between text-xs text-gray-500 mb-2">
             <span className="font-semibold uppercase tracking-wider text-amber-700">
-              {product.category.name}
+              {product.category?.name || "Bottom Wear"}
             </span>
             <span className="font-mono text-gray-500">SKU: {product.sku}</span>
           </div>
@@ -618,11 +618,11 @@ export default function ProductDetailClient({
                 Related Weaves
               </span>
               <h2 className="font-serif text-2xl sm:text-3xl font-bold text-gray-900">
-                More from {product.category.name}
+                More from {product.category?.name || "Collection"}
               </h2>
             </div>
             <Link
-              href={`/products?category=${product.category.slug}`}
+              href={`/products?category=${product.category?.slug || "womens-bottom-wear"}`}
               className="text-xs font-bold text-[#1A365D] hover:underline"
             >
               View Category &rarr;
