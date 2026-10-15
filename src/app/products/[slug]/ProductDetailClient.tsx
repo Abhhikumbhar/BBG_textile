@@ -15,6 +15,7 @@ import {
   Sparkles,
   Layers,
   ChevronRight,
+  ChevronLeft,
   Info,
   Phone,
 } from "lucide-react";
@@ -67,8 +68,69 @@ export default function ProductDetailClient({
 }: ProductDetailProps) {
   const { addItem } = useCart();
 
-  // Active image
+  // Active image & Touch swipe states
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [touchStartX, setTouchStartX] = useState<number | null>(null);
+  const [touchEndX, setTouchEndX] = useState<number | null>(null);
+  const [mouseStartX, setMouseStartX] = useState<number | null>(null);
+  const [isMouseDown, setIsMouseDown] = useState(false);
+  const thumbnailsRef = React.useRef<HTMLDivElement>(null);
+
+  const minSwipeDistance = 35; // Pixel threshold to register a swipe
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchEndX(null);
+    setTouchStartX(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEndX(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (touchStartX === null || touchEndX === null) return;
+    const distance = touchStartX - touchEndX;
+    if (distance > minSwipeDistance) {
+      // Swiped Left -> Next Image
+      setActiveImageIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
+    } else if (distance < -minSwipeDistance) {
+      // Swiped Right -> Previous Image
+      setActiveImageIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1));
+    }
+    setTouchStartX(null);
+    setTouchEndX(null);
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    setMouseStartX(e.clientX);
+    setIsMouseDown(true);
+  };
+
+  const handleMouseUp = (e: React.MouseEvent) => {
+    if (!isMouseDown || mouseStartX === null) return;
+    const distance = mouseStartX - e.clientX;
+    if (distance > minSwipeDistance) {
+      setActiveImageIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
+    } else if (distance < -minSwipeDistance) {
+      setActiveImageIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1));
+    }
+    setIsMouseDown(false);
+    setMouseStartX(null);
+  };
+
+  // Auto-scroll active thumbnail into view
+  React.useEffect(() => {
+    if (thumbnailsRef.current) {
+      const activeBtn = thumbnailsRef.current.children[activeImageIndex] as HTMLElement;
+      if (activeBtn) {
+        activeBtn.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "center",
+        });
+      }
+    }
+  }, [activeImageIndex]);
 
   // Variant selections
   const colors = Array.from(
@@ -270,38 +332,104 @@ export default function ProductDetailClient({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
         {/* LEFT: Enhanced Infographic Product Showcase */}
         <div className="space-y-4">
-          {/* Main Large Image Container */}
-          <div className="relative aspect-[4/4.8] sm:aspect-[4/4.5] rounded-3xl overflow-hidden bg-gradient-to-b from-[#FBF8F4] via-[#F5EFE6] to-[#ECE2D2] border border-[#E5DAC8] shadow-[0_10px_35px_rgba(0,0,0,0.08)] group">
-            <Image
-              src={images[activeImageIndex]?.url || images[0].url}
-              alt={images[activeImageIndex]?.altText || product.name}
-              fill
-              priority
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className={`transition-all duration-300 ${
-                activeImageIndex === 0
-                  ? "object-cover object-[15%_center] sm:object-[18%_center] group-hover:scale-[1.02]"
-                  : "object-contain bg-white/70 p-2 sm:p-4"
-              }`}
-            />
+          {/* Main Large Image Container with Touch & Drag Carousel */}
+          <div
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+            onMouseDown={handleMouseDown}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={() => setIsMouseDown(false)}
+            className="relative aspect-[4/4.8] sm:aspect-[4/4.5] rounded-3xl overflow-hidden bg-gradient-to-b from-[#FBF8F4] via-[#F5EFE6] to-[#ECE2D2] border border-[#E5DAC8] shadow-[0_10px_35px_rgba(0,0,0,0.08)] group select-none cursor-grab active:cursor-grabbing touch-pan-y"
+          >
+            {/* Sliding Carousel Track */}
+            <div
+              className="flex w-full h-full transition-transform duration-300 ease-out will-change-transform"
+              style={{ transform: `translateX(-${activeImageIndex * 100}%)` }}
+            >
+              {images.map((img, idx) => (
+                <div key={img.id || idx} className="relative w-full h-full shrink-0 select-none">
+                  <Image
+                    src={img.url}
+                    alt={img.altText || `${product.name} view ${idx + 1}`}
+                    fill
+                    priority={idx === 0}
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    draggable={false}
+                    className={`transition-all duration-300 pointer-events-none select-none ${
+                      idx === 0
+                        ? "object-cover object-[15%_center] sm:object-[18%_center] group-hover:scale-[1.02]"
+                        : "object-contain bg-white/70 p-2 sm:p-4"
+                    }`}
+                  />
+                </div>
+              ))}
+            </div>
+
+            {/* Prev / Next Navigation Arrows */}
+            {images.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveImageIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1));
+                  }}
+                  className="absolute left-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/90 hover:bg-white text-gray-800 shadow-md backdrop-blur-md flex items-center justify-center transition-all hover:scale-110 active:scale-95 border border-white/60 opacity-80 sm:opacity-0 sm:group-hover:opacity-100"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 text-slate-800" />
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveImageIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
+                  }}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/90 hover:bg-white text-gray-800 shadow-md backdrop-blur-md flex items-center justify-center transition-all hover:scale-110 active:scale-95 border border-white/60 opacity-80 sm:opacity-0 sm:group-hover:opacity-100"
+                  aria-label="Next image"
+                >
+                  <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-slate-800" />
+                </button>
+              </>
+            )}
+
+            {/* Mobile Dots Indicator */}
+            {images.length > 1 && (
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 sm:hidden bg-black/45 px-2.5 py-1 rounded-full backdrop-blur-md pointer-events-none">
+                {images.map((_, dotIdx) => (
+                  <span
+                    key={dotIdx}
+                    className={`rounded-full transition-all duration-300 ${
+                      activeImageIndex === dotIdx
+                        ? "w-4 h-1.5 bg-amber-400"
+                        : "w-1.5 h-1.5 bg-white/60"
+                    }`}
+                  />
+                ))}
+              </div>
+            )}
 
             {/* Top Bar on Image: Back to Studio button if on detail image, and Share button */}
-            <div className="absolute top-4 inset-x-4 flex items-center justify-between gap-2 z-20">
+            <div className="absolute top-4 inset-x-4 flex items-center justify-between gap-2 z-20 pointer-events-none">
               {activeImageIndex > 0 ? (
                 <button
                   type="button"
-                  onClick={() => setActiveImageIndex(0)}
-                  className="px-3.5 py-1.5 bg-[#0B1A30]/90 hover:bg-[#0B1A30] text-amber-300 rounded-full shadow-md backdrop-blur-md text-xs font-bold transition-all flex items-center gap-1.5"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveImageIndex(0);
+                  }}
+                  className="px-3.5 py-1.5 bg-[#0B1A30]/90 hover:bg-[#0B1A30] text-amber-300 rounded-full shadow-md backdrop-blur-md text-xs font-bold transition-all flex items-center gap-1.5 pointer-events-auto"
                 >
                   <span>⟲ Studio View</span>
                 </button>
               ) : (
-                <span className="px-3 py-1 bg-[#0B1A30]/85 text-amber-300 rounded-full text-[11px] font-bold tracking-wider uppercase backdrop-blur-sm shadow">
+                <span className="px-3 py-1 bg-[#0B1A30]/85 text-amber-300 rounded-full text-[11px] font-bold tracking-wider uppercase backdrop-blur-sm shadow pointer-events-auto">
                   Studio Presentation
                 </span>
               )}
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 pointer-events-auto">
                 <span className="px-2.5 py-1 bg-black/50 text-white rounded-full text-[10px] font-mono font-semibold backdrop-blur-sm">
                   {activeImageIndex + 1} / {images.length}
                 </span>
@@ -348,11 +476,14 @@ export default function ProductDetailClient({
                 </div>
 
                 {/* Center-Bottom: 3 Fabric Detail Macro Thumbnails (interactive jump to detail photos) */}
-                <div className="absolute left-1/2 -translate-x-1/2 bottom-3.5 flex items-end gap-2 z-20">
+                <div className="absolute left-1/2 -translate-x-1/2 bottom-3.5 hidden sm:flex items-end gap-2 z-20">
                   {images[1] && (
                     <button
                       type="button"
-                      onClick={() => setActiveImageIndex(1)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveImageIndex(1);
+                      }}
                       className="flex flex-col items-center group/btn cursor-pointer"
                       title="View Stitch Detail"
                     >
@@ -372,7 +503,10 @@ export default function ProductDetailClient({
                   {images[2] && (
                     <button
                       type="button"
-                      onClick={() => setActiveImageIndex(2)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveImageIndex(2);
+                      }}
                       className="flex flex-col items-center group/btn cursor-pointer"
                       title="View Gathers Detail"
                     >
@@ -392,7 +526,10 @@ export default function ProductDetailClient({
                   {images[3] && (
                     <button
                       type="button"
-                      onClick={() => setActiveImageIndex(3)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveImageIndex(3);
+                      }}
                       className="flex flex-col items-center group/btn cursor-pointer"
                       title="View Waistband Detail"
                     >
@@ -412,7 +549,7 @@ export default function ProductDetailClient({
                 </div>
 
                 {/* Bottom Right: Cultural Guarantee Stamp */}
-                <div className="absolute right-3.5 bottom-3.5 z-20 pointer-events-none">
+                <div className="absolute right-3.5 bottom-3.5 z-20 pointer-events-none hidden sm:block">
                   <div className="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-500/90 via-amber-600/90 to-amber-700/90 text-white text-[11px] font-bold shadow-lg border border-amber-300/60 backdrop-blur-md flex items-center gap-1.5">
                     <span>✨</span>
                     <span>परंपरेची आधुनिक पावलं</span>
@@ -424,7 +561,10 @@ export default function ProductDetailClient({
 
           {/* Thumbnails row: Smooth mobile swipe and clean borders */}
           {images.length > 1 && (
-            <div className="flex items-center gap-2.5 overflow-x-auto pb-2 pt-1 touch-pan-x scrollbar-none">
+            <div
+              ref={thumbnailsRef}
+              className="flex items-center gap-2.5 overflow-x-auto pb-2 pt-1 touch-pan-x scrollbar-none"
+            >
               {images.map((img, idx) => (
                 <button
                   key={img.id}
