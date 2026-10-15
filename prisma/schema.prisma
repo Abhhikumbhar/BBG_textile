@@ -1,0 +1,289 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum AdminRole {
+  OWNER
+  ADMIN
+  STAFF
+}
+
+enum StockStatus {
+  IN_STOCK
+  LOW_STOCK
+  OUT_OF_STOCK
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum EnquiryStatus {
+  NEW
+  CONTACTED
+  IN_PROGRESS
+  RESOLVED
+}
+
+model AdminUser {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  name         String
+  passwordHash String
+  role         AdminRole  @default(ADMIN)
+  isActive     Boolean    @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  auditLogs    AuditLog[]
+
+  @@map("admin_users")
+}
+
+model Category {
+  id           String    @id @default(cuid())
+  name         String    @unique
+  slug         String    @unique
+  description  String?
+  imageUrl     String?
+  displayOrder Int       @default(0)
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  products     Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id                 String           @id @default(cuid())
+  name               String
+  slug               String           @unique
+  description        String
+  sku                String           @unique
+  price              Float
+  wholesalePrice     Float?
+  isEnquiryOnly      Boolean          @default(false)
+  isPurchasableOnline Boolean         @default(true)
+  stockQuantity      Int              @default(0)
+  stockStatus        StockStatus      @default(IN_STOCK)
+  isFeatured         Boolean          @default(false)
+  isNewArrival       Boolean          @default(false)
+  isBestSeller       Boolean          @default(false)
+  isActive           Boolean          @default(true)
+  categoryId         String
+  category           Category         @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  images             ProductImage[]
+  variants           ProductVariant[]
+  orderItems         OrderItem[]
+  enquiries          Enquiry[]
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  @@index([categoryId])
+  @@index([isActive])
+  @@index([isFeatured])
+  @@map("products")
+}
+
+model ProductImage {
+  id           String   @id @default(cuid())
+  productId    String
+  product      Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url          String
+  publicId     String?
+  altText      String?
+  displayOrder Int      @default(0)
+  isPrimary    Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  @@index([productId])
+  @@map("product_images")
+}
+
+model ProductVariant {
+  id              String   @id @default(cuid())
+  productId       String
+  product         Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  color           String?
+  size            String?
+  sku             String?
+  additionalPrice Float    @default(0)
+  stockQuantity   Int      @default(0)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([productId])
+  @@map("product_variants")
+}
+
+model Customer {
+  id         String   @id @default(cuid())
+  name       String
+  email      String?
+  phone      String   @unique
+  address    String?
+  city       String?
+  state      String?
+  postalCode String?
+  createdAt  DateTime @default(now())
+  orders     Order[]
+
+  @@map("customers")
+}
+
+model Order {
+  id              String               @id @default(cuid())
+  orderNumber     String               @unique
+  customerId      String?
+  customer        Customer?            @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  customerName    String
+  customerPhone   String
+  customerEmail   String?
+  shippingAddress String
+  city            String
+  state           String
+  postalCode      String
+  status          OrderStatus          @default(PENDING)
+  paymentStatus   PaymentStatus        @default(PENDING)
+  paymentMethod   String               @default("WHATSAPP_COD")
+  paymentId       String?
+  subtotal        Float
+  tax             Float                @default(0)
+  shippingFee     Float                @default(0)
+  total           Float
+  notes           String?
+  items           OrderItem[]
+  statusHistory   OrderStatusHistory[]
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+
+  @@index([status])
+  @@index([orderNumber])
+  @@map("orders")
+}
+
+model OrderItem {
+  id           String  @id @default(cuid())
+  orderId      String
+  order        Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId    String
+  product      Product @relation(fields: [productId], references: [id])
+  productName  String
+  productSku   String
+  productImage String?
+  color        String?
+  size         String?
+  price        Float
+  quantity     Int
+  total        Float
+
+  @@index([orderId])
+  @@map("order_items")
+}
+
+model OrderStatusHistory {
+  id        String      @id @default(cuid())
+  orderId   String
+  order     Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  status    OrderStatus
+  comment   String?
+  changedBy String?
+  createdAt DateTime    @default(now())
+
+  @@index([orderId])
+  @@map("order_status_history")
+}
+
+model Enquiry {
+  id            String        @id @default(cuid())
+  name          String
+  email         String?
+  phone         String
+  message       String
+  status        EnquiryStatus @default(NEW)
+  productId     String?
+  product       Product?      @relation(fields: [productId], references: [id], onDelete: SetNull)
+  internalNotes String?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([status])
+  @@index([productId])
+  @@map("enquiries")
+}
+
+model SiteSettings {
+  id                    String   @id @default("default")
+  businessName          String   @default("BBG TEXTILE")
+  tagline               String   @default("Excellence in Quality Fabrics & Garments")
+  phone                 String   @default("+91 98220 00000")
+  whatsappNumber        String   @default("+919822000000")
+  email                 String   @default("info@bbgtextile.com")
+  address               String   @default("GROUND FLOOR, KHARE MALA, S.NO-204 PLOT NO 28, Kupwad MIDC Area, Madhavnagar, Sangli, Maharashtra - 416436")
+  city                  String   @default("Sangli")
+  state                 String   @default("Maharashtra")
+  pincode               String   @default("416436")
+  googleMapsUrl         String?
+  onlineShoppingEnabled Boolean  @default(true)
+  currencySymbol        String   @default("₹")
+  announcementText      String?  @default("Welcome to BBG Textile — Premium Fabric & Wholesale Garment Solutions")
+  heroTitle             String   @default("Crafting Timeless Quality in Every Thread")
+  heroSubtitle          String   @default("Manufacturer & wholesaler of premium quality textiles, shirting, suiting, and ethnic fabrics in Sangli.")
+  aboutTitle            String   @default("About BBG Textile")
+  aboutStory            String
+  aboutMission          String?
+  aboutSpecialties      String?
+  seoTitle              String   @default("BBG Textile | Premium Fabrics & Garments in Sangli")
+  seoDescription        String   @default("Leading textile wholesaler and manufacturer in Kupwad MIDC, Sangli, Maharashtra.")
+  instagramUrl          String?
+  facebookUrl           String?
+  updatedAt             DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+model HomeBanner {
+  id           String   @id @default(cuid())
+  title        String
+  subtitle     String?
+  linkUrl      String?
+  buttonText   String?  @default("Explore Collection")
+  imageUrl     String
+  displayOrder Int      @default(0)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("home_banners")
+}
+
+model AuditLog {
+  id          String     @id @default(cuid())
+  adminUserId String?
+  adminUser   AdminUser? @relation(fields: [adminUserId], references: [id], onDelete: SetNull)
+  action      String
+  details     String?
+  ipAddress   String?
+  createdAt   DateTime   @default(now())
+
+  @@index([adminUserId])
+  @@map("audit_logs")
+}
