@@ -10,43 +10,65 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+export const revalidate = 60;
+
+export async function generateStaticParams() {
+  try {
+    const products = await prisma.product.findMany({
+      where: { isActive: true },
+      select: { slug: true },
+    });
+    return products.map((p) => ({ slug: p.slug }));
+  } catch (error) {
+    console.error("Error generating static params:", error);
+    return [];
+  }
+}
+
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
-  const product = await prisma.product.findFirst({
-    where: {
-      OR: [{ slug }, { id: slug }],
-      isActive: true,
-    },
-    include: { category: true },
-  });
+  try {
+    const product = await prisma.product.findFirst({
+      where: {
+        OR: [{ slug }, { id: slug }],
+        isActive: true,
+      },
+      select: { name: true, description: true },
+    });
 
-  if (!product) return { title: "Product Not Found" };
+    if (!product) return { title: "Product Not Found | BBG Textile" };
 
-  return {
-    title: `${product.name} | BBG Textile Sangli`,
-    description: product.description.substring(0, 160),
-  };
+    return {
+      title: `${product.name} | BBG Textile Sangli`,
+      description: product.description.substring(0, 160),
+    };
+  } catch {
+    return { title: "Product Detail | BBG Textile" };
+  }
 }
 
 export default async function ProductDetailPage({ params }: Props) {
   const { slug } = await params;
-  const settings = await getSiteSettings();
 
-  const product = await prisma.product.findFirst({
-    where: {
-      OR: [{ slug }, { id: slug }],
-      isActive: true,
-    },
-    include: {
-      category: true,
-      images: {
-        orderBy: { displayOrder: "asc" },
+  // Concurrent fetch for maximum speed
+  const [settings, product] = await Promise.all([
+    getSiteSettings(),
+    prisma.product.findFirst({
+      where: {
+        OR: [{ slug }, { id: slug }],
+        isActive: true,
       },
-      variants: {
-        orderBy: { createdAt: "asc" },
+      include: {
+        category: true,
+        images: {
+          orderBy: { displayOrder: "asc" },
+        },
+        variants: {
+          orderBy: { createdAt: "asc" },
+        },
       },
-    },
-  });
+    }),
+  ]);
 
   if (!product) {
     notFound();

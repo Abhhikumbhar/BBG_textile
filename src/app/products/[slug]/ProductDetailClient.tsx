@@ -266,120 +266,178 @@ export default function ProductDetailClient({
               alt={images[activeImageIndex]?.altText || product.name}
               fill
               priority
-              className="object-cover object-[15%_center] sm:object-[18%_center] transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className={`transition-all duration-300 ${
+                activeImageIndex === 0
+                  ? "object-cover object-[15%_center] sm:object-[18%_center] group-hover:scale-[1.02]"
+                  : "object-contain bg-white/70 p-2 sm:p-4"
+              }`}
             />
 
-            {/* Top Right: Clean Share Button */}
-            <div className="absolute top-4 right-4 z-20">
-              <button
-                type="button"
-                onClick={handleShare}
-                className="p-2.5 bg-white/95 hover:bg-white text-gray-700 rounded-full shadow-md backdrop-blur-sm transition-transform hover:scale-105"
-                title="Share product link"
-              >
-                {copied ? (
-                  <Check className="w-4 h-4 text-emerald-600" />
-                ) : (
-                  <Share2 className="w-4 h-4" />
-                )}
-              </button>
-            </div>
+            {/* Top Bar on Image: Back to Studio button if on detail image, and Share button */}
+            <div className="absolute top-4 inset-x-4 flex items-center justify-between gap-2 z-20">
+              {activeImageIndex > 0 ? (
+                <button
+                  type="button"
+                  onClick={() => setActiveImageIndex(0)}
+                  className="px-3.5 py-1.5 bg-[#0B1A30]/90 hover:bg-[#0B1A30] text-amber-300 rounded-full shadow-md backdrop-blur-md text-xs font-bold transition-all flex items-center gap-1.5"
+                >
+                  <span>⟲ Studio View</span>
+                </button>
+              ) : (
+                <span className="px-3 py-1 bg-[#0B1A30]/85 text-amber-300 rounded-full text-[11px] font-bold tracking-wider uppercase backdrop-blur-sm shadow">
+                  Studio Presentation
+                </span>
+              )}
 
-            {/* Right Side: 4 Vertical Gold-Rimmed Feature Badges */}
-            <div className="absolute right-3.5 top-18 sm:top-20 flex flex-col gap-2.5 z-20 pointer-events-none">
-              <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-white/95 backdrop-blur-md border border-amber-400 shadow-md flex flex-col items-center justify-center p-1 text-center">
-                <span className="text-sm">☁️</span>
-                <span className="text-[8px] font-bold text-slate-900 leading-tight">95% Cotton</span>
-                <span className="text-[7px] text-slate-500 leading-none">Ultra Soft</span>
-              </div>
-              <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-white/95 backdrop-blur-md border border-amber-400 shadow-md flex flex-col items-center justify-center p-1 text-center">
-                <span className="text-sm">✨</span>
-                <span className="text-[8px] font-bold text-slate-900 leading-tight">4-Way Stretch</span>
-                <span className="text-[7px] text-slate-500 leading-none">Max Comfort</span>
-              </div>
-              <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-white/95 backdrop-blur-md border border-amber-400 shadow-md flex flex-col items-center justify-center p-1 text-center">
-                <span className="text-sm">🎨</span>
-                <span className="text-[8px] font-bold text-slate-900 leading-tight">Colorfast</span>
-                <span className="text-[7px] text-slate-500 leading-none">Zero Bleed</span>
-              </div>
-              <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-white/95 backdrop-blur-md border border-amber-400 shadow-md flex flex-col items-center justify-center p-1 text-center">
-                <span className="text-sm">🛡️</span>
-                <span className="text-[8px] font-bold text-slate-900 leading-tight">Bio-Washed</span>
-                <span className="text-[7px] text-slate-500 leading-none">Non-Sheer</span>
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-1 bg-black/50 text-white rounded-full text-[10px] font-mono font-semibold backdrop-blur-sm">
+                  {activeImageIndex + 1} / {images.length}
+                </span>
+                <button
+                  type="button"
+                  onClick={handleShare}
+                  className="p-2.5 bg-white/95 hover:bg-white text-gray-700 rounded-full shadow-md backdrop-blur-sm transition-transform hover:scale-105"
+                  title="Share product link"
+                >
+                  {copied ? (
+                    <Check className="w-4 h-4 text-emerald-600" />
+                  ) : (
+                    <Share2 className="w-4 h-4" />
+                  )}
+                </button>
               </div>
             </div>
 
-            {/* Center-Bottom: 3 Fabric Detail Macro Thumbnails (leaving flowerpot on left fully visible) */}
-            <div className="absolute left-1/2 -translate-x-1/2 bottom-3.5 flex items-end gap-2 z-20">
-              <div className="flex flex-col items-center">
-                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full border-2 border-amber-400 shadow-lg overflow-hidden bg-slate-900 relative">
-                  <Image
-                    src={images[1]?.url || images[0].url}
-                    alt="Seamless Stitch"
-                    fill
-                    className="object-cover scale-[2.2] object-center"
-                  />
+            {/* Overlays: ONLY SHOW ON STUDIO VIEW (Image 0) so other images are completely clear */}
+            {activeImageIndex === 0 && (
+              <>
+                {/* Right Side: 4 Vertical Gold-Rimmed Feature Badges */}
+                <div className="absolute right-3.5 top-16 sm:top-18 flex flex-col gap-2.5 z-20 pointer-events-none">
+                  <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-white/95 backdrop-blur-md border border-amber-400 shadow-md flex flex-col items-center justify-center p-1 text-center">
+                    <span className="text-sm">☁️</span>
+                    <span className="text-[8px] font-bold text-slate-900 leading-tight">95% Cotton</span>
+                    <span className="text-[7px] text-slate-500 leading-none">Ultra Soft</span>
+                  </div>
+                  <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-white/95 backdrop-blur-md border border-amber-400 shadow-md flex flex-col items-center justify-center p-1 text-center">
+                    <span className="text-sm">✨</span>
+                    <span className="text-[8px] font-bold text-slate-900 leading-tight">4-Way Stretch</span>
+                    <span className="text-[7px] text-slate-500 leading-none">Max Comfort</span>
+                  </div>
+                  <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-white/95 backdrop-blur-md border border-amber-400 shadow-md flex flex-col items-center justify-center p-1 text-center">
+                    <span className="text-sm">🎨</span>
+                    <span className="text-[8px] font-bold text-slate-900 leading-tight">Colorfast</span>
+                    <span className="text-[7px] text-slate-500 leading-none">Zero Bleed</span>
+                  </div>
+                  <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-white/95 backdrop-blur-md border border-amber-400 shadow-md flex flex-col items-center justify-center p-1 text-center">
+                    <span className="text-sm">🛡️</span>
+                    <span className="text-[8px] font-bold text-slate-900 leading-tight">Bio-Washed</span>
+                    <span className="text-[7px] text-slate-500 leading-none">Non-Sheer</span>
+                  </div>
                 </div>
-                <span className="text-[9px] font-bold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] mt-1">
-                  Stitch
-                </span>
-              </div>
-              <div className="flex flex-col items-center">
-                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full border-2 border-amber-400 shadow-lg overflow-hidden bg-slate-900 relative">
-                  <Image
-                    src={images[2]?.url || images[0].url}
-                    alt="Ankle Gathers"
-                    fill
-                    className="object-cover scale-[2.4] object-bottom"
-                  />
-                </div>
-                <span className="text-[9px] font-bold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] mt-1">
-                  Gathers
-                </span>
-              </div>
-              <div className="flex flex-col items-center">
-                <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full border-2 border-amber-400 shadow-lg overflow-hidden bg-slate-900 relative">
-                  <Image
-                    src={images[3]?.url || images[0].url}
-                    alt="Gentle Waistband"
-                    fill
-                    className="object-cover scale-[2.2] object-top"
-                  />
-                </div>
-                <span className="text-[9px] font-bold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] mt-1">
-                  Waistband
-                </span>
-              </div>
-            </div>
 
-            {/* Bottom Right: Cultural Guarantee Stamp (Matching Reference) */}
-            <div className="absolute right-3.5 bottom-3.5 z-20 pointer-events-none">
-              <div className="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-500/90 via-amber-600/90 to-amber-700/90 text-white text-[11px] font-bold shadow-lg border border-amber-300/60 backdrop-blur-md flex items-center gap-1.5">
-                <span>✨</span>
-                <span>परंपरेची आधुनिक पावलं</span>
-              </div>
-            </div>
+                {/* Center-Bottom: 3 Fabric Detail Macro Thumbnails (interactive jump to detail photos) */}
+                <div className="absolute left-1/2 -translate-x-1/2 bottom-3.5 flex items-end gap-2 z-20">
+                  {images[1] && (
+                    <button
+                      type="button"
+                      onClick={() => setActiveImageIndex(1)}
+                      className="flex flex-col items-center group/btn cursor-pointer"
+                      title="View Stitch Detail"
+                    >
+                      <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full border-2 border-amber-400 shadow-lg overflow-hidden bg-slate-900 relative group-hover/btn:scale-110 transition-transform">
+                        <Image
+                          src={images[1].url}
+                          alt="Seamless Stitch"
+                          fill
+                          className="object-cover scale-[2.2] object-center"
+                        />
+                      </div>
+                      <span className="text-[9px] font-bold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] mt-1">
+                        Stitch
+                      </span>
+                    </button>
+                  )}
+                  {images[2] && (
+                    <button
+                      type="button"
+                      onClick={() => setActiveImageIndex(2)}
+                      className="flex flex-col items-center group/btn cursor-pointer"
+                      title="View Gathers Detail"
+                    >
+                      <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full border-2 border-amber-400 shadow-lg overflow-hidden bg-slate-900 relative group-hover/btn:scale-110 transition-transform">
+                        <Image
+                          src={images[2].url}
+                          alt="Ankle Gathers"
+                          fill
+                          className="object-cover scale-[2.4] object-bottom"
+                        />
+                      </div>
+                      <span className="text-[9px] font-bold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] mt-1">
+                        Gathers
+                      </span>
+                    </button>
+                  )}
+                  {images[3] && (
+                    <button
+                      type="button"
+                      onClick={() => setActiveImageIndex(3)}
+                      className="flex flex-col items-center group/btn cursor-pointer"
+                      title="View Waistband Detail"
+                    >
+                      <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full border-2 border-amber-400 shadow-lg overflow-hidden bg-slate-900 relative group-hover/btn:scale-110 transition-transform">
+                        <Image
+                          src={images[3].url}
+                          alt="Gentle Waistband"
+                          fill
+                          className="object-cover scale-[2.2] object-top"
+                        />
+                      </div>
+                      <span className="text-[9px] font-bold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] mt-1">
+                        Waistband
+                      </span>
+                    </button>
+                  )}
+                </div>
+
+                {/* Bottom Right: Cultural Guarantee Stamp */}
+                <div className="absolute right-3.5 bottom-3.5 z-20 pointer-events-none">
+                  <div className="px-3.5 py-1.5 rounded-full bg-gradient-to-r from-amber-500/90 via-amber-600/90 to-amber-700/90 text-white text-[11px] font-bold shadow-lg border border-amber-300/60 backdrop-blur-md flex items-center gap-1.5">
+                    <span>✨</span>
+                    <span>परंपरेची आधुनिक पावलं</span>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
 
-          {/* Thumbnails row */}
+          {/* Thumbnails row: Smooth mobile swipe and clean borders */}
           {images.length > 1 && (
-            <div className="flex items-center gap-3 overflow-x-auto pb-2">
+            <div className="flex items-center gap-2.5 overflow-x-auto pb-2 pt-1 touch-pan-x scrollbar-none">
               {images.map((img, idx) => (
                 <button
                   key={img.id}
+                  type="button"
                   onClick={() => setActiveImageIndex(idx)}
-                  className={`relative w-20 h-24 rounded-xl overflow-hidden shrink-0 border-2 transition-all ${
+                  className={`relative w-18 h-22 sm:w-20 sm:h-24 rounded-xl overflow-hidden shrink-0 border-2 transition-all active:scale-95 ${
                     activeImageIndex === idx
-                      ? "border-[#1A365D] ring-2 ring-[#1A365D]/30 shadow-md"
-                      : "border-gray-200 opacity-70 hover:opacity-100"
+                      ? "border-[#1A365D] ring-2 ring-[#1A365D]/30 shadow-md scale-102"
+                      : "border-gray-200 opacity-70 hover:opacity-100 hover:border-gray-400"
                   }`}
+                  aria-label={`View photo ${idx + 1}`}
                 >
                   <Image
                     src={img.url}
                     alt={img.altText || `Product view ${idx + 1}`}
                     fill
-                    className="object-cover object-[18%_center]"
+                    sizes="80px"
+                    className={`object-cover ${idx === 0 ? "object-[18%_center]" : "object-center"}`}
                   />
+                  {idx === 0 && (
+                    <span className="absolute bottom-1 inset-x-1 bg-black/70 text-[8px] font-bold text-amber-300 text-center rounded py-0.5 backdrop-blur-xs">
+                      Studio
+                    </span>
+                  )}
                 </button>
               ))}
             </div>

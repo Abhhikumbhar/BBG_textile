@@ -136,6 +136,7 @@ export default function ProductCard({ product, whatsappNumber = "919822012345" }
       {/* Clean Image Container (Matching Reference Design - No Overlays Blocking Model) */}
       <Link
         href={`/products/${product.slug}`}
+        prefetch={true}
         className="relative block aspect-[7/6] bg-gradient-to-b from-[#F8F4EE] to-[#EFE8DE] overflow-hidden rounded-t-2xl"
       >
         <Image
@@ -195,7 +196,7 @@ export default function ProductCard({ product, whatsappNumber = "919822012345" }
       {/* Content Area with Soft Warm Ivory Tone */}
       <div className="p-4 flex flex-col flex-1 bg-gradient-to-b from-[#FCFAF7] via-[#FAF6EE] to-[#F5EFE4]">
         {/* Title */}
-        <Link href={`/products/${product.slug}`} className="block mb-1.5">
+        <Link href={`/products/${product.slug}`} prefetch={true} className="block mb-1.5">
           <h3 className="font-serif text-sm sm:text-base font-bold text-[#0F2444] group-hover:text-[#1A365D] transition-colors line-clamp-2 min-h-[2.5rem] leading-snug">
             {product.name}
           </h3>
@@ -239,6 +240,7 @@ export default function ProductCard({ product, whatsappNumber = "919822012345" }
         <div className="mt-auto pt-2.5 border-t border-[#EAE1D3] flex items-center gap-2">
           <Link
             href={`/products/${product.slug}`}
+            prefetch={true}
             className="flex-1 py-3 px-3 bg-[#1A365D] hover:bg-[#0F2444] active:bg-[#0A192F] active:scale-[0.98] text-white rounded-xl font-bold text-xs sm:text-sm text-center shadow-sm hover:shadow transition-all flex items-center justify-center gap-1.5 group/btn touch-manipulation min-h-[44px]"
           >
             <span>View Details</span>
