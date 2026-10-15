@@ -8,7 +8,7 @@ export default function WhatsAppWidget({
 }: {
   whatsappNumber?: string;
 }) {
-  const cleanNumber = whatsappNumber.replace(/[^0-9]/g, "");
+  const cleanNumber = (whatsappNumber && whatsappNumber.trim() ? whatsappNumber : "919822012345").replace(/[^0-9]/g, "");
 
   return (
     <a
@@ -17,7 +17,7 @@ export default function WhatsAppWidget({
       )}`}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 w-14 h-14 sm:w-15 sm:h-15 bg-[#25D366] hover:bg-[#20bd5a] text-white rounded-full shadow-[0_6px_25px_rgba(37,211,102,0.45)] hover:shadow-[0_8px_30px_rgba(37,211,102,0.6)] transition-all duration-300 hover:scale-110 flex items-center justify-center group"
+      className="fixed bottom-20 right-4 sm:bottom-6 sm:right-6 z-40 w-13 h-13 sm:w-15 sm:h-15 bg-[#25D366] hover:bg-[#20bd5a] active:bg-[#1DA851] text-white rounded-full shadow-[0_6px_25px_rgba(37,211,102,0.45)] hover:shadow-[0_8px_30px_rgba(37,211,102,0.6)] transition-all duration-300 hover:scale-110 active:scale-95 flex items-center justify-center group touch-manipulation"
       aria-label="Direct WhatsApp Enquiry"
       title="Chat on WhatsApp"
     >

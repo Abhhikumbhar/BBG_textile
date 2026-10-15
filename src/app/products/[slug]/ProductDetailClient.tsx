@@ -190,7 +190,7 @@ export default function ProductDetailClient({
       ]
     : rawImages;
 
-  const cleanWhatsApp = whatsappNumber.replace(/[^0-9]/g, "");
+  const cleanWhatsApp = (whatsappNumber && whatsappNumber.trim() ? whatsappNumber : "919822012345").replace(/[^0-9]/g, "");
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
 
   const whatsappMessage = encodeURIComponent(
@@ -233,7 +233,7 @@ export default function ProductDetailClient({
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 pb-24 sm:pb-12">
       {/* Breadcrumb Navigation */}
       <nav className="flex items-center gap-2 text-xs text-gray-500 mb-8">
         <Link href="/" className="hover:text-gray-900">
@@ -571,6 +571,26 @@ export default function ProductDetailClient({
           </div>
         </div>
       )}
+
+      {/* Sticky Mobile Bottom CTA Bar */}
+      <div className="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-gray-200 p-3 sm:hidden shadow-[0_-4px_25px_rgba(0,0,0,0.1)] flex items-center gap-2.5">
+        <a
+          href={`https://wa.me/${cleanWhatsApp}?text=${whatsappMessage}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex-1 py-3 px-4 bg-[#25D366] hover:bg-[#20BD5A] active:bg-[#1DA851] text-white rounded-xl font-bold text-sm shadow-md flex items-center justify-center gap-2 active:scale-95 transition-transform"
+        >
+          <WhatsAppIcon className="w-5 h-5 text-white" />
+          <span>Enquire on WhatsApp</span>
+        </a>
+        <a
+          href="tel:+919822012345"
+          className="w-12 h-12 border border-gray-300 bg-gray-50 active:bg-gray-100 text-gray-800 rounded-xl flex items-center justify-center shrink-0 active:scale-95 transition-transform shadow-sm"
+          aria-label="Call BBG Textile"
+        >
+          <Phone className="w-5 h-5 text-[#1A365D]" />
+        </a>
+      </div>
     </div>
   );
 }

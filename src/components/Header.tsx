@@ -232,71 +232,83 @@ export default function Header({ settings }: HeaderProps) {
         </div>
       </nav>
 
-      {/* Mobile Drawer Menu */}
+      {/* Mobile Drawer Menu & Backdrop */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-white border-b border-gray-200 px-4 pt-3 pb-6 shadow-xl animate-in slide-in-from-top duration-200">
-          <div className="flex flex-col space-y-3">
-            {navLinks.map((link) => {
-              const isActive =
-                link.href === "/"
-                  ? pathname === "/"
-                  : pathname.startsWith(link.href);
-              return (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  className={`flex items-center justify-between px-3 py-2.5 rounded-lg font-serif text-base tracking-wide font-medium ${
-                    isActive
-                      ? "bg-[#1A365D]/10 text-[#1A365D] font-bold"
-                      : "text-gray-700 hover:bg-gray-50"
-                  }`}
-                >
-                  <span>{link.name}</span>
-                  <ChevronRight className="w-4 h-4 text-gray-400" />
-                </Link>
-              );
-            })}
-
-            <div className="pt-3 border-t border-gray-100 flex flex-col gap-2">
-              <a
-                href={`https://wa.me/${cleanWhatsApp}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center gap-2 w-full py-2.5 px-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm font-semibold shadow-sm transition-colors"
-              >
-                <WhatsAppIcon className="w-4 h-4" />
-                <span>Chat on WhatsApp</span>
-              </a>
-              <a
-                href={`tel:${phone}`}
-                className="flex items-center justify-center gap-2 w-full py-2.5 px-4 border border-gray-300 hover:bg-gray-50 text-gray-800 rounded-lg text-sm font-medium transition-colors"
-              >
-                <Phone className="w-4 h-4" />
-                <span>Call {phone}</span>
-              </a>
-            </div>
-
-            {/* Registered Mill Address Card */}
-            <div className="pt-3 border-t border-gray-100">
-              <div className="bg-amber-50/60 border border-amber-200/60 rounded-xl p-3 flex items-start gap-2.5 text-xs">
-                <MapPin className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-                <div className="flex-1">
-                  <p className="font-semibold text-gray-900 text-xs">Mill & Office Address:</p>
-                  <p className="text-[11px] text-gray-600 leading-relaxed mt-0.5">{fullAddress}</p>
-                  <a
-                    href={mapsUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1 text-[11px] text-[#1A365D] font-bold mt-1.5 hover:underline"
+        <>
+          <div
+            className="fixed inset-0 top-[105px] bg-black/40 backdrop-blur-xs z-30 md:hidden animate-in fade-in duration-200"
+            onClick={() => setMobileMenuOpen(false)}
+            aria-hidden="true"
+          />
+          <div className="relative z-40 md:hidden bg-white border-b border-gray-200 px-4 pt-3 pb-6 shadow-2xl animate-in slide-in-from-top duration-200">
+            <div className="flex flex-col space-y-2.5">
+              {navLinks.map((link) => {
+                const isActive =
+                  link.href === "/"
+                    ? pathname === "/"
+                    : pathname.startsWith(link.href);
+                return (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`flex items-center justify-between px-3.5 py-3 rounded-xl font-serif text-base tracking-wide font-medium transition-colors ${
+                      isActive
+                        ? "bg-[#1A365D] text-white font-bold shadow-sm"
+                        : "text-gray-700 hover:bg-gray-50 active:bg-gray-100"
+                    }`}
                   >
-                    <span>Open in Google Maps</span>
-                    <ChevronRight className="w-3 h-3" />
-                  </a>
+                    <span>{link.name}</span>
+                    <ChevronRight className={`w-4 h-4 ${isActive ? "text-white/80" : "text-gray-400"}`} />
+                  </Link>
+                );
+              })}
+
+              <div className="pt-3 border-t border-gray-100 flex flex-col gap-2.5">
+                <a
+                  href={`https://wa.me/${cleanWhatsApp}?text=${encodeURIComponent(
+                    "Hello BBG Textile, I am visiting your website and have an enquiry regarding wholesale products."
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-[#25D366] hover:bg-[#20BD5A] active:bg-[#1DA851] text-white rounded-xl text-sm font-bold shadow-md transition-all active:scale-[0.98]"
+                >
+                  <WhatsAppIcon className="w-5 h-5 text-white" />
+                  <span>Enquire on WhatsApp</span>
+                </a>
+                <a
+                  href={`tel:${phone}`}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center justify-center gap-2 w-full py-3 px-4 border border-gray-300 hover:bg-gray-50 active:bg-gray-100 text-gray-800 rounded-xl text-sm font-semibold transition-all active:scale-[0.98]"
+                >
+                  <Phone className="w-4 h-4 text-[#1A365D]" />
+                  <span>Call {phone}</span>
+                </a>
+              </div>
+
+              {/* Registered Mill Address Card */}
+              <div className="pt-2 border-t border-gray-100">
+                <div className="bg-amber-50/70 border border-amber-200/70 rounded-xl p-3 flex items-start gap-2.5 text-xs">
+                  <MapPin className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                  <div className="flex-1">
+                    <p className="font-bold text-gray-900 text-xs">Mill & Office Address:</p>
+                    <p className="text-[11px] text-gray-600 leading-relaxed mt-0.5">{fullAddress}</p>
+                    <a
+                      href={mapsUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[11px] text-[#1A365D] font-bold mt-1.5 hover:underline"
+                    >
+                      <span>Open in Google Maps</span>
+                      <ChevronRight className="w-3 h-3" />
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </>
       )}
     </header>
   );

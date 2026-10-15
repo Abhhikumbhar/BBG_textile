@@ -102,7 +102,7 @@ export default function ProductCard({ product, whatsappNumber = "919822012345" }
     product.images?.[0]?.url ||
     "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=600&q=80";
 
-  const cleanWhatsApp = whatsappNumber.replace(/[^0-9]/g, "");
+  const cleanWhatsApp = (whatsappNumber && whatsappNumber.trim() ? whatsappNumber : "919822012345").replace(/[^0-9]/g, "");
   const whatsappText = encodeURIComponent(
     `Hello BBG Textile, I am inquiring about *${product.name}* (SKU: ${product.sku}). Could you please share wholesale pricing and availability?`
   );
@@ -222,24 +222,24 @@ export default function ProductCard({ product, whatsappNumber = "919822012345" }
           </span>
         </div>
 
-        {/* Pricing / Wholesale Rate Row (Matching Reference Design) */}
-        <div className="flex items-baseline justify-between mb-3 pt-1 border-t border-[#EAE1D3]/70">
-          <div className="flex items-baseline gap-1">
-            <span className="font-bold text-base sm:text-lg text-[#0F2444]">
-              ₹{product.price > 0 ? product.price : 349}
+        {/* Direct Mill Wholesale Indicator (No public prices shown) */}
+        <div className="flex items-center justify-between mb-3 pt-2 border-t border-[#EAE1D3]/70">
+          <div className="flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-[11px] sm:text-xs font-bold text-slate-800">
+              Direct Mill Supply
             </span>
-            <span className="text-[11px] text-slate-500 font-medium">/ pc</span>
           </div>
-          <span className="text-[11px] font-bold text-emerald-800 bg-emerald-100/90 border border-emerald-300/70 px-2 py-0.5 rounded-full">
-            Wholesale: ₹{product.wholesalePrice || Math.round((product.price > 0 ? product.price : 349) * 0.55)}
+          <span className="text-[10px] font-bold text-amber-900 bg-amber-100/90 border border-amber-300/80 px-2 py-0.5 rounded-full">
+            Wholesale on Enquiry
           </span>
         </div>
 
-        {/* Action Row: Warm Golden View Details & Standalone WhatsApp Symbol */}
-        <div className="mt-auto pt-3 border-t border-[#EAE1D3] flex items-center gap-2">
+        {/* Action Row: Mobile-Optimized View Details & WhatsApp Buttons */}
+        <div className="mt-auto pt-2.5 border-t border-[#EAE1D3] flex items-center gap-2">
           <Link
             href={`/products/${product.slug}`}
-            className="flex-1 py-2.5 px-3 bg-gradient-to-r from-[#D49B28] via-[#C68D2B] to-[#B57C20] hover:from-[#C68D2B] hover:to-[#A36C18] text-white rounded-xl font-bold text-xs sm:text-sm text-center shadow-sm hover:shadow transition-all flex items-center justify-center gap-1.5 group/btn"
+            className="flex-1 py-3 px-3 bg-[#1A365D] hover:bg-[#0F2444] active:bg-[#0A192F] active:scale-[0.98] text-white rounded-xl font-bold text-xs sm:text-sm text-center shadow-sm hover:shadow transition-all flex items-center justify-center gap-1.5 group/btn touch-manipulation min-h-[44px]"
           >
             <span>View Details</span>
             <ArrowRight className="w-3.5 h-3.5 text-white/90 group-hover/btn:translate-x-0.5 transition-transform" />
@@ -248,11 +248,12 @@ export default function ProductCard({ product, whatsappNumber = "919822012345" }
             href={`https://wa.me/${cleanWhatsApp}?text=${whatsappText}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-10 h-10 bg-[#25D366] hover:bg-[#20BD5A] text-white rounded-xl shadow-sm hover:shadow flex items-center justify-center shrink-0 transition-all hover:scale-105"
+            className="h-11 px-3.5 sm:px-3 bg-[#25D366] hover:bg-[#20BD5A] active:bg-[#1DA851] active:scale-[0.98] text-white rounded-xl shadow-sm hover:shadow flex items-center justify-center gap-1.5 shrink-0 transition-all hover:scale-105 touch-manipulation min-h-[44px]"
             title="Enquire on WhatsApp"
             aria-label="Enquire on WhatsApp"
           >
             <WhatsAppIcon className="w-5 h-5 text-white" />
+            <span className="text-xs font-bold sm:hidden">WhatsApp</span>
           </a>
         </div>
       </div>
