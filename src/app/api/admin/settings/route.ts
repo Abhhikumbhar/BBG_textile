@@ -27,9 +27,9 @@ export async function GET(req: NextRequest) {
           city: "Sangli",
           state: "Maharashtra",
           pincode: "416416",
-          phone: "+91 98220 12345",
-          whatsappNumber: "919822012345",
-          email: "info@bbgtextile.com",
+          phone: "+91 87673 22501",
+          whatsappNumber: "918767322501",
+          email: "bbgtextilebharat1@gmail.com",
           aboutStory: "Premier textile manufacturer in Sangli.",
         },
       });

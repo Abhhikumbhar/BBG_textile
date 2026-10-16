@@ -33,15 +33,15 @@ export default async function AboutPage() {
   const address =
     settings?.address ||
     "GROUND FLOOR, KHARE MALA, S.NO-204 PLOT NO 28, Kupwad MIDC Area, Madhavnagar, Sangli, Maharashtra - 416436, OLD KUPWAD ROAD, SANGLI - 416416";
-  const phone = settings?.phone || "+91 98220 12345";
-  const email = settings?.email || "contact@bbgtextile.com";
-  const whatsapp = settings?.whatsappNumber || "919822012345";
+  const phone = settings?.phone || "+91 87673 22501";
+  const email = settings?.email || "bbgtextilebharat1@gmail.com";
+  const whatsapp = settings?.whatsappNumber || "918767322501";
   const cleanWhatsApp = whatsapp.replace(/[^0-9]/g, "");
 
   const specialtiesList = [
     "4-Way Stretch Cotton Lycra Churidar Leggings",
     "Ankle-Length Bio-Washed Leggings",
-    "Active & Comfort Cycling Shorts",
+    "Active & Comfort Tight Shorts",
     "Pure Combed Cotton & Giza Shirting",
     "Wrinkle-Resistant Poly-Viscose Suiting",
     "Durable Institutional & School Uniform Fabrics",
@@ -170,7 +170,7 @@ export default async function AboutPage() {
                     Headquartered in the historic industrial corridor of <strong>Kupwad MIDC, Sangli</strong> — widely celebrated as Maharashtra&apos;s textile and yarn hub — <strong>BBG TEXTILE</strong> represents the perfect blend of traditional Indian weaving wisdom and modern circular knitting innovation.
                   </p>
                   <p>
-                    We specialize in manufacturing high-density <strong>4-way stretch cotton lycra churidar leggings, ankle-length leggings, and active cycling shorts</strong>, alongside premium pure cotton shirting, suiting, and institutional uniform textiles. Every fabric roll is spun from handpicked long-staple cotton, tested for tensile elasticity, and treated with an eco-friendly enzyme bio-wash.
+                    We specialize in manufacturing high-density <strong>4-way stretch cotton lycra churidar leggings, ankle-length leggings, and active tight shorts</strong>, alongside premium pure cotton shirting, suiting, and institutional uniform textiles. Every fabric roll is spun from handpicked long-staple cotton, tested for tensile elasticity, and treated with an eco-friendly enzyme bio-wash.
                   </p>
                   <p>
                     Unlike middlemen and trading agents who inflate wholesale costs, BBG Textile operates on a <strong>direct mill-to-retailer model</strong>. We supply leading cloth stores, saree showrooms, boutique chains, and garment brands with certified consistent GSM, colorfast assurance, and guaranteed ready dispatch.

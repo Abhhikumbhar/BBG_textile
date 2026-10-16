@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 
 export default function CheckoutClient({
-  whatsappNumber = "919822012345",
+  whatsappNumber = "918767322501",
 }: {
   whatsappNumber?: string;
 }) {
@@ -166,7 +166,7 @@ export default function CheckoutClient({
                       onChange={(e) =>
                         setFormData({ ...formData, customerPhone: e.target.value })
                       }
-                      placeholder="e.g. 9822012345"
+                      placeholder="e.g. 8767322501"
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1A365D] text-sm"
                     />
                   </div>

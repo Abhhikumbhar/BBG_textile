@@ -32,9 +32,9 @@ export default function Footer({ settings }: FooterProps) {
   const address =
     settings?.address ||
     "GROUND FLOOR, KHARE MALA, S.NO-204 PLOT NO 28, Kupwad MIDC Area, Madhavnagar, Sangli, Maharashtra - 416436, OLD KUPWAD ROAD, SANGLI - 416416";
-  const phone = settings?.phone || "+91 98220 12345";
-  const email = settings?.email || "info@bbgtextile.com";
-  const whatsapp = settings?.whatsappNumber || "919822012345";
+  const phone = settings?.phone || "+91 87673 22501";
+  const email = settings?.email || "bbgtextilebharat1@gmail.com";
+  const whatsapp = settings?.whatsappNumber || "918767322501";
   const cleanWhatsApp = whatsapp.replace(/[^0-9]/g, "");
 
   return (
@@ -197,7 +197,7 @@ export default function Footer({ settings }: FooterProps) {
                   href="/products?category=cycling-shorts"
                   className="hover:text-white transition-colors"
                 >
-                  Cycling & Active Shorts
+                  Tight & Active Shorts
                 </Link>
               </li>
               <li>

@@ -34,37 +34,10 @@ export default function Header({ settings }: HeaderProps) {
   const { totalItems, setIsOpen } = useCart();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [showTopBar, setShowTopBar] = useState(true);
-  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setScrolled(currentScrollY > 20);
-
-      // Always show top bar at the very top of page
-      if (currentScrollY <= 15) {
-        setShowTopBar(true);
-        lastScrollY.current = currentScrollY;
-        return;
-      }
-
-      const diff = currentScrollY - lastScrollY.current;
-      // Filter out tiny jitter/touch bounces
-      if (Math.abs(diff) < 6) {
-        return;
-      }
-
-      if (diff > 0 && currentScrollY > 30) {
-        // Scrolling down -> fold/hide top address bar (logo stays visible!)
-        setShowTopBar(false);
-        setMobileMenuOpen(false);
-      } else if (diff < 0) {
-        // Scrolling up -> unfold/show top address bar
-        setShowTopBar(true);
-      }
-
-      lastScrollY.current = currentScrollY;
+      setScrolled(window.scrollY > 10);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -85,8 +58,8 @@ export default function Header({ settings }: HeaderProps) {
   ];
 
   const businessName = settings?.businessName || "BBG TEXTILE";
-  const phone = settings?.phone || "+91 98220 12345";
-  const whatsapp = settings?.whatsappNumber || "919822012345";
+  const phone = settings?.phone || "+91 87673 22501";
+  const whatsapp = settings?.whatsappNumber || "918767322501";
   const cleanWhatsApp = whatsapp.replace(/[^0-9]/g, "");
   const fullAddress =
     settings?.address ||
@@ -99,15 +72,9 @@ export default function Header({ settings }: HeaderProps) {
     "https://maps.google.com/?q=Kupwad+MIDC+Sangli+Maharashtra";
 
   return (
-    <header className="sticky top-0 z-40 w-full transition-shadow duration-200">
+    <div className="w-full">
       {/* Top Announcement Bar */}
-      <div
-        className={`bg-[#0B1220] text-[#F7FAFC] px-3 sm:px-4 text-xs font-medium border-b border-white/10 transition-all duration-300 ease-in-out overflow-hidden ${
-          showTopBar
-            ? "max-h-36 py-2 opacity-100"
-            : "max-h-0 py-0 opacity-0 border-transparent pointer-events-none"
-        }`}
-      >
+      <div className="bg-[#0B1220] text-[#F7FAFC] px-3 sm:px-4 py-2 text-xs font-medium border-b border-white/10">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-1.5 md:gap-3">
           {/* Announcement / Tagline */}
           {!settings?.announcementText ||
@@ -174,14 +141,9 @@ export default function Header({ settings }: HeaderProps) {
         </div>
       </div>
 
-      {/* Main Navigation Bar */}
-      <nav
-        className={`bg-white/95 backdrop-blur-md border-b transition-all duration-200 ${
-          scrolled
-            ? "border-gray-200 shadow-sm py-3"
-            : "border-gray-100 py-4"
-        }`}
-      >
+      {/* Main Navigation Bar - Sticky with fixed stable height (zero bounce/jitter) */}
+      <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-xs">
+        <nav className="py-3 sm:py-3.5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           {/* Logo & Brand */}
           <Link href="/" className="flex items-center group py-0.5">
@@ -345,5 +307,6 @@ export default function Header({ settings }: HeaderProps) {
         </>
       )}
     </header>
+    </div>
   );
 }

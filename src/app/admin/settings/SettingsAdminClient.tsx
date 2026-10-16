@@ -35,9 +35,9 @@ export default function SettingsAdminClient() {
   const [settings, setSettings] = useState({
     businessName: "BBG TEXTILE",
     tagline: "Excellence in Quality Fabrics & Garments",
-    phone: "+91 98220 12345",
-    whatsappNumber: "919822012345",
-    email: "info@bbgtextile.com",
+    phone: "+91 87673 22501",
+    whatsappNumber: "8767322501",
+    email: "bbgtextilebharat1@gmail.com",
     address:
       "GROUND FLOOR, KHARE MALA, S.NO-204 PLOT NO 28, Kupwad MIDC Area, Madhavnagar, Sangli, Maharashtra - 416436, OLD KUPWAD ROAD, SANGLI - 416416",
     city: "Sangli",

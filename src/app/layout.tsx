@@ -82,7 +82,7 @@ export default async function RootLayout({
         <CartProvider>
           {children}
           <CartDrawer />
-          <WhatsAppWidget whatsappNumber={settings?.whatsappNumber || "919822012345"} />
+          <WhatsAppWidget whatsappNumber={settings?.whatsappNumber || "918767322501"} />
         </CartProvider>
       </body>
     </html>

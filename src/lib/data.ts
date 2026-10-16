@@ -123,7 +123,11 @@ export async function getProducts(options: GetProductsOptions = {}) {
     if (options.category) {
       if (options.category === "womens-bottom-wear") {
         where.category = {
-          slug: { in: ["churidar-leggings", "cycling-shorts", "womens-bottom-wear"] },
+          slug: { in: ["churidar-leggings", "cycling-shorts", "tight-shorts", "womens-bottom-wear"] },
+        };
+      } else if (options.category === "tight-shorts" || options.category === "cycling-shorts") {
+        where.category = {
+          slug: { in: ["tight-shorts", "cycling-shorts"] },
         };
       } else {
         where.category = {
@@ -196,10 +200,21 @@ export async function getProducts(options: GetProductsOptions = {}) {
         (p) =>
           p.categorySlug === "churidar-leggings" ||
           p.categorySlug === "cycling-shorts" ||
+          p.categorySlug === "tight-shorts" ||
           p.categorySlug === "womens-bottom-wear" ||
           p.category?.slug === "churidar-leggings" ||
           p.category?.slug === "cycling-shorts" ||
+          p.category?.slug === "tight-shorts" ||
           p.category?.slug === "womens-bottom-wear"
+      );
+    } else if (options.category === "tight-shorts" || options.category === "cycling-shorts") {
+      filtered = filtered.filter(
+        (p) =>
+          p.categorySlug === "cycling-shorts" ||
+          p.categorySlug === "tight-shorts" ||
+          p.category?.slug === "cycling-shorts" ||
+          p.category?.slug === "tight-shorts" ||
+          p.category?.id === options.category
       );
     } else {
       filtered = filtered.filter(
@@ -259,5 +274,12 @@ export async function getProductBySlug(slug: string) {
     console.warn("DB query failed in getProductBySlug, using fallback:", error);
   }
 
-  return fallbackProducts.find((p) => p.slug === slug) || null;
+  return (
+    fallbackProducts.find(
+      (p) =>
+        p.slug === slug ||
+        p.slug.replace("cycling-shorts", "tight-shorts") === slug ||
+        p.slug.replace("tight-shorts", "cycling-shorts") === slug
+    ) || null
+  );
 }

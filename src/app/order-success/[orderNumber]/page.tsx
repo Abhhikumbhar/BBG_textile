@@ -43,7 +43,7 @@ export default async function OrderSuccessPage({ params }: Props) {
     notFound();
   }
 
-  const cleanWhatsApp = (settings?.whatsappNumber || "919822012345").replace(
+  const cleanWhatsApp = (settings?.whatsappNumber || "918767322501").replace(
     /[^0-9]/g,
     ""
   );

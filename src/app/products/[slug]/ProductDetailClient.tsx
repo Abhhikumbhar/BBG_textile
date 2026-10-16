@@ -64,7 +64,7 @@ interface ProductDetailProps {
 export default function ProductDetailClient({
   product,
   relatedProducts,
-  whatsappNumber = "919822012345",
+  whatsappNumber = "918767322501",
 }: ProductDetailProps) {
   const { addItem } = useCart();
 
@@ -166,7 +166,7 @@ export default function ProductDetailClient({
     const s = ((product.slug || "") + " " + (colorHint || selectedColor || "")).toLowerCase();
     const sku = (product.sku || "").toLowerCase();
     const name = (product.name || "").toLowerCase();
-    const isCyclingShorts = s.includes("cycling") || sku.includes("cs") || name.includes("cycling");
+    const isCyclingShorts = s.includes("cycling") || s.includes("tight") || sku.includes("cs") || sku.includes("ts") || name.includes("cycling") || name.includes("tight");
 
     if (isCyclingShorts) {
       if (s.includes("grey") || sku.includes("gry") || name.includes("grey")) {
@@ -252,7 +252,7 @@ export default function ProductDetailClient({
       ]
     : rawImages;
 
-  const cleanWhatsApp = (whatsappNumber && whatsappNumber.trim() ? whatsappNumber : "919822012345").replace(/[^0-9]/g, "");
+  const cleanWhatsApp = (whatsappNumber && whatsappNumber.trim() ? whatsappNumber : "918767322501").replace(/[^0-9]/g, "");
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
 
   const whatsappMessage = encodeURIComponent(
@@ -296,35 +296,35 @@ export default function ProductDetailClient({
 
   return (
     <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-3 sm:pt-8 pb-28 sm:pb-12">
-      {/* Breadcrumb Navigation - Clean single line with horizontal scroll on mobile */}
-      <nav className="flex items-center gap-1.5 text-[11px] sm:text-xs text-gray-500 mb-2.5 sm:mb-6 overflow-x-auto whitespace-nowrap scrollbar-none py-0.5">
+      {/* Breadcrumb Navigation - Clean, single-line, non-wrapping */}
+      <nav className="flex items-center gap-1.5 text-xs text-gray-500 mb-3 sm:mb-6 overflow-x-auto whitespace-nowrap scrollbar-none py-0.5 select-none">
         <Link href="/" className="hover:text-gray-900 transition-colors shrink-0">
           Home
         </Link>
-        <ChevronRight className="w-3 h-3 text-gray-400 shrink-0" />
+        <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0" />
         <Link href="/products" className="hover:text-gray-900 transition-colors shrink-0">
           Products
         </Link>
-        <ChevronRight className="w-3 h-3 text-gray-400 shrink-0" />
+        <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0" />
         <Link
           href={`/products?category=${product.category?.slug || "churidar-leggings"}`}
           className="hover:text-amber-800 font-semibold text-amber-700 transition-colors shrink-0"
         >
           {product.category?.name || "Bottom Wear"}
         </Link>
-        <ChevronRight className="w-3 h-3 text-gray-400 shrink-0" />
-        <span className="text-gray-900 font-medium truncate max-w-[140px] sm:max-w-xs shrink-0">
+        <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0 hidden sm:inline" />
+        <span className="text-gray-900 font-medium truncate max-w-xs shrink-0 hidden sm:inline">
           {product.name}
         </span>
       </nav>
 
       {/* Mobile-Only Product Header */}
-      <div className="lg:hidden mb-3">
-        <div className="flex items-center justify-between text-[11px] font-semibold text-amber-800 tracking-wider uppercase mb-1">
-          <span className="px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-900 border border-amber-600/20 font-bold text-[10px]">
+      <div className="lg:hidden mb-3.5">
+        <div className="flex items-center justify-between gap-2 mb-1.5">
+          <span className="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 border border-amber-300 font-bold text-[11px] tracking-wide uppercase">
             {product.category?.name || "Bottom Wear"}
           </span>
-          <span className="font-mono text-gray-400 font-normal text-[10px]">SKU: {product.sku}</span>
+          <span className="font-mono text-gray-500 font-medium text-[11px]">SKU: {product.sku}</span>
         </div>
         <h1 className="font-serif text-xl sm:text-2xl font-bold text-gray-900 leading-snug">
           {product.name}
@@ -743,7 +743,7 @@ export default function ProductDetailClient({
 
             {/* Direct Call for Booking */}
             <a
-              href="tel:+919822012345"
+              href="tel:+918767322501"
               className="py-4 px-6 border border-gray-300 hover:bg-gray-50 text-gray-800 rounded-xl font-semibold text-sm transition-all flex items-center justify-center gap-2"
             >
               <Phone className="w-4 h-4 text-[#1A365D]" />
@@ -827,7 +827,7 @@ export default function ProductDetailClient({
           <span>Enquire on WhatsApp</span>
         </a>
         <a
-          href="tel:+919822012345"
+          href="tel:+918767322501"
           className="w-11 h-11 border border-gray-300 bg-gray-50 active:bg-gray-100 text-gray-800 rounded-xl flex items-center justify-center shrink-0 active:scale-95 transition-transform shadow-xs"
           aria-label="Call BBG Textile"
         >

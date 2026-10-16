@@ -5,12 +5,12 @@ import { usePathname } from "next/navigation";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 export default function WhatsAppWidget({
-  whatsappNumber = "919822012345",
+  whatsappNumber = "918767322501",
 }: {
   whatsappNumber?: string;
 }) {
   const pathname = usePathname();
-  const cleanNumber = (whatsappNumber && whatsappNumber.trim() ? whatsappNumber : "919822012345").replace(/[^0-9]/g, "");
+  const cleanNumber = (whatsappNumber && whatsappNumber.trim() ? whatsappNumber : "918767322501").replace(/[^0-9]/g, "");
 
   // On product detail page, the sticky bottom bar already provides WhatsApp CTA
   if (pathname?.startsWith("/products/")) {

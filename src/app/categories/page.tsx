@@ -35,7 +35,7 @@ export default async function CategoriesPage() {
               Explore by Textile Category
             </h1>
             <p className="text-gray-600 text-base leading-relaxed">
-              Discover our signature bottom wear collections: Premium 4-Way Stretch Churidar Leggings and Super Combed Cotton Cycling Shorts, crafted for supreme comfort and elegance.
+              Discover our signature bottom wear collections: Premium 4-Way Stretch Churidar Leggings and Super Combed Cotton Tight Shorts, crafted for supreme comfort and elegance.
             </p>
           </div>
 

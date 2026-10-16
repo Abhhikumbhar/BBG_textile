@@ -29,7 +29,7 @@ export interface ProductCardProps {
   whatsappNumber?: string;
 }
 
-export default function ProductCard({ product, whatsappNumber = "919822012345" }: ProductCardProps) {
+export default function ProductCard({ product, whatsappNumber = "918767322501" }: ProductCardProps) {
   const { addItem } = useCart();
   const [added, setAdded] = React.useState(false);
   const [isWishlisted, setIsWishlisted] = React.useState(false);
@@ -39,7 +39,7 @@ export default function ProductCard({ product, whatsappNumber = "919822012345" }
     const s = (product.slug || "").toLowerCase();
     const sku = (product.sku || "").toLowerCase();
     const name = (product.name || "").toLowerCase();
-    const isCyclingShorts = s.includes("cycling") || sku.includes("cs") || name.includes("cycling");
+    const isCyclingShorts = s.includes("cycling") || s.includes("tight") || sku.includes("cs") || sku.includes("ts") || name.includes("cycling") || name.includes("tight");
 
     if (isCyclingShorts) {
       if (s.includes("grey") || sku.includes("gry") || name.includes("grey")) {
@@ -102,7 +102,7 @@ export default function ProductCard({ product, whatsappNumber = "919822012345" }
     product.images?.[0]?.url ||
     "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=600&q=80";
 
-  const cleanWhatsApp = (whatsappNumber && whatsappNumber.trim() ? whatsappNumber : "919822012345").replace(/[^0-9]/g, "");
+  const cleanWhatsApp = (whatsappNumber && whatsappNumber.trim() ? whatsappNumber : "918767322501").replace(/[^0-9]/g, "");
   const whatsappText = encodeURIComponent(
     `Hello BBG Textile, I am inquiring about *${product.name}* (SKU: ${product.sku}). Could you please share wholesale pricing and availability?`
   );

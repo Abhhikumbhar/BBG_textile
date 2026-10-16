@@ -125,9 +125,9 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
   },
   {
     "id": "prod-womens-cotton-lycra-cycling-shorts-white",
-    "name": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Pure White)",
+    "name": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Pure White)",
     "slug": "womens-cotton-lycra-cycling-shorts-white",
-    "description": "Super combed 95% cotton and 5% Lycra 4-way stretch cycling shorts in vibrant Pure White. Designed with an ultra-soft non-roll elastic waistband, mid-thigh slim fit cut, zero transparency, and moisture-wicking breathability for sports, active gym sessions, loungewear, and daily kurti innerwear.",
+    "description": "Super combed 95% cotton and 5% Lycra 4-way stretch tight shorts in vibrant Pure White. Designed with an ultra-soft non-roll elastic waistband, mid-thigh slim fit cut, zero transparency, and moisture-wicking breathability for sports, active gym sessions, loungewear, and daily kurti innerwear.",
     "sku": "BBG-CS-WHT-01",
     "price": 279,
     "wholesalePrice": 140,
@@ -141,63 +141,63 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "categoryId": "cat-cycling-shorts",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Cotton Cycling Shorts",
+      "name": "Women's Cotton Tight Shorts",
       "slug": "cycling-shorts"
     },
     "images": [
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-white-0",
         "url": "/images/products/cycling-shorts-white-1.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Pure White) - Clean Studio Front Shot",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Pure White) - Clean Studio Front Shot",
         "isPrimary": true,
         "displayOrder": 0
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-white-1",
         "url": "/images/products/cycling-shorts-white-2.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Pure White) - View 2",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Pure White) - View 2",
         "isPrimary": false,
         "displayOrder": 1
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-white-2",
         "url": "/images/products/cycling-shorts-white-3.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Pure White) - View 3",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Pure White) - View 3",
         "isPrimary": false,
         "displayOrder": 2
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-white-3",
         "url": "/images/products/cycling-shorts-white-4.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Pure White) - View 4",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Pure White) - View 4",
         "isPrimary": false,
         "displayOrder": 3
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-white-4",
         "url": "/images/products/cycling-shorts-white-5.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Pure White) - View 5",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Pure White) - View 5",
         "isPrimary": false,
         "displayOrder": 4
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-white-5",
         "url": "/images/products/cycling-shorts-white-6.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Pure White) - View 6",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Pure White) - View 6",
         "isPrimary": false,
         "displayOrder": 5
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-white-6",
         "url": "/images/products/cycling-shorts-white-7.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Pure White) - View 7",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Pure White) - View 7",
         "isPrimary": false,
         "displayOrder": 6
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-white-7",
         "url": "/images/products/cycling-shorts-white-key-features.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Pure White) - Key Features Infographic",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Pure White) - Key Features Infographic",
         "isPrimary": false,
         "displayOrder": 7
       }
@@ -228,9 +228,9 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
   },
   {
     "id": "prod-womens-cotton-lycra-cycling-shorts-grey",
-    "name": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Heather Grey)",
+    "name": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Heather Grey)",
     "slug": "womens-cotton-lycra-cycling-shorts-grey",
-    "description": "Super combed 95% cotton and 5% Lycra 4-way stretch cycling shorts in vibrant Heather Grey. Designed with an ultra-soft non-roll elastic waistband, mid-thigh slim fit cut, zero transparency, and moisture-wicking breathability for sports, active gym sessions, loungewear, and daily kurti innerwear.",
+    "description": "Super combed 95% cotton and 5% Lycra 4-way stretch tight shorts in vibrant Heather Grey. Designed with an ultra-soft non-roll elastic waistband, mid-thigh slim fit cut, zero transparency, and moisture-wicking breathability for sports, active gym sessions, loungewear, and daily kurti innerwear.",
     "sku": "BBG-CS-GRY-02",
     "price": 279,
     "wholesalePrice": 140,
@@ -244,63 +244,63 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "categoryId": "cat-cycling-shorts",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Cotton Cycling Shorts",
+      "name": "Women's Cotton Tight Shorts",
       "slug": "cycling-shorts"
     },
     "images": [
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-grey-0",
         "url": "/images/products/cycling-shorts-grey-1.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Heather Grey) - Clean Studio Front Shot",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Heather Grey) - Clean Studio Front Shot",
         "isPrimary": true,
         "displayOrder": 0
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-grey-1",
         "url": "/images/products/cycling-shorts-grey-2.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Heather Grey) - View 2",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Heather Grey) - View 2",
         "isPrimary": false,
         "displayOrder": 1
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-grey-2",
         "url": "/images/products/cycling-shorts-grey-3.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Heather Grey) - View 3",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Heather Grey) - View 3",
         "isPrimary": false,
         "displayOrder": 2
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-grey-3",
         "url": "/images/products/cycling-shorts-grey-4.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Heather Grey) - View 4",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Heather Grey) - View 4",
         "isPrimary": false,
         "displayOrder": 3
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-grey-4",
         "url": "/images/products/cycling-shorts-grey-5.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Heather Grey) - View 5",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Heather Grey) - View 5",
         "isPrimary": false,
         "displayOrder": 4
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-grey-5",
         "url": "/images/products/cycling-shorts-grey-6.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Heather Grey) - View 6",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Heather Grey) - View 6",
         "isPrimary": false,
         "displayOrder": 5
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-grey-6",
         "url": "/images/products/cycling-shorts-grey-7.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Heather Grey) - View 7",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Heather Grey) - View 7",
         "isPrimary": false,
         "displayOrder": 6
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-grey-7",
         "url": "/images/products/cycling-shorts-grey-key-features.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Heather Grey) - Key Features Infographic",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Heather Grey) - Key Features Infographic",
         "isPrimary": false,
         "displayOrder": 7
       }
@@ -331,9 +331,9 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
   },
   {
     "id": "prod-womens-cotton-lycra-cycling-shorts-beige",
-    "name": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Beige Skin)",
+    "name": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Beige Skin)",
     "slug": "womens-cotton-lycra-cycling-shorts-beige",
-    "description": "Super combed 95% cotton and 5% Lycra 4-way stretch cycling shorts in vibrant Beige / Nude. Designed with an ultra-soft non-roll elastic waistband, mid-thigh slim fit cut, zero transparency, and moisture-wicking breathability for sports, active gym sessions, loungewear, and daily kurti innerwear.",
+    "description": "Super combed 95% cotton and 5% Lycra 4-way stretch tight shorts in vibrant Beige / Nude. Designed with an ultra-soft non-roll elastic waistband, mid-thigh slim fit cut, zero transparency, and moisture-wicking breathability for sports, active gym sessions, loungewear, and daily kurti innerwear.",
     "sku": "BBG-CS-BGE-03",
     "price": 279,
     "wholesalePrice": 140,
@@ -347,63 +347,63 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "categoryId": "cat-cycling-shorts",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Cotton Cycling Shorts",
+      "name": "Women's Cotton Tight Shorts",
       "slug": "cycling-shorts"
     },
     "images": [
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-beige-0",
         "url": "/images/products/cycling-shorts-beige-1.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Beige Skin) - Clean Studio Front Shot",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Beige Skin) - Clean Studio Front Shot",
         "isPrimary": true,
         "displayOrder": 0
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-beige-1",
         "url": "/images/products/cycling-shorts-beige-2.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Beige Skin) - View 2",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Beige Skin) - View 2",
         "isPrimary": false,
         "displayOrder": 1
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-beige-2",
         "url": "/images/products/cycling-shorts-beige-3.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Beige Skin) - View 3",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Beige Skin) - View 3",
         "isPrimary": false,
         "displayOrder": 2
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-beige-3",
         "url": "/images/products/cycling-shorts-beige-4.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Beige Skin) - View 4",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Beige Skin) - View 4",
         "isPrimary": false,
         "displayOrder": 3
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-beige-4",
         "url": "/images/products/cycling-shorts-beige-5.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Beige Skin) - View 5",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Beige Skin) - View 5",
         "isPrimary": false,
         "displayOrder": 4
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-beige-5",
         "url": "/images/products/cycling-shorts-beige-6.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Beige Skin) - View 6",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Beige Skin) - View 6",
         "isPrimary": false,
         "displayOrder": 5
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-beige-6",
         "url": "/images/products/cycling-shorts-beige-7.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Beige Skin) - View 7",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Beige Skin) - View 7",
         "isPrimary": false,
         "displayOrder": 6
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-beige-7",
         "url": "/images/products/cycling-shorts-beige-key-features.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Beige Skin) - Key Features Infographic",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Beige Skin) - Key Features Infographic",
         "isPrimary": false,
         "displayOrder": 7
       }
@@ -434,9 +434,9 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
   },
   {
     "id": "prod-womens-cotton-lycra-cycling-shorts-teal",
-    "name": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Peacock Teal)",
+    "name": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Peacock Teal)",
     "slug": "womens-cotton-lycra-cycling-shorts-teal",
-    "description": "Super combed 95% cotton and 5% Lycra 4-way stretch cycling shorts in vibrant Peacock Teal Blue. Designed with an ultra-soft non-roll elastic waistband, mid-thigh slim fit cut, zero transparency, and moisture-wicking breathability for sports, active gym sessions, loungewear, and daily kurti innerwear.",
+    "description": "Super combed 95% cotton and 5% Lycra 4-way stretch tight shorts in vibrant Peacock Teal Blue. Designed with an ultra-soft non-roll elastic waistband, mid-thigh slim fit cut, zero transparency, and moisture-wicking breathability for sports, active gym sessions, loungewear, and daily kurti innerwear.",
     "sku": "BBG-CS-TEL-04",
     "price": 279,
     "wholesalePrice": 140,
@@ -450,63 +450,63 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "categoryId": "cat-cycling-shorts",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Cotton Cycling Shorts",
+      "name": "Women's Cotton Tight Shorts",
       "slug": "cycling-shorts"
     },
     "images": [
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-teal-0",
         "url": "/images/products/cycling-shorts-teal-1.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Peacock Teal) - Clean Studio Front Shot",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Peacock Teal) - Clean Studio Front Shot",
         "isPrimary": true,
         "displayOrder": 0
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-teal-1",
         "url": "/images/products/cycling-shorts-teal-2.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Peacock Teal) - View 2",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Peacock Teal) - View 2",
         "isPrimary": false,
         "displayOrder": 1
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-teal-2",
         "url": "/images/products/cycling-shorts-teal-3.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Peacock Teal) - View 3",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Peacock Teal) - View 3",
         "isPrimary": false,
         "displayOrder": 2
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-teal-3",
         "url": "/images/products/cycling-shorts-teal-4.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Peacock Teal) - View 4",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Peacock Teal) - View 4",
         "isPrimary": false,
         "displayOrder": 3
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-teal-4",
         "url": "/images/products/cycling-shorts-teal-5.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Peacock Teal) - View 5",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Peacock Teal) - View 5",
         "isPrimary": false,
         "displayOrder": 4
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-teal-5",
         "url": "/images/products/cycling-shorts-teal-6.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Peacock Teal) - View 6",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Peacock Teal) - View 6",
         "isPrimary": false,
         "displayOrder": 5
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-teal-6",
         "url": "/images/products/cycling-shorts-teal-7.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Peacock Teal) - View 7",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Peacock Teal) - View 7",
         "isPrimary": false,
         "displayOrder": 6
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-teal-7",
         "url": "/images/products/cycling-shorts-teal-key-features.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Peacock Teal) - Key Features Infographic",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Peacock Teal) - Key Features Infographic",
         "isPrimary": false,
         "displayOrder": 7
       }
@@ -537,9 +537,9 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
   },
   {
     "id": "prod-womens-cotton-lycra-cycling-shorts-red",
-    "name": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Bright Red)",
+    "name": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Bright Red)",
     "slug": "womens-cotton-lycra-cycling-shorts-red",
-    "description": "Super combed 95% cotton and 5% Lycra 4-way stretch cycling shorts in vibrant Bright Red. Designed with an ultra-soft non-roll elastic waistband, mid-thigh slim fit cut, zero transparency, and moisture-wicking breathability for sports, active gym sessions, loungewear, and daily kurti innerwear.",
+    "description": "Super combed 95% cotton and 5% Lycra 4-way stretch tight shorts in vibrant Bright Red. Designed with an ultra-soft non-roll elastic waistband, mid-thigh slim fit cut, zero transparency, and moisture-wicking breathability for sports, active gym sessions, loungewear, and daily kurti innerwear.",
     "sku": "BBG-CS-RED-05",
     "price": 279,
     "wholesalePrice": 140,
@@ -553,63 +553,63 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "categoryId": "cat-cycling-shorts",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Cotton Cycling Shorts",
+      "name": "Women's Cotton Tight Shorts",
       "slug": "cycling-shorts"
     },
     "images": [
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-red-0",
         "url": "/images/products/cycling-shorts-red-1.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Bright Red) - Clean Studio Front Shot",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Bright Red) - Clean Studio Front Shot",
         "isPrimary": true,
         "displayOrder": 0
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-red-1",
         "url": "/images/products/cycling-shorts-red-2.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Bright Red) - View 2",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Bright Red) - View 2",
         "isPrimary": false,
         "displayOrder": 1
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-red-2",
         "url": "/images/products/cycling-shorts-red-3.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Bright Red) - View 3",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Bright Red) - View 3",
         "isPrimary": false,
         "displayOrder": 2
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-red-3",
         "url": "/images/products/cycling-shorts-red-4.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Bright Red) - View 4",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Bright Red) - View 4",
         "isPrimary": false,
         "displayOrder": 3
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-red-4",
         "url": "/images/products/cycling-shorts-red-5.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Bright Red) - View 5",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Bright Red) - View 5",
         "isPrimary": false,
         "displayOrder": 4
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-red-5",
         "url": "/images/products/cycling-shorts-red-6.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Bright Red) - View 6",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Bright Red) - View 6",
         "isPrimary": false,
         "displayOrder": 5
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-red-6",
         "url": "/images/products/cycling-shorts-red-7.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Bright Red) - View 7",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Bright Red) - View 7",
         "isPrimary": false,
         "displayOrder": 6
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-red-7",
         "url": "/images/products/cycling-shorts-red-key-features.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Bright Red) - Key Features Infographic",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Bright Red) - Key Features Infographic",
         "isPrimary": false,
         "displayOrder": 7
       }
@@ -640,9 +640,9 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
   },
   {
     "id": "prod-womens-cotton-lycra-cycling-shorts-royal-blue",
-    "name": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Royal Blue)",
+    "name": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Royal Blue)",
     "slug": "womens-cotton-lycra-cycling-shorts-royal-blue",
-    "description": "Super combed 95% cotton and 5% Lycra 4-way stretch cycling shorts in vibrant Royal Blue. Designed with an ultra-soft non-roll elastic waistband, mid-thigh slim fit cut, zero transparency, and moisture-wicking breathability for sports, active gym sessions, loungewear, and daily kurti innerwear.",
+    "description": "Super combed 95% cotton and 5% Lycra 4-way stretch tight shorts in vibrant Royal Blue. Designed with an ultra-soft non-roll elastic waistband, mid-thigh slim fit cut, zero transparency, and moisture-wicking breathability for sports, active gym sessions, loungewear, and daily kurti innerwear.",
     "sku": "BBG-CS-RBL-06",
     "price": 279,
     "wholesalePrice": 140,
@@ -656,63 +656,63 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "categoryId": "cat-cycling-shorts",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Cotton Cycling Shorts",
+      "name": "Women's Cotton Tight Shorts",
       "slug": "cycling-shorts"
     },
     "images": [
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-royal-blue-0",
         "url": "/images/products/cycling-shorts-royal-blue-1.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Royal Blue) - Clean Studio Front Shot",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Royal Blue) - Clean Studio Front Shot",
         "isPrimary": true,
         "displayOrder": 0
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-royal-blue-1",
         "url": "/images/products/cycling-shorts-royal-blue-2.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Royal Blue) - View 2",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Royal Blue) - View 2",
         "isPrimary": false,
         "displayOrder": 1
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-royal-blue-2",
         "url": "/images/products/cycling-shorts-royal-blue-3.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Royal Blue) - View 3",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Royal Blue) - View 3",
         "isPrimary": false,
         "displayOrder": 2
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-royal-blue-3",
         "url": "/images/products/cycling-shorts-royal-blue-4.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Royal Blue) - View 4",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Royal Blue) - View 4",
         "isPrimary": false,
         "displayOrder": 3
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-royal-blue-4",
         "url": "/images/products/cycling-shorts-royal-blue-5.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Royal Blue) - View 5",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Royal Blue) - View 5",
         "isPrimary": false,
         "displayOrder": 4
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-royal-blue-5",
         "url": "/images/products/cycling-shorts-royal-blue-6.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Royal Blue) - View 6",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Royal Blue) - View 6",
         "isPrimary": false,
         "displayOrder": 5
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-royal-blue-6",
         "url": "/images/products/cycling-shorts-royal-blue-7.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Royal Blue) - View 7",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Royal Blue) - View 7",
         "isPrimary": false,
         "displayOrder": 6
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-royal-blue-7",
         "url": "/images/products/cycling-shorts-royal-blue-key-features.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Royal Blue) - Key Features Infographic",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Royal Blue) - Key Features Infographic",
         "isPrimary": false,
         "displayOrder": 7
       }
@@ -743,9 +743,9 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
   },
   {
     "id": "prod-womens-cotton-lycra-cycling-shorts-maroon",
-    "name": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Deep Maroon)",
+    "name": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Deep Maroon)",
     "slug": "womens-cotton-lycra-cycling-shorts-maroon",
-    "description": "Super combed 95% cotton and 5% Lycra 4-way stretch cycling shorts in vibrant Deep Maroon. Designed with an ultra-soft non-roll elastic waistband, mid-thigh slim fit cut, zero transparency, and moisture-wicking breathability for sports, active gym sessions, loungewear, and daily kurti innerwear.",
+    "description": "Super combed 95% cotton and 5% Lycra 4-way stretch tight shorts in vibrant Deep Maroon. Designed with an ultra-soft non-roll elastic waistband, mid-thigh slim fit cut, zero transparency, and moisture-wicking breathability for sports, active gym sessions, loungewear, and daily kurti innerwear.",
     "sku": "BBG-CS-MRN-07",
     "price": 279,
     "wholesalePrice": 140,
@@ -759,63 +759,63 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "categoryId": "cat-cycling-shorts",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Cotton Cycling Shorts",
+      "name": "Women's Cotton Tight Shorts",
       "slug": "cycling-shorts"
     },
     "images": [
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-maroon-0",
         "url": "/images/products/cycling-shorts-maroon-1.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Deep Maroon) - Clean Studio Front Shot",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Deep Maroon) - Clean Studio Front Shot",
         "isPrimary": true,
         "displayOrder": 0
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-maroon-1",
         "url": "/images/products/cycling-shorts-maroon-2.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Deep Maroon) - View 2",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Deep Maroon) - View 2",
         "isPrimary": false,
         "displayOrder": 1
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-maroon-2",
         "url": "/images/products/cycling-shorts-maroon-3.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Deep Maroon) - View 3",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Deep Maroon) - View 3",
         "isPrimary": false,
         "displayOrder": 2
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-maroon-3",
         "url": "/images/products/cycling-shorts-maroon-4.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Deep Maroon) - View 4",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Deep Maroon) - View 4",
         "isPrimary": false,
         "displayOrder": 3
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-maroon-4",
         "url": "/images/products/cycling-shorts-maroon-5.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Deep Maroon) - View 5",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Deep Maroon) - View 5",
         "isPrimary": false,
         "displayOrder": 4
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-maroon-5",
         "url": "/images/products/cycling-shorts-maroon-6.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Deep Maroon) - View 6",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Deep Maroon) - View 6",
         "isPrimary": false,
         "displayOrder": 5
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-maroon-6",
         "url": "/images/products/cycling-shorts-maroon-7.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Deep Maroon) - View 7",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Deep Maroon) - View 7",
         "isPrimary": false,
         "displayOrder": 6
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-maroon-7",
         "url": "/images/products/cycling-shorts-maroon-key-features.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Deep Maroon) - Key Features Infographic",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Deep Maroon) - Key Features Infographic",
         "isPrimary": false,
         "displayOrder": 7
       }
@@ -846,9 +846,9 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
   },
   {
     "id": "prod-womens-cotton-lycra-cycling-shorts-black",
-    "name": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Jet Black)",
+    "name": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Jet Black)",
     "slug": "womens-cotton-lycra-cycling-shorts-black",
-    "description": "Super combed 95% cotton and 5% Lycra 4-way stretch cycling shorts in vibrant Jet Black. Designed with an ultra-soft non-roll elastic waistband, mid-thigh slim fit cut, zero transparency, and moisture-wicking breathability for sports, active gym sessions, loungewear, and daily kurti innerwear.",
+    "description": "Super combed 95% cotton and 5% Lycra 4-way stretch tight shorts in vibrant Jet Black. Designed with an ultra-soft non-roll elastic waistband, mid-thigh slim fit cut, zero transparency, and moisture-wicking breathability for sports, active gym sessions, loungewear, and daily kurti innerwear.",
     "sku": "BBG-CS-BLK-08",
     "price": 279,
     "wholesalePrice": 140,
@@ -862,63 +862,63 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "categoryId": "cat-cycling-shorts",
     "category": {
       "id": "cat-bottom-wear",
-      "name": "Women's Cotton Cycling Shorts",
+      "name": "Women's Cotton Tight Shorts",
       "slug": "cycling-shorts"
     },
     "images": [
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-black-0",
         "url": "/images/products/cycling-shorts-black-1.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Jet Black) - Clean Studio Front Shot",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Jet Black) - Clean Studio Front Shot",
         "isPrimary": true,
         "displayOrder": 0
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-black-1",
         "url": "/images/products/cycling-shorts-black-2.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Jet Black) - View 2",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Jet Black) - View 2",
         "isPrimary": false,
         "displayOrder": 1
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-black-2",
         "url": "/images/products/cycling-shorts-black-3.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Jet Black) - View 3",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Jet Black) - View 3",
         "isPrimary": false,
         "displayOrder": 2
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-black-3",
         "url": "/images/products/cycling-shorts-black-4.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Jet Black) - View 4",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Jet Black) - View 4",
         "isPrimary": false,
         "displayOrder": 3
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-black-4",
         "url": "/images/products/cycling-shorts-black-5.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Jet Black) - View 5",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Jet Black) - View 5",
         "isPrimary": false,
         "displayOrder": 4
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-black-5",
         "url": "/images/products/cycling-shorts-black-6.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Jet Black) - View 6",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Jet Black) - View 6",
         "isPrimary": false,
         "displayOrder": 5
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-black-6",
         "url": "/images/products/cycling-shorts-black-7.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Jet Black) - View 7",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Jet Black) - View 7",
         "isPrimary": false,
         "displayOrder": 6
       },
       {
         "id": "img-womens-cotton-lycra-cycling-shorts-black-7",
         "url": "/images/products/cycling-shorts-black-key-features.jpg",
-        "altText": "Women's 4-Way Stretch Cotton Lycra Cycling Shorts (Jet Black) - Key Features Infographic",
+        "altText": "Women's 4-Way Stretch Cotton Lycra Tight Shorts (Jet Black) - Key Features Infographic",
         "isPrimary": false,
         "displayOrder": 7
       }
