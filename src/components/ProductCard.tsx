@@ -202,6 +202,18 @@ export default function ProductCard({ product, whatsappNumber = "918767322501" }
           </h3>
         </Link>
 
+        {/* Rating & Assured Badge - Flipkart Style */}
+        <div className="flex items-center gap-1.5 mb-1.5 flex-wrap">
+          <div className="inline-flex items-center gap-0.5 bg-emerald-700 text-white text-[9px] sm:text-[10px] font-bold px-1.5 py-0.5 rounded">
+            <span>4.8</span>
+            <span className="text-[8px] sm:text-[9px]">★</span>
+          </div>
+          <span className="inline-flex items-center gap-0.5 text-[9px] sm:text-[10px] font-bold text-[#1A365D] bg-blue-50 border border-blue-200/80 px-1.5 py-0.5 rounded">
+            <span className="text-amber-500 font-bold">★</span>
+            <span className="italic">BBG Assured</span>
+          </span>
+        </div>
+
         {/* Shades / Colors Available Preview */}
         {colors.length > 0 && (
           <div className="text-[11px] sm:text-xs text-slate-600 mb-1.5 sm:mb-2 flex items-center gap-1 sm:gap-1.5">

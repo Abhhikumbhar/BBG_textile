@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import HeroVideo from "@/components/HeroVideo";
+import FlipkartBannerCarousel from "@/components/FlipkartBannerCarousel";
 import {
   getSiteSettings,
   getHomeBanners,
@@ -144,8 +145,13 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* HERO SECTION */}
-        <section className="relative bg-[#0B1120] text-white overflow-hidden min-h-[640px] sm:min-h-[700px] lg:min-h-[760px] pb-14 sm:pb-20 lg:pb-24 flex items-center">
+        {/* MOBILE HERO: FLIPKART-STYLE SWIPEABLE BANNER CAROUSEL */}
+        <div className="md:hidden">
+          <FlipkartBannerCarousel />
+        </div>
+
+        {/* DESKTOP HERO SECTION (Hidden on mobile) */}
+        <section className="hidden md:flex relative bg-[#0B1120] text-white overflow-hidden min-h-[640px] sm:min-h-[700px] lg:min-h-[760px] pb-14 sm:pb-20 lg:pb-24 items-center">
           {/* Autoplaying Background Video & Ambient Luxury Lighting */}
           <HeroVideo />
 
