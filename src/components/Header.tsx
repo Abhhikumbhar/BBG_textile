@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -34,12 +34,40 @@ export default function Header({ settings }: HeaderProps) {
   const { totalItems, setIsOpen } = useCart();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [showHeader, setShowHeader] = useState(true);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
+      const currentScrollY = window.scrollY;
+      setScrolled(currentScrollY > 20);
+
+      // Always show at top of page
+      if (currentScrollY <= 20) {
+        setShowHeader(true);
+        lastScrollY.current = currentScrollY;
+        return;
+      }
+
+      const diff = currentScrollY - lastScrollY.current;
+      // Filter out tiny jitter/touch bounces
+      if (Math.abs(diff) < 8) {
+        return;
+      }
+
+      if (diff > 0 && currentScrollY > 60) {
+        // Scrolling down -> slide up and hide header
+        setShowHeader(false);
+        setMobileMenuOpen(false);
+      } else if (diff < 0) {
+        // Scrolling up -> slide down and reveal header
+        setShowHeader(true);
+      }
+
+      lastScrollY.current = currentScrollY;
     };
-    window.addEventListener("scroll", handleScroll);
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -71,7 +99,11 @@ export default function Header({ settings }: HeaderProps) {
     "https://maps.google.com/?q=Kupwad+MIDC+Sangli+Maharashtra";
 
   return (
-    <header className="sticky top-0 z-40 w-full transition-all duration-200">
+    <header
+      className={`sticky top-0 z-40 w-full transition-transform duration-300 ease-in-out ${
+        showHeader ? "translate-y-0" : "-translate-y-full shadow-none"
+      }`}
+    >
       {/* Top Announcement Bar */}
       <div className="bg-[#0B1220] text-[#F7FAFC] px-3 sm:px-4 py-2 text-xs font-medium border-b border-white/10">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-1.5 md:gap-3">
@@ -218,7 +250,10 @@ export default function Header({ settings }: HeaderProps) {
 
             {/* Mobile Menu Toggle */}
             <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              onClick={() => {
+                if (!mobileMenuOpen) setShowHeader(true);
+                setMobileMenuOpen(!mobileMenuOpen);
+              }}
               className="md:hidden p-2 text-gray-700 hover:text-black rounded-lg hover:bg-gray-100 transition-colors"
               aria-label="Toggle Navigation Menu"
             >
