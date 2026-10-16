@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
 import { getAdminFromRequest, recordAuditLog } from "@/lib/auth";
 import { categorySchema, formatZodError } from "@/lib/validations";
+
+export const dynamic = "force-dynamic";
 
 export async function GET(
   req: NextRequest,
@@ -95,6 +98,14 @@ export async function PUT(
       adminUserId: admin.id,
     });
 
+    try {
+      revalidatePath("/categories");
+      revalidatePath("/products");
+      revalidatePath("/");
+    } catch (e) {
+      console.warn("Revalidation error:", e);
+    }
+
     return NextResponse.json({ success: true, category: updated });
   } catch (error) {
     console.error("Update category error:", error);
@@ -147,6 +158,14 @@ export async function DELETE(
       details: `Deleted category "${category.name}"`,
       adminUserId: admin.id,
     });
+
+    try {
+      revalidatePath("/categories");
+      revalidatePath("/products");
+      revalidatePath("/");
+    } catch (e) {
+      console.warn("Revalidation error:", e);
+    }
 
     return NextResponse.json({ success: true, message: "Category deleted" });
   } catch (error) {

@@ -6,6 +6,9 @@ import Footer from "@/components/Footer";
 import { getSiteSettings, getCategories } from "@/lib/data";
 import { ArrowRight, Layers } from "lucide-react";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata = {
   title: "Product Categories | BBG Textile Sangli",
   description:

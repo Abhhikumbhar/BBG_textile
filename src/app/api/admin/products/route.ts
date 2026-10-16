@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
 import { getAdminFromRequest, recordAuditLog } from "@/lib/auth";
 import { productSchema, formatZodError } from "@/lib/validations";
+
+export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   const admin = await getAdminFromRequest(req);
@@ -142,6 +145,15 @@ export async function POST(req: NextRequest) {
       details: `Created product "${product.name}" (SKU: ${product.sku})`,
       adminUserId: admin.id,
     });
+
+    try {
+      revalidatePath("/products");
+      revalidatePath(`/products/${product.slug}`);
+      revalidatePath("/categories");
+      revalidatePath("/");
+    } catch (e) {
+      console.error("Revalidate path error:", e);
+    }
 
     return NextResponse.json({ success: true, product }, { status: 201 });
   } catch (error) {

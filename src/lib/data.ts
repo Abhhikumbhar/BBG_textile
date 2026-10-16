@@ -76,7 +76,6 @@ export async function getCategories() {
     const categories = await prisma.category.findMany({
       where: {
         isActive: true,
-        products: { some: { isActive: true } },
       },
       orderBy: { displayOrder: "asc" },
       include: {

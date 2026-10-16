@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
 import { getAdminFromRequest, recordAuditLog } from "@/lib/auth";
+
+export const dynamic = "force-dynamic";
 
 export async function PUT(
   req: NextRequest,
@@ -36,6 +39,12 @@ export async function PUT(
       adminUserId: admin.id,
     });
 
+    try {
+      revalidatePath("/");
+    } catch (e) {
+      console.error("Revalidate path error:", e);
+    }
+
     return NextResponse.json({ success: true, banner });
   } catch (error) {
     return NextResponse.json({ error: "Failed to update banner" }, { status: 500 });
@@ -61,6 +70,12 @@ export async function DELETE(
       details: `Deleted home banner ID ${id}`,
       adminUserId: admin.id,
     });
+
+    try {
+      revalidatePath("/");
+    } catch (e) {
+      console.error("Revalidate path error:", e);
+    }
 
     return NextResponse.json({ success: true, message: "Banner deleted" });
   } catch (error) {

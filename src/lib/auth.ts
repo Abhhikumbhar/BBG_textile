@@ -77,20 +77,13 @@ export async function getAdminFromRequest(req: NextRequest): Promise<AdminPayloa
     if (!token) return null;
 
     const payload = await verifyAdminToken(token);
-    if (!payload) return null;
-
-    const user = await prisma.adminUser.findUnique({
-      where: { id: payload.id },
-      select: { id: true, email: true, name: true, role: true, isActive: true },
-    });
-
-    if (!user || !user.isActive) return null;
+    if (!payload || !payload.id) return null;
 
     return {
-      id: user.id,
-      email: user.email,
-      name: user.name,
-      role: user.role,
+      id: payload.id,
+      email: payload.email,
+      name: payload.name,
+      role: payload.role,
     };
   } catch {
     return null;

@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
 import { getAdminFromRequest, recordAuditLog } from "@/lib/auth";
 import { productSchema, formatZodError } from "@/lib/validations";
+
+export const dynamic = "force-dynamic";
 
 export async function GET(
   req: NextRequest,
@@ -147,6 +150,15 @@ export async function PUT(
       adminUserId: admin.id,
     });
 
+    try {
+      revalidatePath("/products");
+      revalidatePath(`/products/${updated.slug}`);
+      revalidatePath("/categories");
+      revalidatePath("/");
+    } catch (e) {
+      console.error("Revalidate path error:", e);
+    }
+
     return NextResponse.json({ success: true, product: updated });
   } catch (error) {
     console.error("Update product error:", error);
@@ -184,6 +196,16 @@ export async function DELETE(
         where: { id },
         data: { isActive: false },
       });
+
+      try {
+        revalidatePath("/products");
+        revalidatePath(`/products/${product.slug}`);
+        revalidatePath("/categories");
+        revalidatePath("/");
+      } catch (e) {
+        console.error("Revalidate path error:", e);
+      }
+
       return NextResponse.json({
         success: true,
         message: "Product has associated orders, so it was deactivated instead of deleted.",
@@ -197,6 +219,15 @@ export async function DELETE(
       details: `Deleted product "${product.name}" (SKU: ${product.sku})`,
       adminUserId: admin.id,
     });
+
+    try {
+      revalidatePath("/products");
+      revalidatePath(`/products/${product.slug}`);
+      revalidatePath("/categories");
+      revalidatePath("/");
+    } catch (e) {
+      console.error("Revalidate path error:", e);
+    }
 
     return NextResponse.json({ success: true, message: "Product deleted" });
   } catch (error) {

@@ -62,6 +62,11 @@ export default function ProductsAdminClient() {
         fetch("/api/admin/categories"),
       ]);
 
+      if (prodRes.status === 401 || catRes.status === 401) {
+        window.location.href = "/admin/login";
+        return;
+      }
+
       const prodData = await prodRes.json();
       const catData = await catRes.json();
 

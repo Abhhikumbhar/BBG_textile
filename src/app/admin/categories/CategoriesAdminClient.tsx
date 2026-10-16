@@ -51,6 +51,10 @@ export default function CategoriesAdminClient() {
     setLoading(true);
     try {
       const res = await fetch("/api/admin/categories");
+      if (res.status === 401) {
+        window.location.href = "/admin/login";
+        return;
+      }
       const data = await res.json();
       setCategories(data.categories || []);
     } catch {

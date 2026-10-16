@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
 import { getAdminFromRequest, recordAuditLog } from "@/lib/auth";
 import { categorySchema, formatZodError } from "@/lib/validations";
+
+export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   const admin = await getAdminFromRequest(req);
@@ -77,6 +80,14 @@ export async function POST(req: NextRequest) {
       details: `Created category "${category.name}"`,
       adminUserId: admin.id,
     });
+
+    try {
+      revalidatePath("/categories");
+      revalidatePath("/products");
+      revalidatePath("/");
+    } catch (e) {
+      console.warn("Revalidation error:", e);
+    }
 
     return NextResponse.json({ success: true, category }, { status: 201 });
   } catch (error) {

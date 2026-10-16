@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
 import { getAdminFromRequest, recordAuditLog } from "@/lib/auth";
 import { siteSettingsSchema, formatZodError } from "@/lib/validations";
+
+export const dynamic = "force-dynamic";
 
 export async function GET(req: NextRequest) {
   const admin = await getAdminFromRequest(req);
@@ -73,6 +76,14 @@ export async function PUT(req: NextRequest) {
       details: "Updated website content and site settings",
       adminUserId: admin.id,
     });
+
+    try {
+      revalidatePath("/");
+      revalidatePath("/products");
+      revalidatePath("/categories");
+    } catch (e) {
+      console.error("Revalidate path error:", e);
+    }
 
     return NextResponse.json({ success: true, settings: updated });
   } catch (error) {

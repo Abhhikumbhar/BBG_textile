@@ -5,7 +5,8 @@ import ProductsClient from "./ProductsClient";
 import { getSiteSettings, getCategories, getProducts } from "@/lib/data";
 import { Loader2 } from "lucide-react";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export const metadata = {
   title: "All Fabrics & Products | BBG Textile Sangli",
