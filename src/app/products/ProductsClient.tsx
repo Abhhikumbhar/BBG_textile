@@ -206,10 +206,10 @@ export default function ProductsClient({
       {/* Page Title & Breadcrumbs */}
       <div className="mb-8">
         <h1 className="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
-          Fabric & Garment Collection
+          Women's Bottom Wear Collection
         </h1>
         <p className="text-gray-500 text-sm max-w-2xl">
-          Explore our complete range of cotton shirtings, suiting blends, linens, and institutional fabrics manufactured with premium yarns.
+          Explore our complete collection: Premium 4-Way Stretch Churidar Leggings (Full Length Pants) and Cotton Lycra Tight Shorts manufactured with super-combed yarns in Sangli.
         </p>
       </div>
 
@@ -271,7 +271,7 @@ export default function ProductsClient({
                 : "bg-gray-100 hover:bg-gray-200 text-gray-700"
             }`}
           >
-            All Fabrics
+            All Collections
           </button>
 
           {categories.map((cat) => (

@@ -41,10 +41,16 @@ export async function getHomeBanners() {
 }
 
 export async function getFeaturedProducts() {
-  const staticFeatured = fallbackProducts.filter((p) => p.isFeatured).slice(0, 8);
+  const staticFeatured = fallbackProducts
+    .filter((p) => p.categorySlug === "churidar-leggings" || p.category?.slug === "churidar-leggings")
+    .slice(0, 8);
+
   const dbProducts = await fastDb(
     prisma.product.findMany({
-      where: { isActive: true, isFeatured: true },
+      where: {
+        isActive: true,
+        category: { slug: "churidar-leggings" },
+      },
       take: 8,
       orderBy: { createdAt: "desc" },
       include: {
@@ -61,10 +67,16 @@ export async function getFeaturedProducts() {
 }
 
 export async function getNewArrivalProducts() {
-  const staticNewArrivals = fallbackProducts.filter((p) => p.isNewArrival).slice(0, 8);
+  const staticNewArrivals = fallbackProducts
+    .filter((p) => p.categorySlug === "cycling-shorts" || p.categorySlug === "tight-shorts" || p.category?.slug === "cycling-shorts")
+    .slice(0, 8);
+
   const dbProducts = await fastDb(
     prisma.product.findMany({
-      where: { isActive: true, isNewArrival: true },
+      where: {
+        isActive: true,
+        category: { slug: { in: ["cycling-shorts", "tight-shorts"] } },
+      },
       take: 8,
       orderBy: { createdAt: "desc" },
       include: {

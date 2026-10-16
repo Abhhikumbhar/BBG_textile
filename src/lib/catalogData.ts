@@ -1436,7 +1436,7 @@ const rawProducts = [
     },
   ];
 
-export const fallbackProducts: CatalogProduct[] = rawProducts.map((p: any, idx: number) => ({
+const mappedProducts: CatalogProduct[] = rawProducts.map((p: any, idx: number) => ({
   id: "prod-" + (idx + 1),
   name: p.name,
   slug: p.slug,
@@ -1479,3 +1479,9 @@ export const fallbackProducts: CatalogProduct[] = rawProducts.map((p: any, idx: 
   })),
   createdAt: new Date(Date.now() - idx * 3600000).toISOString()
 }));
+
+// Place Women's Churidar Leggings (Full Pants) FIRST, followed by Tight Shorts
+export const fallbackProducts: CatalogProduct[] = [
+  ...mappedProducts.filter((p) => p.categorySlug === "churidar-leggings"),
+  ...mappedProducts.filter((p) => p.categorySlug !== "churidar-leggings"),
+];

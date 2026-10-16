@@ -217,24 +217,27 @@ export default async function HomePage() {
         </section>
 
 
-        {/* FEATURED PRODUCTS SECTION */}
+        {/* FEATURED PRODUCTS SECTION: FLAGSHIP FULL-LENGTH CHURIDAR LEGGINGS */}
         <section className="py-16 sm:py-20 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-amber-700 mb-1 flex items-center gap-2">
-                  <span>OUR COLLECTION</span>
+                  <span>FLAGSHIP ETHNIC BOTTOM WEAR</span>
                   <span className="w-8 h-[1.5px] bg-amber-600/50 inline-block" />
                 </span>
                 <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#0F2444]">
-                  Featured Products
+                  Premium Churidar Leggings (Full Length)
                 </h2>
+                <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                  Super combed 4-way stretch cotton lycra churidar pants with authentic ankle gathers in 8 rich shades.
+                </p>
               </div>
               <Link
-                href="/products?featured=true"
+                href="/products?category=churidar-leggings"
                 className="mt-4 sm:mt-0 text-sm font-bold text-[#1A365D] hover:text-[#2A4365] flex items-center gap-1 group"
               >
-                <span>View Full Catalogue</span>
+                <span>View All Churidar Leggings</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
@@ -257,24 +260,27 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* NEW ARRIVALS SECTION */}
+        {/* ACTIVEWEAR SECTION: 4-WAY STRETCH TIGHT SHORTS */}
         {newArrivals.length > 0 && (
           <section className="py-16 sm:py-20 bg-gray-50 border-t border-gray-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10">
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-amber-700 mb-1 block">
-                    Fresh Off The Looms
+                    Activewear & Loungewear
                   </span>
                   <h2 className="font-serif text-3xl sm:text-4xl font-bold text-gray-900">
-                    New Arrivals & Season Specials
+                    4-Way Stretch Cotton Tight Shorts
                   </h2>
+                  <p className="text-xs sm:text-sm text-gray-500 mt-1">
+                    Mid-thigh comfort cotton lycra tight shorts for active gym, sports, kurti innerwear & home wear.
+                  </p>
                 </div>
                 <Link
-                  href="/products?newArrival=true"
+                  href="/products?category=cycling-shorts"
                   className="mt-4 sm:mt-0 text-sm font-bold text-[#1A365D] hover:text-[#2A4365] flex items-center gap-1 group"
                 >
-                  <span>See All New Weaves</span>
+                  <span>View All Tight Shorts</span>
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
