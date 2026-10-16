@@ -34,7 +34,7 @@ export default function Header({ settings }: HeaderProps) {
   const { totalItems, setIsOpen } = useCart();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [showHeader, setShowHeader] = useState(true);
+  const [showTopBar, setShowTopBar] = useState(true);
   const lastScrollY = useRef(0);
 
   useEffect(() => {
@@ -42,26 +42,26 @@ export default function Header({ settings }: HeaderProps) {
       const currentScrollY = window.scrollY;
       setScrolled(currentScrollY > 20);
 
-      // Always show at top of page
-      if (currentScrollY <= 20) {
-        setShowHeader(true);
+      // Always show top bar at the very top of page
+      if (currentScrollY <= 15) {
+        setShowTopBar(true);
         lastScrollY.current = currentScrollY;
         return;
       }
 
       const diff = currentScrollY - lastScrollY.current;
       // Filter out tiny jitter/touch bounces
-      if (Math.abs(diff) < 8) {
+      if (Math.abs(diff) < 6) {
         return;
       }
 
-      if (diff > 0 && currentScrollY > 60) {
-        // Scrolling down -> slide up and hide header
-        setShowHeader(false);
+      if (diff > 0 && currentScrollY > 30) {
+        // Scrolling down -> fold/hide top address bar (logo stays visible!)
+        setShowTopBar(false);
         setMobileMenuOpen(false);
       } else if (diff < 0) {
-        // Scrolling up -> slide down and reveal header
-        setShowHeader(true);
+        // Scrolling up -> unfold/show top address bar
+        setShowTopBar(true);
       }
 
       lastScrollY.current = currentScrollY;
@@ -99,13 +99,15 @@ export default function Header({ settings }: HeaderProps) {
     "https://maps.google.com/?q=Kupwad+MIDC+Sangli+Maharashtra";
 
   return (
-    <header
-      className={`sticky top-0 z-40 w-full transition-transform duration-300 ease-in-out ${
-        showHeader ? "translate-y-0" : "-translate-y-full shadow-none"
-      }`}
-    >
+    <header className="sticky top-0 z-40 w-full transition-shadow duration-200">
       {/* Top Announcement Bar */}
-      <div className="bg-[#0B1220] text-[#F7FAFC] px-3 sm:px-4 py-2 text-xs font-medium border-b border-white/10">
+      <div
+        className={`bg-[#0B1220] text-[#F7FAFC] px-3 sm:px-4 text-xs font-medium border-b border-white/10 transition-all duration-300 ease-in-out overflow-hidden ${
+          showTopBar
+            ? "max-h-36 py-2 opacity-100"
+            : "max-h-0 py-0 opacity-0 border-transparent pointer-events-none"
+        }`}
+      >
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-1.5 md:gap-3">
           {/* Announcement / Tagline */}
           {!settings?.announcementText ||
@@ -250,10 +252,7 @@ export default function Header({ settings }: HeaderProps) {
 
             {/* Mobile Menu Toggle */}
             <button
-              onClick={() => {
-                if (!mobileMenuOpen) setShowHeader(true);
-                setMobileMenuOpen(!mobileMenuOpen);
-              }}
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="md:hidden p-2 text-gray-700 hover:text-black rounded-lg hover:bg-gray-100 transition-colors"
               aria-label="Toggle Navigation Menu"
             >
@@ -271,7 +270,7 @@ export default function Header({ settings }: HeaderProps) {
       {mobileMenuOpen && (
         <>
           <div
-            className="fixed inset-0 top-[105px] bg-black/40 backdrop-blur-xs z-30 md:hidden animate-in fade-in duration-200"
+            className="fixed inset-0 bg-black/40 backdrop-blur-xs z-30 md:hidden animate-in fade-in duration-200"
             onClick={() => setMobileMenuOpen(false)}
             aria-hidden="true"
           />

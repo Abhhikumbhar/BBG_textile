@@ -295,43 +295,45 @@ export default function ProductDetailClient({
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 pb-24 sm:pb-12">
+    <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-3 sm:pt-8 pb-28 sm:pb-12">
       {/* Breadcrumb Navigation - Clean single line with horizontal scroll on mobile */}
-      <nav className="flex items-center gap-1.5 text-xs text-gray-500 mb-4 sm:mb-6 overflow-x-auto whitespace-nowrap scrollbar-none py-1">
+      <nav className="flex items-center gap-1.5 text-[11px] sm:text-xs text-gray-500 mb-2.5 sm:mb-6 overflow-x-auto whitespace-nowrap scrollbar-none py-0.5">
         <Link href="/" className="hover:text-gray-900 transition-colors shrink-0">
           Home
         </Link>
-        <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+        <ChevronRight className="w-3 h-3 text-gray-400 shrink-0" />
         <Link href="/products" className="hover:text-gray-900 transition-colors shrink-0">
           Products
         </Link>
-        <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+        <ChevronRight className="w-3 h-3 text-gray-400 shrink-0" />
         <Link
-          href={`/products?category=${product.category?.slug || "womens-bottom-wear"}`}
+          href={`/products?category=${product.category?.slug || "churidar-leggings"}`}
           className="hover:text-amber-800 font-semibold text-amber-700 transition-colors shrink-0"
         >
           {product.category?.name || "Bottom Wear"}
         </Link>
-        <ChevronRight className="w-3.5 h-3.5 text-gray-400 shrink-0" />
-        <span className="text-gray-900 font-medium truncate max-w-[180px] sm:max-w-xs shrink-0">
+        <ChevronRight className="w-3 h-3 text-gray-400 shrink-0" />
+        <span className="text-gray-900 font-medium truncate max-w-[140px] sm:max-w-xs shrink-0">
           {product.name}
         </span>
       </nav>
 
-      {/* Mobile-Only Product Header: Displays category, SKU, and full title prominently at the top */}
-      <div className="lg:hidden mb-4">
-        <div className="flex items-center justify-between text-xs font-semibold text-amber-700 tracking-wider uppercase mb-1">
-          <span>{product.category?.name || "Bottom Wear"}</span>
-          <span className="font-mono text-gray-400 font-normal text-[11px]">SKU: {product.sku}</span>
+      {/* Mobile-Only Product Header */}
+      <div className="lg:hidden mb-3">
+        <div className="flex items-center justify-between text-[11px] font-semibold text-amber-800 tracking-wider uppercase mb-1">
+          <span className="px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-900 border border-amber-600/20 font-bold text-[10px]">
+            {product.category?.name || "Bottom Wear"}
+          </span>
+          <span className="font-mono text-gray-400 font-normal text-[10px]">SKU: {product.sku}</span>
         </div>
-        <h1 className="font-serif text-2xl font-bold text-gray-900 leading-snug">
+        <h1 className="font-serif text-xl sm:text-2xl font-bold text-gray-900 leading-snug">
           {product.name}
         </h1>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
         {/* LEFT: Enhanced Infographic Product Showcase */}
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {/* Main Large Image Container with Touch & Drag Carousel */}
           <div
             onTouchStart={handleTouchStart}
@@ -340,7 +342,7 @@ export default function ProductDetailClient({
             onMouseDown={handleMouseDown}
             onMouseUp={handleMouseUp}
             onMouseLeave={() => setIsMouseDown(false)}
-            className="relative aspect-[4/4.8] sm:aspect-[4/4.5] rounded-3xl overflow-hidden bg-gradient-to-b from-[#FBF8F4] via-[#F5EFE6] to-[#ECE2D2] border border-[#E5DAC8] shadow-[0_10px_35px_rgba(0,0,0,0.08)] group select-none cursor-grab active:cursor-grabbing touch-pan-y"
+            className="relative aspect-[4/4.1] sm:aspect-[4/4.4] lg:aspect-[4/4.5] rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-b from-[#FBF8F4] via-[#F5EFE6] to-[#ECE2D2] border border-[#E5DAC8] shadow-[0_8px_30px_rgba(0,0,0,0.07)] group select-none cursor-grab active:cursor-grabbing touch-pan-y"
           >
             {/* Sliding Carousel Track */}
             <div
@@ -358,7 +360,7 @@ export default function ProductDetailClient({
                     draggable={false}
                     className={`transition-all duration-300 pointer-events-none select-none ${
                       idx === 0
-                        ? "object-cover object-[15%_center] sm:object-[18%_center] group-hover:scale-[1.02]"
+                        ? "object-cover object-[24%_center] sm:object-[20%_center] group-hover:scale-[1.02]"
                         : "object-contain bg-white/70 p-2 sm:p-4"
                     }`}
                   />
@@ -375,7 +377,7 @@ export default function ProductDetailClient({
                     e.stopPropagation();
                     setActiveImageIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1));
                   }}
-                  className="absolute left-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/90 hover:bg-white text-gray-800 shadow-md backdrop-blur-md flex items-center justify-center transition-all hover:scale-110 active:scale-95 border border-white/60 opacity-80 sm:opacity-0 sm:group-hover:opacity-100"
+                  className="absolute left-2 sm:left-2.5 top-1/2 -translate-y-1/2 z-20 w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-white/85 hover:bg-white text-gray-800 shadow-md backdrop-blur-md flex items-center justify-center transition-all active:scale-90 border border-white/60"
                   aria-label="Previous image"
                 >
                   <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5 text-slate-800" />
@@ -386,7 +388,7 @@ export default function ProductDetailClient({
                     e.stopPropagation();
                     setActiveImageIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0));
                   }}
-                  className="absolute right-2.5 top-1/2 -translate-y-1/2 z-20 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-white/90 hover:bg-white text-gray-800 shadow-md backdrop-blur-md flex items-center justify-center transition-all hover:scale-110 active:scale-95 border border-white/60 opacity-80 sm:opacity-0 sm:group-hover:opacity-100"
+                  className="absolute right-2 sm:right-2.5 top-1/2 -translate-y-1/2 z-20 w-7 h-7 sm:w-10 sm:h-10 rounded-full bg-white/85 hover:bg-white text-gray-800 shadow-md backdrop-blur-md flex items-center justify-center transition-all active:scale-90 border border-white/60"
                   aria-label="Next image"
                 >
                   <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5 text-slate-800" />
@@ -396,13 +398,13 @@ export default function ProductDetailClient({
 
             {/* Mobile Dots Indicator */}
             {images.length > 1 && (
-              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 sm:hidden bg-black/45 px-2.5 py-1 rounded-full backdrop-blur-md pointer-events-none">
+              <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-1.5 sm:hidden bg-black/45 px-2.5 py-0.5 rounded-full backdrop-blur-md pointer-events-none">
                 {images.map((_, dotIdx) => (
                   <span
                     key={dotIdx}
                     className={`rounded-full transition-all duration-300 ${
                       activeImageIndex === dotIdx
-                        ? "w-4 h-1.5 bg-amber-400"
+                        ? "w-3.5 h-1.5 bg-amber-400"
                         : "w-1.5 h-1.5 bg-white/60"
                     }`}
                   />
@@ -410,8 +412,8 @@ export default function ProductDetailClient({
               </div>
             )}
 
-            {/* Top Bar on Image: Back to Studio button if on detail image, and Share button */}
-            <div className="absolute top-4 inset-x-4 flex items-center justify-between gap-2 z-20 pointer-events-none">
+            {/* Top Bar on Image */}
+            <div className="absolute top-2.5 sm:top-4 inset-x-2.5 sm:inset-x-4 flex items-center justify-between gap-2 z-20 pointer-events-none">
               {activeImageIndex > 0 ? (
                 <button
                   type="button"
@@ -419,30 +421,30 @@ export default function ProductDetailClient({
                     e.stopPropagation();
                     setActiveImageIndex(0);
                   }}
-                  className="px-3.5 py-1.5 bg-[#0B1A30]/90 hover:bg-[#0B1A30] text-amber-300 rounded-full shadow-md backdrop-blur-md text-xs font-bold transition-all flex items-center gap-1.5 pointer-events-auto"
+                  className="px-2.5 py-1 sm:px-3.5 sm:py-1.5 bg-[#0B1A30]/90 hover:bg-[#0B1A30] text-amber-300 rounded-full shadow-md backdrop-blur-md text-[10px] sm:text-xs font-bold transition-all flex items-center gap-1 pointer-events-auto"
                 >
-                  <span>⟲ Studio View</span>
+                  <span>⟲ Studio</span>
                 </button>
               ) : (
-                <span className="px-3 py-1 bg-[#0B1A30]/85 text-amber-300 rounded-full text-[11px] font-bold tracking-wider uppercase backdrop-blur-sm shadow pointer-events-auto">
+                <span className="px-2.5 py-0.5 sm:px-3 sm:py-1 bg-[#0B1A30]/85 text-amber-300 rounded-full text-[9px] sm:text-[11px] font-bold tracking-wider uppercase backdrop-blur-sm shadow pointer-events-auto">
                   Studio Presentation
                 </span>
               )}
 
-              <div className="flex items-center gap-2 pointer-events-auto">
-                <span className="px-2.5 py-1 bg-black/50 text-white rounded-full text-[10px] font-mono font-semibold backdrop-blur-sm">
+              <div className="flex items-center gap-1.5 sm:gap-2 pointer-events-auto">
+                <span className="px-2 py-0.5 sm:px-2.5 sm:py-1 bg-black/50 text-white rounded-full text-[9px] sm:text-[10px] font-mono font-semibold backdrop-blur-sm">
                   {activeImageIndex + 1} / {images.length}
                 </span>
                 <button
                   type="button"
                   onClick={handleShare}
-                  className="p-2.5 bg-white/95 hover:bg-white text-gray-700 rounded-full shadow-md backdrop-blur-sm transition-transform hover:scale-105"
+                  className="p-1.5 sm:p-2.5 bg-white/95 hover:bg-white text-gray-700 rounded-full shadow-md backdrop-blur-sm transition-transform hover:scale-105 active:scale-95"
                   title="Share product link"
                 >
                   {copied ? (
-                    <Check className="w-4 h-4 text-emerald-600" />
+                    <Check className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-600" />
                   ) : (
-                    <Share2 className="w-4 h-4" />
+                    <Share2 className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   )}
                 </button>
               </div>
@@ -451,8 +453,8 @@ export default function ProductDetailClient({
             {/* Overlays: ONLY SHOW ON STUDIO VIEW (Image 0) so other images are completely clear */}
             {activeImageIndex === 0 && (
               <>
-                {/* Right Side: 4 Vertical Gold-Rimmed Feature Badges */}
-                <div className="absolute right-3.5 top-16 sm:top-18 flex flex-col gap-2.5 z-20 pointer-events-none">
+                {/* Right Side: 4 Vertical Gold-Rimmed Feature Badges (Desktop Only - hidden on mobile so model is 100% visible) */}
+                <div className="hidden lg:flex absolute right-3.5 top-16 sm:top-18 flex-col gap-2.5 z-20 pointer-events-none">
                   <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-white/95 backdrop-blur-md border border-amber-400 shadow-md flex flex-col items-center justify-center p-1 text-center">
                     <span className="text-sm">☁️</span>
                     <span className="text-[8px] font-bold text-slate-900 leading-tight">95% Cotton</span>
@@ -563,14 +565,14 @@ export default function ProductDetailClient({
           {images.length > 1 && (
             <div
               ref={thumbnailsRef}
-              className="flex items-center gap-2.5 overflow-x-auto pb-2 pt-1 touch-pan-x scrollbar-none"
+              className="flex items-center gap-2 sm:gap-2.5 overflow-x-auto pb-1.5 pt-0.5 touch-pan-x scrollbar-none"
             >
               {images.map((img, idx) => (
                 <button
                   key={img.id}
                   type="button"
                   onClick={() => setActiveImageIndex(idx)}
-                  className={`relative w-18 h-22 sm:w-20 sm:h-24 rounded-xl overflow-hidden shrink-0 border-2 transition-all active:scale-95 ${
+                  className={`relative w-15 h-19 sm:w-20 sm:h-24 rounded-xl overflow-hidden shrink-0 border-2 transition-all active:scale-95 ${
                     activeImageIndex === idx
                       ? "border-[#1A365D] ring-2 ring-[#1A365D]/30 shadow-md scale-102"
                       : "border-gray-200 opacity-70 hover:opacity-100 hover:border-gray-400"
@@ -582,10 +584,10 @@ export default function ProductDetailClient({
                     alt={img.altText || `Product view ${idx + 1}`}
                     fill
                     sizes="80px"
-                    className={`object-cover ${idx === 0 ? "object-[18%_center]" : "object-center"}`}
+                    className={`object-cover ${idx === 0 ? "object-[24%_center]" : "object-center"}`}
                   />
                   {idx === 0 && (
-                    <span className="absolute bottom-1 inset-x-1 bg-black/70 text-[8px] font-bold text-amber-300 text-center rounded py-0.5 backdrop-blur-xs">
+                    <span className="absolute bottom-0.5 inset-x-0.5 bg-black/75 text-[7px] sm:text-[8px] font-bold text-amber-300 text-center rounded py-0.5 backdrop-blur-xs">
                       Studio
                     </span>
                   )}
@@ -593,6 +595,38 @@ export default function ProductDetailClient({
               ))}
             </div>
           )}
+
+          {/* Mobile Highlights Grid (Unobstructed view of model & fabric) */}
+          <div className="lg:hidden grid grid-cols-2 gap-2 pt-1">
+            <div className="flex items-center gap-2 p-2 rounded-xl bg-amber-50/70 border border-amber-200/70 shadow-xs">
+              <span className="text-base shrink-0">☁️</span>
+              <div>
+                <div className="text-[11px] font-bold text-slate-900 leading-tight">95% Cotton</div>
+                <div className="text-[9px] text-slate-500 font-medium">Ultra Soft Combed</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 p-2 rounded-xl bg-amber-50/70 border border-amber-200/70 shadow-xs">
+              <span className="text-base shrink-0">✨</span>
+              <div>
+                <div className="text-[11px] font-bold text-slate-900 leading-tight">4-Way Stretch</div>
+                <div className="text-[9px] text-slate-500 font-medium">Supreme Comfort</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 p-2 rounded-xl bg-amber-50/70 border border-amber-200/70 shadow-xs">
+              <span className="text-base shrink-0">🎨</span>
+              <div>
+                <div className="text-[11px] font-bold text-slate-900 leading-tight">Colorfast</div>
+                <div className="text-[9px] text-slate-500 font-medium">Zero Bleed Weave</div>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 p-2 rounded-xl bg-amber-50/70 border border-amber-200/70 shadow-xs">
+              <span className="text-base shrink-0">🛡️</span>
+              <div>
+                <div className="text-[11px] font-bold text-slate-900 leading-tight">Bio-Washed</div>
+                <div className="text-[9px] text-slate-500 font-medium">Non-Sheer Knit</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* RIGHT: Product Details & Purchase Actions */}
@@ -781,23 +815,23 @@ export default function ProductDetailClient({
         </div>
       )}
 
-      {/* Sticky Mobile Bottom CTA Bar */}
-      <div className="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-gray-200 p-3 sm:hidden shadow-[0_-4px_25px_rgba(0,0,0,0.1)] flex items-center gap-2.5">
+      {/* Sticky Mobile Bottom CTA Bar with safe-area-inset */}
+      <div className="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-gray-200 px-3 py-2.5 sm:hidden shadow-[0_-4px_25px_rgba(0,0,0,0.1)] flex items-center gap-2 pb-[max(0.65rem,env(safe-area-inset-bottom))]">
         <a
           href={`https://wa.me/${cleanWhatsApp}?text=${whatsappMessage}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="flex-1 py-3 px-4 bg-[#25D366] hover:bg-[#20BD5A] active:bg-[#1DA851] text-white rounded-xl font-bold text-sm shadow-md flex items-center justify-center gap-2 active:scale-95 transition-transform"
+          className="flex-1 py-3 px-4 bg-[#25D366] hover:bg-[#20BD5A] active:bg-[#1DA851] text-white rounded-xl font-bold text-sm shadow-md flex items-center justify-center gap-2 active:scale-98 transition-transform"
         >
           <WhatsAppIcon className="w-5 h-5 text-white" />
           <span>Enquire on WhatsApp</span>
         </a>
         <a
           href="tel:+919822012345"
-          className="w-12 h-12 border border-gray-300 bg-gray-50 active:bg-gray-100 text-gray-800 rounded-xl flex items-center justify-center shrink-0 active:scale-95 transition-transform shadow-sm"
+          className="w-11 h-11 border border-gray-300 bg-gray-50 active:bg-gray-100 text-gray-800 rounded-xl flex items-center justify-center shrink-0 active:scale-95 transition-transform shadow-xs"
           aria-label="Call BBG Textile"
         >
-          <Phone className="w-5 h-5 text-[#1A365D]" />
+          <Phone className="w-4 h-4 text-[#1A365D]" />
         </a>
       </div>
     </div>
