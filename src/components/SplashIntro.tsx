@@ -10,21 +10,21 @@ export default function SplashIntro() {
   const [isMounted, setIsMounted] = useState(true);
 
   useEffect(() => {
-    // 1. Enter: Logo floats in smoothly
+    // 1. Enter: Logo shines immediately
     const enterTimer = setTimeout(() => {
       setStage("glow");
-    }, 100);
+    }, 60);
 
-    // 2. Zoom: Seamless 100x IQ camera push-through into the website
+    // 2. Zoom: Smooth camera push-through into the already-synced website
     const zoomTimer = setTimeout(() => {
       setStage("zoom");
-    }, 1300);
+    }, 800);
 
     // 3. Complete: Cleanly unmount overlay
     const doneTimer = setTimeout(() => {
       setStage("done");
       setIsMounted(false);
-    }, 2150);
+    }, 1250);
 
     return () => {
       clearTimeout(enterTimer);
@@ -38,7 +38,7 @@ export default function SplashIntro() {
     setTimeout(() => {
       setStage("done");
       setIsMounted(false);
-    }, 450);
+    }, 200);
   };
 
   if (!isMounted || stage === "done") return null;
@@ -46,7 +46,7 @@ export default function SplashIntro() {
   return (
     <div
       onClick={handleSkip}
-      className={`fixed inset-0 z-[99999] flex items-center justify-center overflow-hidden cursor-pointer select-none transition-all duration-800 ease-out ${
+      className={`fixed inset-0 z-[99999] flex items-center justify-center overflow-hidden cursor-pointer select-none transition-all duration-500 ease-out ${
         stage === "zoom" ? "opacity-0 pointer-events-none scale-105" : "opacity-100"
       }`}
       style={{

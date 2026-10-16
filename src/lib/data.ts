@@ -6,34 +6,44 @@ import {
   CatalogProduct,
 } from "./catalogData";
 
+async function fastDb<T>(promise: Promise<T>, fallback: T, timeoutMs = 500): Promise<T> {
+  let timer: NodeJS.Timeout;
+  const timeout = new Promise<T>((resolve) => {
+    timer = setTimeout(() => resolve(fallback), timeoutMs);
+  });
+  return Promise.race([
+    promise
+      .then((res) => (res !== null && res !== undefined ? res : fallback))
+      .catch(() => fallback),
+    timeout,
+  ]).finally(() => clearTimeout(timer));
+}
+
 export async function getSiteSettings() {
-  try {
-    const settings = await prisma.siteSettings.findUnique({
+  return fastDb(
+    prisma.siteSettings.findUnique({
       where: { id: "default" },
-    });
-    return settings || fallbackSiteSettings;
-  } catch (error) {
-    console.warn("Using fallback settings due to DB error:", error);
-    return fallbackSiteSettings;
-  }
+    }),
+    fallbackSiteSettings,
+    500
+  );
 }
 
 export async function getHomeBanners() {
-  try {
-    const banners = await prisma.homeBanner.findMany({
+  return fastDb(
+    prisma.homeBanner.findMany({
       where: { isActive: true },
       orderBy: { displayOrder: "asc" },
-    });
-    return banners;
-  } catch (error) {
-    console.warn("Failed to fetch banners:", error);
-    return [];
-  }
+    }),
+    [],
+    500
+  );
 }
 
 export async function getFeaturedProducts() {
-  try {
-    const products = await prisma.product.findMany({
+  const staticFeatured = fallbackProducts.filter((p) => p.isFeatured).slice(0, 8);
+  const dbProducts = await fastDb(
+    prisma.product.findMany({
       where: { isActive: true, isFeatured: true },
       take: 8,
       orderBy: { createdAt: "desc" },
@@ -42,18 +52,18 @@ export async function getFeaturedProducts() {
         images: { orderBy: { displayOrder: "asc" } },
         variants: true,
       },
-    });
-    if (products && products.length > 0) return products;
-    return fallbackProducts.filter((p) => p.isFeatured).slice(0, 8);
-  } catch (error) {
-    console.warn("Using fallback featured products due to DB error");
-    return fallbackProducts.filter((p) => p.isFeatured).slice(0, 8);
-  }
+    }),
+    null,
+    600
+  );
+  if (dbProducts && dbProducts.length > 0) return dbProducts;
+  return staticFeatured;
 }
 
 export async function getNewArrivalProducts() {
-  try {
-    const products = await prisma.product.findMany({
+  const staticNewArrivals = fallbackProducts.filter((p) => p.isNewArrival).slice(0, 8);
+  const dbProducts = await fastDb(
+    prisma.product.findMany({
       where: { isActive: true, isNewArrival: true },
       take: 8,
       orderBy: { createdAt: "desc" },
@@ -62,18 +72,17 @@ export async function getNewArrivalProducts() {
         images: { orderBy: { displayOrder: "asc" } },
         variants: true,
       },
-    });
-    if (products && products.length > 0) return products;
-    return fallbackProducts.filter((p) => p.isNewArrival).slice(0, 8);
-  } catch (error) {
-    console.warn("Using fallback new arrivals due to DB error");
-    return fallbackProducts.filter((p) => p.isNewArrival).slice(0, 8);
-  }
+    }),
+    null,
+    600
+  );
+  if (dbProducts && dbProducts.length > 0) return dbProducts;
+  return staticNewArrivals;
 }
 
 export async function getCategories() {
-  try {
-    const categories = await prisma.category.findMany({
+  const dbCategories = await fastDb(
+    prisma.category.findMany({
       where: {
         isActive: true,
       },
@@ -83,13 +92,12 @@ export async function getCategories() {
           select: { products: { where: { isActive: true } } },
         },
       },
-    });
-    if (categories && categories.length > 0) return categories;
-    return fallbackCategories;
-  } catch (error) {
-    console.warn("Using fallback categories due to DB error");
-    return fallbackCategories;
-  }
+    }),
+    null,
+    500
+  );
+  if (dbCategories && dbCategories.length > 0) return dbCategories;
+  return fallbackCategories;
 }
 
 export interface GetProductsOptions {
@@ -151,22 +159,27 @@ export async function getProducts(options: GetProductsOptions = {}) {
     if (options.sort === "price_desc") orderBy = { price: "desc" };
     if (options.sort === "popular") orderBy = { isBestSeller: "desc" };
 
-    const [total, products] = await Promise.all([
-      prisma.product.count({ where }),
-      prisma.product.findMany({
-        where,
-        orderBy,
-        skip: (page - 1) * limit,
-        take: limit,
-        include: {
-          category: { select: { id: true, name: true, slug: true } },
-          images: { orderBy: { displayOrder: "asc" } },
-          variants: true,
-        },
-      }),
-    ]);
+    const dbData = await fastDb(
+      Promise.all([
+        prisma.product.count({ where }),
+        prisma.product.findMany({
+          where,
+          orderBy,
+          skip: (page - 1) * limit,
+          take: limit,
+          include: {
+            category: { select: { id: true, name: true, slug: true } },
+            images: { orderBy: { displayOrder: "asc" } },
+            variants: true,
+          },
+        }),
+      ]),
+      null,
+      700
+    );
 
-    if (products && products.length > 0) {
+    if (dbData && dbData[1] && dbData[1].length > 0) {
+      const [total, products] = dbData;
       return {
         products,
         pagination: {
@@ -178,7 +191,7 @@ export async function getProducts(options: GetProductsOptions = {}) {
       };
     }
   } catch (error) {
-    console.warn("DB query failed in getProducts, using fallback catalog:", error);
+    // fast fallback
   }
 
   // High-performance fallback filtering
@@ -260,19 +273,19 @@ export async function getProducts(options: GetProductsOptions = {}) {
 }
 
 export async function getProductBySlug(slug: string) {
-  try {
-    const product = await prisma.product.findUnique({
+  const product = await fastDb(
+    prisma.product.findUnique({
       where: { slug },
       include: {
         category: true,
         images: { orderBy: { displayOrder: "asc" } },
         variants: true,
       },
-    });
-    if (product) return product;
-  } catch (error) {
-    console.warn("DB query failed in getProductBySlug, using fallback:", error);
-  }
+    }),
+    null,
+    500
+  );
+  if (product) return product;
 
   return (
     fallbackProducts.find(

@@ -5,8 +5,7 @@ import ProductsClient from "./ProductsClient";
 import { getSiteSettings, getCategories, getProducts } from "@/lib/data";
 import { Loader2 } from "lucide-react";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
 
 export const metadata = {
   title: "All Fabrics & Products | BBG Textile Sangli",
@@ -18,7 +17,7 @@ export default async function ProductsPage() {
   const [settings, categories, initialData] = await Promise.all([
     getSiteSettings(),
     getCategories(),
-    getProducts({ page: 1, limit: 12 }),
+    getProducts({ page: 1, limit: 50 }),
   ]);
 
   return (

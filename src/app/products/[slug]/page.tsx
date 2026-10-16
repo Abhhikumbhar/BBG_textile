@@ -15,8 +15,25 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+export const revalidate = 60;
+
+// Prerender all 17 product pages at build time so Vercel serves them instantly without DB dependency
+export async function generateStaticParams() {
+  const staticSlugs = getAllCatalogProducts().map((p) => ({ slug: p.slug }));
+  try {
+    const dbProducts = await prisma.product.findMany({
+      where: { isActive: true },
+      select: { slug: true },
+    });
+    const all = new Set([
+      ...staticSlugs.map((s) => s.slug),
+      ...dbProducts.map((p) => p.slug),
+    ]);
+    return Array.from(all).map((slug) => ({ slug }));
+  } catch {
+    return staticSlugs;
+  }
+}
 
 export async function generateMetadata({ params }: Props) {
   const { slug } = await params;
