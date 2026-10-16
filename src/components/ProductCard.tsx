@@ -194,68 +194,68 @@ export default function ProductCard({ product, whatsappNumber = "918767322501" }
       </Link>
 
       {/* Content Area with Soft Warm Ivory Tone */}
-      <div className="p-4 flex flex-col flex-1 bg-gradient-to-b from-[#FCFAF7] via-[#FAF6EE] to-[#F5EFE4]">
+      <div className="p-2.5 sm:p-4 flex flex-col flex-1 bg-gradient-to-b from-[#FCFAF7] via-[#FAF6EE] to-[#F5EFE4]">
         {/* Title */}
-        <Link href={`/products/${product.slug}`} prefetch={true} className="block mb-1.5">
-          <h3 className="font-serif text-sm sm:text-base font-bold text-[#0F2444] group-hover:text-[#1A365D] transition-colors line-clamp-2 min-h-[2.5rem] leading-snug">
+        <Link href={`/products/${product.slug}`} prefetch={true} className="block mb-1 sm:mb-1.5">
+          <h3 className="font-serif text-xs sm:text-base font-bold text-[#0F2444] group-hover:text-[#1A365D] transition-colors line-clamp-2 min-h-[2rem] sm:min-h-[2.5rem] leading-snug">
             {product.name}
           </h3>
         </Link>
 
         {/* Shades / Colors Available Preview */}
         {colors.length > 0 && (
-          <div className="text-xs text-slate-600 mb-2 flex items-center gap-1.5">
+          <div className="text-[11px] sm:text-xs text-slate-600 mb-1.5 sm:mb-2 flex items-center gap-1 sm:gap-1.5">
             <span className="font-medium text-slate-500">Shades:</span>
             <span className="font-semibold text-slate-800 truncate">
-              {colors.slice(0, 3).join(", ")}
-              {colors.length > 3 ? ` +${colors.length - 3} more` : ""}
+              {colors.slice(0, 2).join(", ")}
+              {colors.length > 2 ? ` +${colors.length - 2}` : ""}
             </span>
           </div>
         )}
 
         {/* Fabric & Quality Badges */}
-        <div className="flex items-center gap-1.5 mb-2.5 flex-wrap">
-          <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-[#EFE8DD] text-[#634E35] border border-[#E2D6C3]">
+        <div className="flex items-center gap-1 sm:gap-1.5 mb-2 sm:mb-2.5 flex-wrap">
+          <span className="text-[9px] sm:text-[10px] font-semibold px-1.5 sm:px-2 py-0.5 rounded bg-[#EFE8DD] text-[#634E35] border border-[#E2D6C3]">
             4-Way Stretch
           </span>
-          <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-[#EFE8DD] text-[#634E35] border border-[#E2D6C3]">
+          <span className="text-[9px] sm:text-[10px] font-semibold px-1.5 sm:px-2 py-0.5 rounded bg-[#EFE8DD] text-[#634E35] border border-[#E2D6C3]">
             Bio-Washed
           </span>
         </div>
 
         {/* Direct Mill Wholesale Indicator (No public prices shown) */}
-        <div className="flex items-center justify-between mb-3 pt-2 border-t border-[#EAE1D3]/70">
-          <div className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span className="text-[11px] sm:text-xs font-bold text-slate-800">
-              Direct Mill Supply
+        <div className="flex items-center justify-between mb-2 sm:mb-3 pt-1.5 sm:pt-2 border-t border-[#EAE1D3]/70">
+          <div className="flex items-center gap-1 sm:gap-1.5">
+            <span className="w-1.5 sm:w-2 h-1.5 sm:h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-[10px] sm:text-xs font-bold text-slate-800">
+              Direct Mill
             </span>
           </div>
-          <span className="text-[10px] font-bold text-amber-900 bg-amber-100/90 border border-amber-300/80 px-2 py-0.5 rounded-full">
-            Wholesale on Enquiry
+          <span className="text-[9px] sm:text-[10px] font-bold text-amber-900 bg-amber-100/90 border border-amber-300/80 px-1.5 sm:px-2 py-0.5 rounded-full">
+            Wholesale
           </span>
         </div>
 
         {/* Action Row: Mobile-Optimized View Details & WhatsApp Buttons */}
-        <div className="mt-auto pt-2.5 border-t border-[#EAE1D3] flex items-center gap-2">
+        <div className="mt-auto pt-2 sm:pt-2.5 border-t border-[#EAE1D3] flex items-center gap-1.5 sm:gap-2">
           <Link
             href={`/products/${product.slug}`}
             prefetch={true}
-            className="flex-1 py-3 px-3 bg-[#1A365D] hover:bg-[#0F2444] active:bg-[#0A192F] active:scale-[0.98] text-white rounded-xl font-bold text-xs sm:text-sm text-center shadow-sm hover:shadow transition-all flex items-center justify-center gap-1.5 group/btn touch-manipulation min-h-[44px]"
+            className="flex-1 py-2 sm:py-3 px-2 sm:px-3 bg-[#1A365D] hover:bg-[#0F2444] active:bg-[#0A192F] active:scale-[0.98] text-white rounded-lg sm:rounded-xl font-bold text-[11px] sm:text-sm text-center shadow-xs hover:shadow transition-all flex items-center justify-center gap-1 group/btn touch-manipulation min-h-[36px] sm:min-h-[44px]"
           >
-            <span>View Details</span>
-            <ArrowRight className="w-3.5 h-3.5 text-white/90 group-hover/btn:translate-x-0.5 transition-transform" />
+            <span>View</span>
+            <ArrowRight className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-white/90 group-hover/btn:translate-x-0.5 transition-transform" />
           </Link>
           <a
             href={`https://wa.me/${cleanWhatsApp}?text=${whatsappText}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="h-11 px-3.5 sm:px-3 bg-[#25D366] hover:bg-[#20BD5A] active:bg-[#1DA851] active:scale-[0.98] text-white rounded-xl shadow-sm hover:shadow flex items-center justify-center gap-1.5 shrink-0 transition-all hover:scale-105 touch-manipulation min-h-[44px]"
+            className="h-9 sm:h-11 px-2.5 sm:px-3.5 bg-[#25D366] hover:bg-[#20BD5A] active:bg-[#1DA851] active:scale-[0.98] text-white rounded-lg sm:rounded-xl shadow-xs hover:shadow flex items-center justify-center gap-1 shrink-0 transition-all hover:scale-105 touch-manipulation min-h-[36px] sm:min-h-[44px]"
             title="Enquire on WhatsApp"
             aria-label="Enquire on WhatsApp"
           >
-            <WhatsAppIcon className="w-5 h-5 text-white" />
-            <span className="text-xs font-bold sm:hidden">WhatsApp</span>
+            <WhatsAppIcon className="w-4 sm:w-5 h-4 sm:h-5 text-white" />
+            <span className="text-[11px] font-bold hidden md:inline">WhatsApp</span>
           </a>
         </div>
       </div>

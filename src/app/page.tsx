@@ -47,6 +47,103 @@ export default async function HomePage() {
       <Header settings={settings || undefined} />
 
       <main className="flex-1">
+        {/* FLIPKART-STYLE QUICK CATEGORIES BAR */}
+        <section className="bg-white border-b border-gray-200/70 py-2.5 sm:py-3.5 overflow-x-auto scrollbar-none shadow-2xs">
+          <div className="max-w-7xl mx-auto px-4 flex items-center gap-4 sm:gap-8 min-w-max sm:min-w-0 sm:justify-center">
+            <Link
+              href="/products"
+              className="flex flex-col items-center gap-1 group text-center"
+            >
+              <div className="w-12 h-12 sm:w-15 sm:h-15 rounded-full p-0.5 bg-gradient-to-tr from-[#1A365D] to-amber-500 shadow-xs group-hover:scale-105 transition-transform flex items-center justify-center">
+                <div className="w-full h-full rounded-full bg-white p-1 overflow-hidden flex items-center justify-center">
+                  <Image
+                    src="/images/logo/bbg-logo-full.png"
+                    alt="All Products"
+                    width={56}
+                    height={56}
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              </div>
+              <span className="text-[11px] sm:text-xs font-semibold text-gray-800 group-hover:text-[#1A365D]">
+                All Products
+              </span>
+            </Link>
+
+            <Link
+              href="/products?category=churidar-leggings"
+              className="flex flex-col items-center gap-1 group text-center"
+            >
+              <div className="w-12 h-12 sm:w-15 sm:h-15 rounded-full p-0.5 bg-gradient-to-tr from-amber-400 to-[#1A365D] shadow-xs group-hover:scale-105 transition-transform flex items-center justify-center">
+                <div className="w-full h-full rounded-full bg-white p-0.5 overflow-hidden">
+                  <Image
+                    src="/images/products/bbg-studio-hd-crimson-red.jpg"
+                    alt="Churidar Leggings"
+                    width={56}
+                    height={56}
+                    className="w-full h-full object-cover object-top"
+                  />
+                </div>
+              </div>
+              <span className="text-[11px] sm:text-xs font-semibold text-gray-800 group-hover:text-[#1A365D]">
+                Churidar
+              </span>
+            </Link>
+
+            <Link
+              href="/products?category=cycling-shorts"
+              className="flex flex-col items-center gap-1 group text-center"
+            >
+              <div className="w-12 h-12 sm:w-15 sm:h-15 rounded-full p-0.5 bg-gradient-to-tr from-emerald-500 to-amber-400 shadow-xs group-hover:scale-105 transition-transform flex items-center justify-center">
+                <div className="w-full h-full rounded-full bg-white p-0.5 overflow-hidden">
+                  <Image
+                    src="/images/products/bbg-studio-hd-cs-white.jpg"
+                    alt="Tight Shorts"
+                    width={56}
+                    height={56}
+                    className="w-full h-full object-cover object-top"
+                  />
+                </div>
+              </div>
+              <span className="text-[11px] sm:text-xs font-semibold text-gray-800 group-hover:text-[#1A365D]">
+                Tight Shorts
+              </span>
+            </Link>
+
+            <Link
+              href="/categories"
+              className="flex flex-col items-center gap-1 group text-center"
+            >
+              <div className="w-12 h-12 sm:w-15 sm:h-15 rounded-full p-0.5 bg-gradient-to-tr from-amber-500 to-amber-200 shadow-xs group-hover:scale-105 transition-transform flex items-center justify-center">
+                <div className="w-full h-full rounded-full bg-[#0B1220] flex items-center justify-center text-amber-300">
+                  <Layers className="w-5 h-5 sm:w-6 sm:h-6" />
+                </div>
+              </div>
+              <span className="text-[11px] sm:text-xs font-semibold text-gray-800 group-hover:text-[#1A365D]">
+                Categories
+              </span>
+            </Link>
+
+            <a
+              href={`https://wa.me/${cleanWhatsApp}?text=${encodeURIComponent(
+                "Hello BBG Textile, I am looking for direct mill wholesale rate catalog."
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-col items-center gap-1 group text-center"
+            >
+              <div className="w-12 h-12 sm:w-15 sm:h-15 rounded-full p-0.5 bg-gradient-to-tr from-emerald-500 to-emerald-300 shadow-xs group-hover:scale-105 transition-transform flex items-center justify-center">
+                <div className="w-full h-full rounded-full bg-[#25D366] flex items-center justify-center text-white">
+                  <WhatsAppIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+                </div>
+              </div>
+              <span className="text-[11px] sm:text-xs font-semibold text-gray-800 group-hover:text-emerald-700">
+                Mill Rates
+              </span>
+            </a>
+          </div>
+        </section>
+
         {/* HERO SECTION */}
         <section className="relative bg-[#0B1120] text-white overflow-hidden min-h-[640px] sm:min-h-[700px] lg:min-h-[760px] pb-14 sm:pb-20 lg:pb-24 flex items-center">
           {/* Autoplaying Background Video & Ambient Luxury Lighting */}
@@ -225,7 +322,7 @@ export default async function HomePage() {
                 <p className="text-gray-500">Products are currently being loaded into the catalogue.</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-6">
                 {featuredProducts.map((product) => (
                   <ProductCard
                     key={product.id}
@@ -240,14 +337,14 @@ export default async function HomePage() {
 
         {/* ACTIVEWEAR SECTION: 4-WAY STRETCH TIGHT SHORTS */}
         {newArrivals.length > 0 && (
-          <section className="py-16 sm:py-20 bg-gray-50 border-t border-gray-200">
+          <section className="py-10 sm:py-20 bg-gray-50 border-t border-gray-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 sm:mb-10">
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-amber-700 mb-1 block">
                     Activewear & Loungewear
                   </span>
-                  <h2 className="font-serif text-3xl sm:text-4xl font-bold text-gray-900">
+                  <h2 className="font-serif text-2xl sm:text-4xl font-bold text-gray-900">
                     4-Way Stretch Cotton Tight Shorts
                   </h2>
                   <p className="text-xs sm:text-sm text-gray-500 mt-1">
@@ -256,14 +353,14 @@ export default async function HomePage() {
                 </div>
                 <Link
                   href="/products?category=cycling-shorts"
-                  className="mt-4 sm:mt-0 text-sm font-bold text-[#1A365D] hover:text-[#2A4365] flex items-center gap-1 group"
+                  className="mt-3 sm:mt-0 text-xs sm:text-sm font-bold text-[#1A365D] hover:text-[#2A4365] flex items-center gap-1 group"
                 >
                   <span>View All Tight Shorts</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="w-3.5 sm:w-4 h-3.5 sm:h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-6">
                 {newArrivals.map((product) => (
                   <ProductCard
                     key={product.id}
