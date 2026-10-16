@@ -49,18 +49,27 @@ export default async function HomePage() {
       <main className="flex-1">
         {/* HERO SECTION */}
         <section className="relative bg-[#0B1120] text-white overflow-hidden min-h-[640px] sm:min-h-[700px] lg:min-h-[760px] pb-14 sm:pb-20 lg:pb-24 flex items-center">
-          {/* Background Video */}
+          {/* Background Video / Static Hero Poster */}
           <div className="absolute inset-0 z-0 overflow-hidden">
             <video
-              autoPlay
-              loop
+              poster="/hero-bg-poster.jpg"
               muted
               playsInline
+              preload="none"
               className="w-full h-full object-cover object-[center_top] sm:object-[68%_10%] lg:object-[72%_10%] opacity-100 scale-100 pointer-events-none"
             >
-              <source src="/hero-bg.mp4" type="video/mp4" />
-              <source src="/video-1791976373277.mp4" type="video/mp4" />
+              <source src="/hero-bg.mp4#t=0.001" type="video/mp4" />
+              <source src="/video-1791976373277.mp4#t=0.001" type="video/mp4" />
             </video>
+            {/* Instant high-quality static background frame to guarantee zero-flicker on mobile and desktop */}
+            <Image
+              src="/hero-bg-poster.jpg"
+              alt="BBG Textile Premium Clothing Collection"
+              fill
+              priority
+              sizes="100vw"
+              className="absolute inset-0 -z-10 w-full h-full object-cover object-[center_top] sm:object-[68%_10%] lg:object-[72%_10%] opacity-100 scale-100 pointer-events-none select-none"
+            />
             {/* Soft, high-clarity scrim so the background video is bright & clearly visible */}
             <div className="absolute inset-0 bg-gradient-to-r from-[#070b14]/75 via-[#070b14]/45 sm:via-[#070b14]/30 to-transparent z-0" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#070b14]/35 via-transparent to-transparent z-0" />
