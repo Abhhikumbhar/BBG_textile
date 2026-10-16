@@ -82,13 +82,13 @@ export default function AdminLayoutClient({ children }: AdminLayoutProps) {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] flex flex-col md:flex-row">
-      {/* DESKTOP SIDEBAR */}
-      <aside className="hidden md:flex flex-col w-64 bg-[#0F172A] text-gray-300 border-r border-gray-800 shrink-0 select-none">
+    <div className="min-h-screen bg-[#FDFCF9] flex flex-col md:flex-row">
+      {/* DESKTOP SIDEBAR - Clean Light Luxury Theme */}
+      <aside className="hidden md:flex flex-col w-64 bg-white text-slate-700 border-r border-[#E8DEC8] shrink-0 select-none shadow-[2px_0_12px_rgba(0,0,0,0.02)]">
         {/* Brand Header */}
-        <div className="p-6 border-b border-gray-800 flex items-center justify-between">
-          <Link href="/admin" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-white/10 p-1 flex items-center justify-center shrink-0 border border-white/10 shadow-inner">
+        <div className="p-5 border-b border-[#E8DEC8] flex items-center justify-between bg-gradient-to-r from-amber-500/5 to-transparent">
+          <Link href="/admin" className="flex items-center gap-3 group">
+            <div className="w-10 h-10 rounded-xl bg-white p-1 flex items-center justify-center shrink-0 border border-amber-600/30 shadow-xs group-hover:scale-105 transition-transform">
               <Image
                 src="/images/logo/bbg-logo-icon.png"
                 alt="BBG Logo"
@@ -98,10 +98,10 @@ export default function AdminLayoutClient({ children }: AdminLayoutProps) {
               />
             </div>
             <div>
-              <span className="font-serif text-lg font-bold text-white tracking-wide block leading-none">
+              <span className="font-serif text-lg font-bold text-[#0F2444] tracking-wide block leading-none">
                 BBG TEXTILE
               </span>
-              <span className="text-[10px] uppercase font-semibold text-amber-400 tracking-wider">
+              <span className="text-[10px] uppercase font-bold text-amber-800 tracking-wider">
                 Admin Console
               </span>
             </div>
@@ -109,7 +109,7 @@ export default function AdminLayoutClient({ children }: AdminLayoutProps) {
         </div>
 
         {/* Navigation Links */}
-        <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto">
+        <nav className="flex-1 px-3.5 py-5 space-y-1 overflow-y-auto">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive =
@@ -121,52 +121,52 @@ export default function AdminLayoutClient({ children }: AdminLayoutProps) {
               <Link
                 key={item.name}
                 href={item.href}
-                className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-colors ${
+                className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
                   isActive
-                    ? "bg-[#1E293B] text-amber-400 font-semibold shadow-inner"
-                    : "text-gray-400 hover:text-white hover:bg-gray-800/60"
+                    ? "bg-amber-500/15 text-[#0F2444] font-bold border-l-4 border-amber-600 shadow-xs"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-100/70"
                 }`}
               >
-                <Icon className={`w-4 h-4 ${isActive ? "text-amber-400" : "text-gray-400"}`} />
+                <Icon className={`w-4 h-4 ${isActive ? "text-amber-700" : "text-slate-400"}`} />
                 <span>{item.name}</span>
-                {isActive && <ChevronRight className="w-3.5 h-3.5 ml-auto text-amber-400" />}
+                {isActive && <ChevronRight className="w-3.5 h-3.5 ml-auto text-amber-700" />}
               </Link>
             );
           })}
         </nav>
 
-        {/* Bottom Storefront Link & Admin Info */}
-        <div className="p-4 border-t border-gray-800 space-y-3">
+        {/* Bottom Storefront Link & Admin Profile */}
+        <div className="p-4 border-t border-[#E8DEC8] space-y-3 bg-[#FCFAF6]">
           <Link
             href="/"
             target="_blank"
-            className="flex items-center justify-between px-3 py-2 rounded-lg text-xs font-semibold text-gray-400 hover:text-white hover:bg-gray-800/60 transition-colors"
+            className="flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 bg-white hover:bg-amber-50/70 border border-slate-200 hover:border-amber-200 transition-colors shadow-2xs"
           >
             <span className="flex items-center gap-2">
-              <ExternalLink className="w-3.5 h-3.5 text-amber-400" />
+              <ExternalLink className="w-3.5 h-3.5 text-amber-600" />
               <span>Live Storefront</span>
             </span>
-            <span className="text-[10px] text-gray-500">Sangli</span>
+            <span className="text-[10px] text-amber-800 font-bold bg-amber-500/15 px-1.5 py-0.5 rounded">Sangli</span>
           </Link>
 
-          <div className="pt-2 border-t border-gray-800/80 flex items-center justify-between">
+          <div className="pt-2 border-t border-slate-200/80 flex items-center justify-between">
             <div className="flex items-center gap-2.5 overflow-hidden">
-              <div className="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-amber-400 shrink-0">
+              <div className="w-8 h-8 rounded-full bg-amber-100 border border-amber-200 text-amber-800 flex items-center justify-center shrink-0">
                 <User className="w-4 h-4" />
               </div>
               <div className="truncate">
-                <p className="text-xs font-semibold text-white truncate">
+                <p className="text-xs font-bold text-slate-900 truncate">
                   {adminUser?.name || "Administrator"}
                 </p>
-                <p className="text-[10px] text-gray-400 truncate">
-                  {adminUser?.email || "admin@bbgtextile.com"}
+                <p className="text-[10px] font-mono text-slate-500 truncate">
+                  {adminUser?.email || "admin@gmail.com"}
                 </p>
               </div>
             </div>
 
             <button
               onClick={handleLogout}
-              className="p-1.5 text-gray-400 hover:text-red-400 hover:bg-gray-800 rounded-lg transition-colors"
+              className="p-1.5 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors cursor-pointer"
               title="Logout"
             >
               <LogOut className="w-4 h-4" />
@@ -175,10 +175,10 @@ export default function AdminLayoutClient({ children }: AdminLayoutProps) {
         </div>
       </aside>
 
-      {/* MOBILE TOP BAR */}
-      <div className="md:hidden bg-[#0F172A] text-white p-4 flex items-center justify-between border-b border-gray-800 sticky top-0 z-30">
+      {/* MOBILE TOP BAR - Clean Light Theme */}
+      <div className="md:hidden bg-white text-slate-900 p-3.5 flex items-center justify-between border-b border-[#E8DEC8] sticky top-0 z-30 shadow-xs">
         <Link href="/admin" className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-white/10 p-0.5 flex items-center justify-center shrink-0 border border-white/10">
+          <div className="w-8 h-8 rounded-lg bg-amber-500/10 p-0.5 flex items-center justify-center shrink-0 border border-amber-600/20">
             <Image
               src="/images/logo/bbg-logo-icon.png"
               alt="BBG Logo"
@@ -187,21 +187,21 @@ export default function AdminLayoutClient({ children }: AdminLayoutProps) {
               className="w-full h-full object-contain"
             />
           </div>
-          <span className="font-serif font-bold text-base">BBG Textile Admin</span>
+          <span className="font-serif font-bold text-base text-[#0F2444]">BBG Textile Admin</span>
         </Link>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           <Link
             href="/"
             target="_blank"
-            className="p-2 text-gray-400 hover:text-white"
+            className="p-2 text-slate-500 hover:text-slate-900 rounded-lg hover:bg-slate-100"
             title="View Storefront"
           >
             <ExternalLink className="w-4 h-4" />
           </Link>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 text-gray-300 hover:text-white rounded-lg hover:bg-gray-800"
+            className="p-2 text-slate-700 hover:text-slate-900 rounded-lg hover:bg-slate-100"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -210,7 +210,7 @@ export default function AdminLayoutClient({ children }: AdminLayoutProps) {
 
       {/* MOBILE NAV DRAWER */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#0F172A] text-gray-300 p-4 border-b border-gray-800 space-y-1">
+        <div className="md:hidden bg-white text-slate-700 p-4 border-b border-[#E8DEC8] space-y-1 shadow-lg">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive =
@@ -225,20 +225,20 @@ export default function AdminLayoutClient({ children }: AdminLayoutProps) {
                 onClick={() => setMobileMenuOpen(false)}
                 className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium ${
                   isActive
-                    ? "bg-[#1E293B] text-amber-400 font-semibold"
-                    : "text-gray-400 hover:text-white"
+                    ? "bg-amber-500/15 text-[#0F2444] font-bold border-l-4 border-amber-600"
+                    : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
                 }`}
               >
-                <Icon className="w-4 h-4" />
+                <Icon className={`w-4 h-4 ${isActive ? "text-amber-700" : "text-slate-400"}`} />
                 <span>{item.name}</span>
               </Link>
             );
           })}
-          <div className="pt-3 border-t border-gray-800 flex justify-between items-center px-2">
-            <span className="text-xs text-gray-400">{adminUser?.email}</span>
+          <div className="pt-3 border-t border-slate-100 flex justify-between items-center px-2">
+            <span className="text-xs font-mono text-slate-500">{adminUser?.email || "admin@gmail.com"}</span>
             <button
               onClick={handleLogout}
-              className="text-xs font-semibold text-red-400 flex items-center gap-1"
+              className="text-xs font-semibold text-red-600 hover:text-red-700 flex items-center gap-1 cursor-pointer"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>Logout</span>

@@ -53,8 +53,8 @@ async function main() {
   console.log("✓ Site Settings configured");
 
   // 2. Seed Admin User
-  const adminEmail = process.env.ADMIN_EMAIL || "admin@bbgtextile.com";
-  const adminPassword = process.env.ADMIN_PASSWORD || "Admin@BBGTextile#2026";
+  const adminEmail = process.env.ADMIN_EMAIL || "admin@gmail.com";
+  const adminPassword = process.env.ADMIN_PASSWORD || "admin@123";
   const salt = await bcrypt.genSalt(10);
   const passwordHash = await bcrypt.hash(adminPassword, salt);
 

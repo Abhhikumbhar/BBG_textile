@@ -10,14 +10,15 @@ import {
   Mail,
   Loader2,
   AlertCircle,
-  ArrowRight,
   Sparkles,
+  ArrowRight,
+  Crown,
 } from "lucide-react";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("admin@bbgtextile.com");
-  const [password, setPassword] = useState("Admin@BBGTextile#2026");
+  const [email, setEmail] = useState("admin@gmail.com");
+  const [password, setPassword] = useState("admin@123");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -47,69 +48,76 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0F172A] flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Background accents */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
+    <div className="min-h-screen bg-gradient-to-br from-[#FAF8F5] via-[#F4EFE6] to-[#EAE2D5] flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
+      {/* Soft warm ambient lighting accents */}
+      <div className="absolute -top-32 -left-32 w-96 h-96 bg-amber-400/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-[#1A365D]/10 rounded-full blur-3xl pointer-events-none" />
 
+      {/* Header & Logo */}
       <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 text-center">
-        <div className="inline-flex w-20 h-20 rounded-2xl bg-white/10 p-2 border border-white/15 shadow-2xl mb-4 items-center justify-center backdrop-blur-sm">
+        <div className="inline-flex w-20 h-20 rounded-2xl bg-white p-2.5 border border-[#DFD3C3] shadow-[0_10px_25px_rgba(140,110,65,0.12)] mb-4 items-center justify-center backdrop-blur-md">
           <Image
             src="/images/logo/bbg-logo-icon.png"
             alt="BBG Textile Logo"
             width={72}
             height={72}
             priority
-            className="w-full h-full object-contain drop-shadow"
+            className="w-full h-full object-contain drop-shadow-sm"
           />
         </div>
-        <h2 className="font-serif text-3xl font-bold tracking-tight text-white">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-600/20 text-amber-900 text-xs font-bold uppercase tracking-wider mb-2">
+          <Crown className="w-3.5 h-3.5 text-amber-600" />
+          <span>Management Portal</span>
+        </div>
+        <h2 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight text-[#0F2444]">
           BBG Textile Console
         </h2>
-        <p className="mt-2 text-sm text-gray-400">
-          Sign in to manage products, categories, orders, and content
+        <p className="mt-2 text-sm text-slate-600">
+          Sign in to manage fabrics, categories, wholesale orders, and enquiries
         </p>
       </div>
 
+      {/* Login Card */}
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
-        <div className="bg-[#1E293B] py-8 px-6 shadow-2xl rounded-3xl sm:px-10 border border-gray-800">
+        <div className="bg-white/95 backdrop-blur-xl py-8 px-6 sm:px-10 shadow-[0_20px_60px_-15px_rgba(140,110,65,0.18)] rounded-3xl border border-[#DFD3C3]">
           {error && (
-            <div className="mb-6 p-4 rounded-xl bg-red-950/60 border border-red-800/80 text-red-200 text-xs flex items-start gap-2.5">
-              <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
-              <span>{error}</span>
+            <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-800 text-xs flex items-start gap-2.5 shadow-xs">
+              <AlertCircle className="w-4 h-4 text-red-600 shrink-0 mt-0.5" />
+              <span className="font-medium">{error}</span>
             </div>
           )}
 
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
-              <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
                 Admin Email Address
               </label>
               <div className="relative">
-                <Mail className="w-4 h-4 text-gray-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@bbgtextile.com"
-                  className="w-full pl-10 pr-4 py-3 bg-[#0F172A] border border-gray-700 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all placeholder:text-gray-600"
+                  placeholder="admin@gmail.com"
+                  className="w-full pl-10 pr-4 py-3 bg-slate-50/70 border border-slate-200 rounded-xl text-slate-900 text-sm font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all placeholder:text-slate-400"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">
+              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-2">
                 Security Password
               </label>
               <div className="relative">
-                <Lock className="w-4 h-4 text-gray-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <Lock className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                 <input
                   type="password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="w-full pl-10 pr-4 py-3 bg-[#0F172A] border border-gray-700 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-amber-500 transition-all placeholder:text-gray-600"
+                  className="w-full pl-10 pr-4 py-3 bg-slate-50/70 border border-slate-200 rounded-xl text-slate-900 text-sm font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all placeholder:text-slate-400"
                 />
               </div>
             </div>
@@ -117,52 +125,59 @@ export default function AdminLoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3.5 px-4 bg-amber-500 hover:bg-amber-600 disabled:opacity-50 text-gray-950 rounded-xl font-bold text-sm shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 mt-2"
+              className="w-full py-3.5 px-4 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 disabled:opacity-50 text-slate-950 rounded-xl font-bold text-sm shadow-lg shadow-amber-500/25 hover:shadow-amber-500/35 hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98] transition-all flex items-center justify-center gap-2 mt-2 cursor-pointer"
             >
               {loading ? (
                 <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="w-4 h-4 animate-spin text-slate-950" />
                   <span>Verifying Credentials...</span>
                 </>
               ) : (
                 <>
-                  <ShieldCheck className="w-4 h-4" />
+                  <ShieldCheck className="w-4 h-4 text-slate-950" />
                   <span>Enter Admin Dashboard</span>
+                  <ArrowRight className="w-4 h-4 text-slate-950" />
                 </>
               )}
             </button>
           </form>
 
-          {/* Seed Credentials Quick Fill Info */}
-          <div className="mt-6 pt-6 border-t border-gray-800 text-xs text-gray-400">
+          {/* Quick Fill Credentials Helper Card */}
+          <div className="mt-6 pt-6 border-t border-slate-100 text-xs">
             <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-1.5 text-amber-400 font-semibold">
-                <Sparkles className="w-3.5 h-3.5" />
+              <div className="flex items-center gap-1.5 text-amber-800 font-bold">
+                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
                 <span>Admin Login Credentials:</span>
               </div>
               <button
                 type="button"
                 onClick={() => {
-                  setEmail("admin@bbgtextile.com");
-                  setPassword("Admin@BBGTextile#2026");
+                  setEmail("admin@gmail.com");
+                  setPassword("admin@123");
                 }}
-                className="text-[11px] text-amber-400 hover:text-amber-300 font-medium underline underline-offset-2 transition-colors cursor-pointer"
+                className="text-[11px] text-amber-800 hover:text-amber-900 font-bold underline underline-offset-2 transition-colors cursor-pointer bg-amber-500/10 px-2.5 py-1 rounded-md border border-amber-600/20"
               >
                 Auto Fill
               </button>
             </div>
-            <div className="text-gray-300 font-mono text-[11px] bg-[#0F172A] p-3 rounded-xl border border-gray-800 space-y-1">
-              <div><span className="text-gray-500">Email:</span> admin@bbgtextile.com</div>
-              <div><span className="text-gray-500">Password:</span> Admin@BBGTextile#2026</div>
+            <div className="bg-amber-50/70 p-3.5 rounded-xl border border-amber-200/80 font-mono text-xs space-y-1.5 shadow-xs">
+              <div className="flex justify-between items-center">
+                <span className="text-slate-500 font-sans">Email:</span>
+                <span className="font-bold text-slate-900 select-all">admin@gmail.com</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-slate-500 font-sans">Password:</span>
+                <span className="font-bold text-slate-900 select-all">admin@123</span>
+              </div>
             </div>
           </div>
 
           <div className="mt-6 text-center">
             <Link
               href="/"
-              className="text-xs text-gray-400 hover:text-white transition-colors"
+              className="text-xs font-semibold text-slate-500 hover:text-[#1A365D] transition-colors inline-flex items-center gap-1"
             >
-              &larr; Return to Public Website
+              <span>&larr; Return to Public Website</span>
             </Link>
           </div>
         </div>
