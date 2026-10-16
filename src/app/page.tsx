@@ -191,7 +191,7 @@ export default async function HomePage() {
                 </div>
                 <div>
                   <div className="text-sm font-bold text-[#0F2444]">Pan-India Dispatch</div>
-                  <div className="text-xs text-[#7A6953]">B2B Wholesale Shipping</div>
+                  <div className="text-xs text-[#7A6953]">B2B & B2C Shipping</div>
                 </div>
               </div>
 
