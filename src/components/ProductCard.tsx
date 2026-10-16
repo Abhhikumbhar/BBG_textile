@@ -85,7 +85,7 @@ export default function ProductCard({ product, whatsappNumber = "918767322501" }
       return "/images/products/bbg-studio-hd-pure-white.jpg";
     }
     if (s.includes("teal") || sku.includes("tel") || name.includes("teal")) {
-      return "/images/products/bbg-studio-hd-peacock-teal.jpg";
+      return "/images/products/churidar-leggings-teal-1.jpg";
     }
     if (s.includes("beige") || sku.includes("bge") || name.includes("beige")) {
       return "/images/products/bbg-studio-hd-beige-cream.jpg";

@@ -196,9 +196,9 @@ export default function ProductDetailClient({
       return "/images/products/bbg-studio-hd-cs-black.jpg";
     }
 
-    // Churidar Leggings: Prioritize Peacock Teal before Royal Blue
+    // Churidar Leggings: Completely remove unwanted studio image for Peacock Teal as requested
     if (s.includes("teal") || sku.includes("tel") || name.includes("teal")) {
-      return "/images/products/bbg-studio-hd-peacock-teal.jpg";
+      return null;
     }
     if (s.includes("maroon") || sku.includes("mrn") || name.includes("maroon")) {
       return "/images/products/bbg-studio-hd-deep-maroon.jpg";
@@ -222,12 +222,12 @@ export default function ProductDetailClient({
       return "/images/products/bbg-studio-hd-heather-grey.jpg";
     }
 
-    return "/images/products/bbg-studio-hd-peacock-teal.jpg";
+    return null;
   };
 
   const studioImg = getStudioImage(selectedColor);
 
-  const rawImages =
+  const rawImages = (
     product.images && product.images.length > 0
       ? product.images
       : [
@@ -237,15 +237,22 @@ export default function ProductDetailClient({
             altText: product.name,
             isPrimary: true,
           },
-        ];
+        ]
+  ).filter(
+    (img) =>
+      !(
+        (product.slug.includes("teal") || product.name.toLowerCase().includes("teal")) &&
+        (img.url.includes("bbg-studio-hd") || img.url.includes("royal-blue"))
+      )
+  );
 
-  // Prepend studio photo with flowerpot as primary showcase image
+  // Prepend studio photo with flowerpot as primary showcase image only if available
   const images: ProductImage[] = studioImg
     ? [
         {
           id: `studio-${selectedColor || "primary"}`,
           url: studioImg,
-          altText: `${product.name} Studio Backdrop with Flowerpot & Decor`,
+          altText: `${product.name} Studio Presentation`,
           isPrimary: true,
         },
         ...rawImages.filter((img) => img.url !== studioImg),
@@ -370,7 +377,7 @@ export default function ProductDetailClient({
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     draggable={false}
                     className={`transition-all duration-300 pointer-events-none select-none ${
-                      idx === 0
+                      idx === 0 && img.url.includes("bbg-studio-hd")
                         ? "object-cover object-[24%_center] sm:object-[20%_center] group-hover:scale-[1.02]"
                         : "object-contain object-center sm:object-[24%_center] mix-blend-multiply"
                     }`}
@@ -585,9 +592,9 @@ export default function ProductDetailClient({
                     alt={img.altText || `Product view ${idx + 1}`}
                     fill
                     sizes="80px"
-                    className={`object-cover ${idx === 0 ? "object-[24%_center]" : "object-center mix-blend-multiply"}`}
+                    className={`object-cover ${idx === 0 && img.url.includes("bbg-studio-hd") ? "object-[24%_center]" : "object-center mix-blend-multiply"}`}
                   />
-                  {idx === 0 && (
+                  {idx === 0 && img.url.includes("bbg-studio-hd") && (
                     <span className="absolute bottom-0.5 inset-x-0.5 bg-black/75 text-[7px] sm:text-[8px] font-bold text-amber-300 text-center rounded py-0.5 backdrop-blur-xs">
                       Studio
                     </span>

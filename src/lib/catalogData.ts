@@ -769,7 +769,7 @@ const rawProducts = [
       categorySlug: "churidar-leggings",
       images: [
           {
-                    "url": "/images/products/bbg-studio-hd-peacock-teal.jpg",
+                    "url": "/images/products/churidar-leggings-teal-1.jpg",
                     "altText": "Women's Premium Cotton Lycra Churidar Leggings (Peacock Teal) - Clean Studio Front Shot",
                     "isPrimary": true,
                     "displayOrder": 0
