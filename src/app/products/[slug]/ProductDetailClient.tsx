@@ -169,6 +169,9 @@ export default function ProductDetailClient({
     const isCyclingShorts = s.includes("cycling") || s.includes("tight") || sku.includes("cs") || sku.includes("ts") || name.includes("cycling") || name.includes("tight");
 
     if (isCyclingShorts) {
+      if (s.includes("teal") || sku.includes("tel") || name.includes("teal")) {
+        return "/images/products/bbg-studio-hd-cs-teal.jpg";
+      }
       if (s.includes("grey") || sku.includes("gry") || name.includes("grey")) {
         return "/images/products/bbg-studio-hd-cycling-grey.jpg";
       }
@@ -178,13 +181,10 @@ export default function ProductDetailClient({
       if (s.includes("beige") || sku.includes("bge") || name.includes("beige")) {
         return "/images/products/bbg-studio-hd-cs-beige.jpg";
       }
-      if (s.includes("teal") || sku.includes("tel") || name.includes("teal")) {
-        return "/images/products/bbg-studio-hd-cs-teal.jpg";
-      }
       if (s.includes("red") || sku.includes("red") || name.includes("red")) {
         return "/images/products/bbg-studio-hd-cs-red.jpg";
       }
-      if (s.includes("royal") || s.includes("blue") || sku.includes("rbl") || name.includes("royal blue")) {
+      if ((s.includes("royal") || s.includes("blue") || sku.includes("rbl") || name.includes("royal blue")) && !s.includes("teal")) {
         return "/images/products/bbg-studio-hd-cs-royal-blue.jpg";
       }
       if (s.includes("maroon") || sku.includes("mrn") || name.includes("maroon")) {
@@ -196,14 +196,17 @@ export default function ProductDetailClient({
       return "/images/products/bbg-studio-hd-cs-black.jpg";
     }
 
-    // Churidar Leggings
+    // Churidar Leggings: Prioritize Peacock Teal before Royal Blue
+    if (s.includes("teal") || sku.includes("tel") || name.includes("teal")) {
+      return "/images/products/bbg-studio-hd-peacock-teal.jpg";
+    }
     if (s.includes("maroon") || sku.includes("mrn") || name.includes("maroon")) {
       return "/images/products/bbg-studio-hd-deep-maroon.jpg";
     }
     if (s.includes("red") || sku.includes("red") || name.includes("crimson")) {
       return "/images/products/bbg-studio-hd-crimson-red.jpg";
     }
-    if (s.includes("royal") || s.includes("blue") || sku.includes("rbl") || name.includes("royal blue")) {
+    if ((s.includes("royal") || s.includes("blue") || sku.includes("rbl") || name.includes("royal blue")) && !s.includes("teal")) {
       return "/images/products/bbg-studio-hd-royal-blue.jpg";
     }
     if (s.includes("black") || sku.includes("blk") || name.includes("black")) {
@@ -212,9 +215,6 @@ export default function ProductDetailClient({
     if (s.includes("white") || sku.includes("wht") || name.includes("white")) {
       return "/images/products/bbg-studio-hd-pure-white.jpg";
     }
-    if (s.includes("teal") || sku.includes("tel") || name.includes("teal")) {
-      return "/images/products/bbg-studio-hd-peacock-teal.jpg";
-    }
     if (s.includes("beige") || sku.includes("bge") || name.includes("beige")) {
       return "/images/products/bbg-studio-hd-beige-cream.jpg";
     }
@@ -222,7 +222,7 @@ export default function ProductDetailClient({
       return "/images/products/bbg-studio-hd-heather-grey.jpg";
     }
 
-    return "/images/products/bbg-studio-hd-deep-maroon.jpg";
+    return "/images/products/bbg-studio-hd-peacock-teal.jpg";
   };
 
   const studioImg = getStudioImage(selectedColor);
