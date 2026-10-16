@@ -823,24 +823,35 @@ export default function ProductDetailClient({
         </div>
       )}
 
-      {/* Sticky Mobile Bottom CTA Bar with safe-area-inset */}
-      <div className="fixed bottom-0 inset-x-0 z-40 bg-white/95 backdrop-blur-md border-t border-gray-200 px-3 py-2.5 sm:hidden shadow-[0_-4px_25px_rgba(0,0,0,0.1)] flex items-center gap-2 pb-[max(0.65rem,env(safe-area-inset-bottom))]">
-        <a
-          href={`https://wa.me/${cleanWhatsApp}?text=${whatsappMessage}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex-1 py-3 px-4 bg-[#25D366] hover:bg-[#20BD5A] active:bg-[#1DA851] text-white rounded-xl font-bold text-sm shadow-md flex items-center justify-center gap-2 active:scale-98 transition-transform"
-        >
-          <WhatsAppIcon className="w-5 h-5 text-white" />
-          <span>Enquire on WhatsApp</span>
-        </a>
-        <a
-          href="tel:+918767322501"
-          className="w-11 h-11 border border-gray-300 bg-gray-50 active:bg-gray-100 text-gray-800 rounded-xl flex items-center justify-center shrink-0 active:scale-95 transition-transform shadow-xs"
-          aria-label="Call BBG Textile"
-        >
-          <Phone className="w-4 h-4 text-[#1A365D]" />
-        </a>
+      {/* Floating Mobile Bottom Action Pill */}
+      <div className="fixed bottom-4 inset-x-0 z-40 flex justify-center pointer-events-none sm:hidden px-4">
+        <div className="pointer-events-auto bg-[#0B1220]/95 backdrop-blur-xl border border-white/10 rounded-full p-1.5 shadow-[0_12px_40px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.08)] flex items-center gap-2 max-w-sm w-full">
+          <Link
+            href="/products"
+            className="w-11 h-11 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 active:scale-90 transition-all shrink-0"
+            aria-label="Back to Products"
+            title="Back to Products"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </Link>
+          <a
+            href={`https://wa.me/${cleanWhatsApp}?text=${whatsappMessage}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex-1 py-2.5 px-4 bg-[#25D366] hover:bg-[#20BD5A] active:bg-[#1DA851] text-white rounded-full font-bold text-sm shadow-md flex items-center justify-center gap-2 active:scale-98 transition-all"
+          >
+            <WhatsAppIcon className="w-5 h-5 text-white" />
+            <span>Enquire on WhatsApp</span>
+          </a>
+          <a
+            href="tel:+918767322501"
+            className="w-11 h-11 rounded-full bg-white/10 text-white flex items-center justify-center hover:bg-white/20 active:scale-90 transition-all shrink-0"
+            aria-label="Call BBG Textile"
+            title="Call"
+          >
+            <Phone className="w-4 h-4 text-white" />
+          </a>
+        </div>
       </div>
     </div>
   );
