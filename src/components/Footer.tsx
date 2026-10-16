@@ -28,7 +28,7 @@ interface FooterProps {
 }
 
 export default function Footer({ settings }: FooterProps) {
-  const businessName = settings?.businessName || "BBG TEXTILE";
+  const businessName = settings?.businessName || "BBG TEXTILE EXPORTER";
   const address =
     settings?.address ||
     "GROUND FLOOR, KHARE MALA, S.NO-204 PLOT NO 28, Kupwad MIDC Area, Madhavnagar, Sangli, Maharashtra - 416436, OLD KUPWAD ROAD, SANGLI - 416416";
@@ -94,9 +94,9 @@ export default function Footer({ settings }: FooterProps) {
             <div className="mb-5 inline-block bg-white rounded-xl px-3 py-1.5 shadow-sm">
               <Image
                 src="/images/logo/bbg-logo-horizontal.png"
-                alt="BBG TEXTILE - Premium Fabrics & Garments"
-                width={260}
-                height={58}
+                alt="BBG TEXTILE EXPORTER - Premium Fabrics & Garments"
+                width={280}
+                height={72}
                 className="h-9 w-auto object-contain"
               />
             </div>

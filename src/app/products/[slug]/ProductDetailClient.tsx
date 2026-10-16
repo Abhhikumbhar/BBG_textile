@@ -350,7 +350,18 @@ export default function ProductDetailClient({
               style={{ transform: `translateX(-${activeImageIndex * 100}%)` }}
             >
               {images.map((img, idx) => (
-                <div key={img.id || idx} className="relative w-full h-full shrink-0 select-none">
+                <div key={img.id || idx} className="relative w-full h-full shrink-0 select-none overflow-hidden">
+                  {/* Studio Backdrop Room with Plant behind every slide */}
+                  <Image
+                    src="/images/studio-backdrop-hd.jpg"
+                    alt="Studio Room Backdrop"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover object-[24%_center] sm:object-[20%_center] pointer-events-none -z-10"
+                    priority={idx <= 1}
+                  />
+
+                  {/* Model Photo: Primary is pre-composited; secondary photos blend seamlessly on the studio backdrop */}
                   <Image
                     src={img.url}
                     alt={img.altText || `${product.name} view ${idx + 1}`}
@@ -361,7 +372,7 @@ export default function ProductDetailClient({
                     className={`transition-all duration-300 pointer-events-none select-none ${
                       idx === 0
                         ? "object-cover object-[24%_center] sm:object-[20%_center] group-hover:scale-[1.02]"
-                        : "object-contain p-1 sm:p-3 group-hover:scale-[1.01]"
+                        : "object-contain object-center sm:object-[24%_center] mix-blend-multiply"
                     }`}
                   />
                 </div>
@@ -412,10 +423,10 @@ export default function ProductDetailClient({
               </div>
             )}
 
-            {/* Top Bar on Image */}
+            {/* Top Bar on Image - Always Studio Presentation styling */}
             <div className="absolute top-2.5 sm:top-4 inset-x-2.5 sm:inset-x-4 flex items-center justify-between gap-2 z-20 pointer-events-none">
               <span className="px-2.5 py-0.5 sm:px-3 sm:py-1 bg-[#0B1A30]/85 text-amber-300 rounded-full text-[9px] sm:text-[11px] font-bold tracking-wider uppercase backdrop-blur-sm shadow pointer-events-auto">
-                {activeImageIndex === 0 ? "Studio Presentation" : "Premium Finish • Detail"}
+                Studio Presentation
               </span>
 
               <div className="flex items-center gap-1.5 sm:gap-2 pointer-events-auto">
@@ -437,33 +448,33 @@ export default function ProductDetailClient({
               </div>
             </div>
 
-            {/* Overlays: NOW SHOWN ON ALL SLIDE IMAGES */}
-            {/* Right Side: 4 Vertical Gold-Rimmed Feature Badges */}
-            <div className="flex absolute right-2 sm:right-3.5 top-12 sm:top-16 flex-col gap-1.5 sm:gap-2.5 z-20 pointer-events-none">
-              <div className="w-10 h-10 sm:w-13 sm:h-13 rounded-full bg-white/95 backdrop-blur-md border border-amber-400 shadow-md flex flex-col items-center justify-center p-0.5 sm:p-1 text-center">
-                <span className="text-xs sm:text-sm">☁️</span>
-                <span className="text-[7px] sm:text-[8px] font-bold text-slate-900 leading-tight">95% Cotton</span>
-                <span className="text-[6px] sm:text-[7px] text-slate-500 leading-none">Ultra Soft</span>
+            {/* Overlays: Visible across all slides so design is consistent */}
+            {/* Right Side: 4 Vertical Gold-Rimmed Feature Badges (Desktop Only) */}
+            <div className="hidden lg:flex absolute right-3.5 top-16 sm:top-18 flex-col gap-2.5 z-20 pointer-events-none">
+              <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-white/95 backdrop-blur-md border border-amber-400 shadow-md flex flex-col items-center justify-center p-1 text-center">
+                <span className="text-sm">☁️</span>
+                <span className="text-[8px] font-bold text-slate-900 leading-tight">95% Cotton</span>
+                <span className="text-[7px] text-slate-500 leading-none">Ultra Soft</span>
               </div>
-              <div className="w-10 h-10 sm:w-13 sm:h-13 rounded-full bg-white/95 backdrop-blur-md border border-amber-400 shadow-md flex flex-col items-center justify-center p-0.5 sm:p-1 text-center">
-                <span className="text-xs sm:text-sm">✨</span>
-                <span className="text-[7px] sm:text-[8px] font-bold text-slate-900 leading-tight">4-Way Stretch</span>
-                <span className="text-[6px] sm:text-[7px] text-slate-500 leading-none">Max Comfort</span>
+              <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-white/95 backdrop-blur-md border border-amber-400 shadow-md flex flex-col items-center justify-center p-1 text-center">
+                <span className="text-sm">✨</span>
+                <span className="text-[8px] font-bold text-slate-900 leading-tight">4-Way Stretch</span>
+                <span className="text-[7px] text-slate-500 leading-none">Max Comfort</span>
               </div>
-              <div className="w-10 h-10 sm:w-13 sm:h-13 rounded-full bg-white/95 backdrop-blur-md border border-amber-400 shadow-md flex flex-col items-center justify-center p-0.5 sm:p-1 text-center">
-                <span className="text-xs sm:text-sm">🎨</span>
-                <span className="text-[7px] sm:text-[8px] font-bold text-slate-900 leading-tight">Colorfast</span>
-                <span className="text-[6px] sm:text-[7px] text-slate-500 leading-none">Zero Bleed</span>
+              <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-white/95 backdrop-blur-md border border-amber-400 shadow-md flex flex-col items-center justify-center p-1 text-center">
+                <span className="text-sm">🎨</span>
+                <span className="text-[8px] font-bold text-slate-900 leading-tight">Colorfast</span>
+                <span className="text-[7px] text-slate-500 leading-none">Zero Bleed</span>
               </div>
-              <div className="w-10 h-10 sm:w-13 sm:h-13 rounded-full bg-white/95 backdrop-blur-md border border-amber-400 shadow-md flex flex-col items-center justify-center p-0.5 sm:p-1 text-center">
-                <span className="text-xs sm:text-sm">🛡️</span>
-                <span className="text-[7px] sm:text-[8px] font-bold text-slate-900 leading-tight">Bio-Washed</span>
-                <span className="text-[6px] sm:text-[7px] text-slate-500 leading-none">Non-Sheer</span>
+              <div className="w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-white/95 backdrop-blur-md border border-amber-400 shadow-md flex flex-col items-center justify-center p-1 text-center">
+                <span className="text-sm">🛡️</span>
+                <span className="text-[8px] font-bold text-slate-900 leading-tight">Bio-Washed</span>
+                <span className="text-[7px] text-slate-500 leading-none">Non-Sheer</span>
               </div>
             </div>
 
             {/* Center-Bottom: 3 Fabric Detail Macro Thumbnails (interactive jump to detail photos) */}
-            <div className="absolute left-1/2 -translate-x-1/2 bottom-2 sm:bottom-3.5 flex items-end gap-1.5 sm:gap-2 z-20">
+            <div className="absolute left-1/2 -translate-x-1/2 bottom-3.5 flex items-end gap-1.5 sm:gap-2 z-20">
               {images[1] && (
                 <button
                   type="button"
@@ -471,12 +482,10 @@ export default function ProductDetailClient({
                     e.stopPropagation();
                     setActiveImageIndex(1);
                   }}
-                  className={`flex flex-col items-center group/btn cursor-pointer transition-transform ${
-                    activeImageIndex === 1 ? "scale-110" : ""
-                  }`}
+                  className={`flex flex-col items-center group/btn cursor-pointer transition-transform ${activeImageIndex === 1 ? "scale-110" : "opacity-90 hover:opacity-100"}`}
                   title="View Stitch Detail"
                 >
-                  <div className={`w-9 h-9 sm:w-12 sm:h-12 rounded-full border-2 ${activeImageIndex === 1 ? "border-amber-500 ring-2 ring-amber-400" : "border-amber-400"} shadow-lg overflow-hidden bg-slate-900 relative group-hover/btn:scale-110 transition-transform`}>
+                  <div className={`w-9 h-9 sm:w-12 sm:h-12 rounded-full border-2 ${activeImageIndex === 1 ? "border-amber-300 ring-2 ring-amber-400" : "border-amber-400"} shadow-lg overflow-hidden bg-slate-900 relative group-hover/btn:scale-110 transition-transform`}>
                     <Image
                       src={images[1].url}
                       alt="Seamless Stitch"
@@ -484,7 +493,7 @@ export default function ProductDetailClient({
                       className="object-cover scale-[2.2] object-center"
                     />
                   </div>
-                  <span className="text-[8px] sm:text-[9px] font-bold text-slate-900 drop-shadow-[0_1px_2px_rgba(255,255,255,0.9)] bg-white/80 px-1 rounded-sm mt-0.5 sm:mt-1">
+                  <span className="text-[8px] sm:text-[9px] font-bold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] mt-0.5 sm:mt-1">
                     Stitch
                   </span>
                 </button>
@@ -496,12 +505,10 @@ export default function ProductDetailClient({
                     e.stopPropagation();
                     setActiveImageIndex(2);
                   }}
-                  className={`flex flex-col items-center group/btn cursor-pointer transition-transform ${
-                    activeImageIndex === 2 ? "scale-110" : ""
-                  }`}
+                  className={`flex flex-col items-center group/btn cursor-pointer transition-transform ${activeImageIndex === 2 ? "scale-110" : "opacity-90 hover:opacity-100"}`}
                   title="View Gathers Detail"
                 >
-                  <div className={`w-9 h-9 sm:w-12 sm:h-12 rounded-full border-2 ${activeImageIndex === 2 ? "border-amber-500 ring-2 ring-amber-400" : "border-amber-400"} shadow-lg overflow-hidden bg-slate-900 relative group-hover/btn:scale-110 transition-transform`}>
+                  <div className={`w-9 h-9 sm:w-12 sm:h-12 rounded-full border-2 ${activeImageIndex === 2 ? "border-amber-300 ring-2 ring-amber-400" : "border-amber-400"} shadow-lg overflow-hidden bg-slate-900 relative group-hover/btn:scale-110 transition-transform`}>
                     <Image
                       src={images[2].url}
                       alt="Ankle Gathers"
@@ -509,7 +516,7 @@ export default function ProductDetailClient({
                       className="object-cover scale-[2.4] object-bottom"
                     />
                   </div>
-                  <span className="text-[8px] sm:text-[9px] font-bold text-slate-900 drop-shadow-[0_1px_2px_rgba(255,255,255,0.9)] bg-white/80 px-1 rounded-sm mt-0.5 sm:mt-1">
+                  <span className="text-[8px] sm:text-[9px] font-bold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] mt-0.5 sm:mt-1">
                     Gathers
                   </span>
                 </button>
@@ -521,12 +528,10 @@ export default function ProductDetailClient({
                     e.stopPropagation();
                     setActiveImageIndex(3);
                   }}
-                  className={`flex flex-col items-center group/btn cursor-pointer transition-transform ${
-                    activeImageIndex === 3 ? "scale-110" : ""
-                  }`}
+                  className={`flex flex-col items-center group/btn cursor-pointer transition-transform ${activeImageIndex === 3 ? "scale-110" : "opacity-90 hover:opacity-100"}`}
                   title="View Waistband Detail"
                 >
-                  <div className={`w-9 h-9 sm:w-12 sm:h-12 rounded-full border-2 ${activeImageIndex === 3 ? "border-amber-500 ring-2 ring-amber-400" : "border-amber-400"} shadow-lg overflow-hidden bg-slate-900 relative group-hover/btn:scale-110 transition-transform`}>
+                  <div className={`w-9 h-9 sm:w-12 sm:h-12 rounded-full border-2 ${activeImageIndex === 3 ? "border-amber-300 ring-2 ring-amber-400" : "border-amber-400"} shadow-lg overflow-hidden bg-slate-900 relative group-hover/btn:scale-110 transition-transform`}>
                     <Image
                       src={images[3].url}
                       alt="Gentle Waistband"
@@ -534,16 +539,16 @@ export default function ProductDetailClient({
                       className="object-cover scale-[2.2] object-top"
                     />
                   </div>
-                  <span className="text-[8px] sm:text-[9px] font-bold text-slate-900 drop-shadow-[0_1px_2px_rgba(255,255,255,0.9)] bg-white/80 px-1 rounded-sm mt-0.5 sm:mt-1">
+                  <span className="text-[8px] sm:text-[9px] font-bold text-white drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] mt-0.5 sm:mt-1">
                     Waistband
                   </span>
                 </button>
               )}
             </div>
 
-            {/* Bottom Right: Cultural Guarantee Stamp */}
-            <div className="absolute right-2 sm:right-3.5 bottom-2 sm:bottom-3.5 z-20 pointer-events-none hidden sm:block">
-              <div className="px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-gradient-to-r from-amber-500/95 via-amber-600/95 to-amber-700/95 text-white text-[10px] sm:text-[11px] font-bold shadow-lg border border-amber-300/60 backdrop-blur-md flex items-center gap-1.5">
+            {/* Bottom Right: Cultural Guarantee Stamp (visible on mobile and desktop) */}
+            <div className="absolute right-2.5 sm:right-3.5 bottom-2.5 sm:bottom-3.5 z-20 pointer-events-none flex">
+              <div className="px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-gradient-to-r from-amber-500/90 via-amber-600/90 to-amber-700/90 text-white text-[9px] sm:text-[11px] font-bold shadow-lg border border-amber-300/60 backdrop-blur-md flex items-center gap-1 sm:gap-1.5">
                 <span>✨</span>
                 <span>परंपरेची आधुनिक पावलं</span>
               </div>
@@ -561,19 +566,26 @@ export default function ProductDetailClient({
                   key={img.id}
                   type="button"
                   onClick={() => setActiveImageIndex(idx)}
-                  className={`relative w-15 h-19 sm:w-20 sm:h-24 rounded-xl overflow-hidden shrink-0 border-2 transition-all active:scale-95 ${
+                  className={`relative w-15 h-19 sm:w-20 sm:h-24 rounded-xl overflow-hidden shrink-0 border-2 transition-all active:scale-95 bg-[#F5EFE6] ${
                     activeImageIndex === idx
                       ? "border-[#1A365D] ring-2 ring-[#1A365D]/30 shadow-md scale-102"
-                      : "border-gray-200 opacity-70 hover:opacity-100 hover:border-gray-400"
+                      : "border-gray-200 opacity-75 hover:opacity-100 hover:border-gray-400"
                   }`}
                   aria-label={`View photo ${idx + 1}`}
                 >
+                  <Image
+                    src="/images/studio-backdrop-hd.jpg"
+                    alt="Backdrop"
+                    fill
+                    sizes="80px"
+                    className="object-cover object-[24%_center] pointer-events-none -z-10"
+                  />
                   <Image
                     src={img.url}
                     alt={img.altText || `Product view ${idx + 1}`}
                     fill
                     sizes="80px"
-                    className={`object-cover ${idx === 0 ? "object-[24%_center]" : "object-center"}`}
+                    className={`object-cover ${idx === 0 ? "object-[24%_center]" : "object-center mix-blend-multiply"}`}
                   />
                   {idx === 0 && (
                     <span className="absolute bottom-0.5 inset-x-0.5 bg-black/75 text-[7px] sm:text-[8px] font-bold text-amber-300 text-center rounded py-0.5 backdrop-blur-xs">

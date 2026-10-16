@@ -14,11 +14,11 @@ async function main() {
     where: { id: "default" },
     update: {
       address: defaultAddress,
-      businessName: "BBG TEXTILE",
+      businessName: "BBG TEXTILE EXPORTER",
     },
     create: {
       id: "default",
-      businessName: "BBG TEXTILE",
+      businessName: "BBG TEXTILE EXPORTER",
       tagline: "Excellence in Quality Fabrics & Garments",
       phone: "+91 87673 22501",
       whatsappNumber: "918767322501",
