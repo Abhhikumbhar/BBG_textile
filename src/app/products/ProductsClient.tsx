@@ -65,27 +65,94 @@ export default function ProductsClient({
   const [pagination, setPagination] = useState(initialPagination);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const isFirstMount = React.useRef(true);
+  const masterList = React.useRef<Product[]>(initialProducts);
+  if (initialProducts.length > masterList.current.length) {
+    masterList.current = initialProducts;
+  }
 
-  // Fetch products when filters change
-  useEffect(() => {
-    // If it's the very first render and we have initial products with default query, skip fetch!
-    if (isFirstMount.current) {
-      isFirstMount.current = false;
-      const isDefaultQuery =
-        !search &&
-        !selectedCategory &&
-        sort === "newest" &&
-        !featuredOnly &&
-        !newArrivalOnly &&
-        !bestSellerOnly &&
-        page === 1;
-
-      if (isDefaultQuery && initialProducts.length > 0) {
-        return;
+  // Instant in-memory filter helper
+  const filterLocally = (
+    master: Product[],
+    sTerm: string,
+    cat: string,
+    srt: string,
+    feat: boolean,
+    newArr: boolean,
+    best: boolean
+  ) => {
+    let result = [...master];
+    if (sTerm.trim()) {
+      const q = sTerm.trim().toLowerCase();
+      result = result.filter(
+        (p) =>
+          p.name.toLowerCase().includes(q) ||
+          p.sku.toLowerCase().includes(q) ||
+          (p.category?.name && p.category.name.toLowerCase().includes(q))
+      );
+    }
+    if (cat) {
+      if (cat === "womens-bottom-wear") {
+        result = result.filter(
+          (p) =>
+            p.category?.slug === "womens-bottom-wear" ||
+            p.category?.slug === "cycling-shorts" ||
+            p.category?.slug === "churidar-leggings" ||
+            p.category?.slug === "tight-shorts"
+        );
+      } else if (cat === "cycling-shorts" || cat === "tight-shorts") {
+        result = result.filter(
+          (p) =>
+            p.category?.slug === "cycling-shorts" ||
+            p.category?.slug === "tight-shorts" ||
+            p.slug.includes("cycling") ||
+            p.sku.includes("CS")
+        );
+      } else if (cat === "churidar-leggings") {
+        result = result.filter(
+          (p) =>
+            p.category?.slug === "churidar-leggings" ||
+            p.slug.includes("churidar") ||
+            p.sku.includes("LEG")
+        );
+      } else {
+        result = result.filter((p) => p.category?.slug === cat);
       }
     }
+    if (feat) result = result.filter((p) => p.isFeatured);
+    if (newArr) result = result.filter((p) => p.isNewArrival);
+    if (best) result = result.filter((p) => p.isBestSeller);
 
+    if (srt === "price_asc") result.sort((a, b) => a.price - b.price);
+    else if (srt === "price_desc") result.sort((a, b) => b.price - a.price);
+    else if (srt === "popular") result.sort((a, b) => (b.isBestSeller ? 1 : 0) - (a.isBestSeller ? 1 : 0));
+
+    return result;
+  };
+
+  // Instant filter execution on state change (0ms latency)
+  useEffect(() => {
+    if (masterList.current.length > 0) {
+      const filtered = filterLocally(
+        masterList.current,
+        search,
+        selectedCategory,
+        sort,
+        featuredOnly,
+        newArrivalOnly,
+        bestSellerOnly
+      );
+      setProducts(filtered.slice((page - 1) * 12, page * 12));
+      setPagination({
+        page,
+        limit: 12,
+        total: filtered.length,
+        totalPages: Math.ceil(filtered.length / 12) || 1,
+      });
+      setLoading(false);
+      return;
+    }
+
+    // Fallback: only if master list is completely empty
     let ignore = false;
     setLoading(true);
     setError(null);
@@ -270,10 +337,10 @@ export default function ProductsClient({
       </div>
 
       {/* Products Grid / Status */}
-      {loading ? (
+      {loading && products.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-24">
           <Loader2 className="w-8 h-8 text-[#1A365D] animate-spin mb-3" />
-          <p className="text-gray-500 text-sm">Loading authentic textiles from database...</p>
+          <p className="text-gray-500 text-sm">Loading authentic textiles...</p>
         </div>
       ) : error ? (
         <div className="text-center py-16 bg-red-50 rounded-2xl border border-red-200 p-8">

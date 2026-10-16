@@ -19,8 +19,8 @@ async function fastDb<T>(promise: Promise<T>, fallback: T, timeoutMs = 500): Pro
   ]).finally(() => clearTimeout(timer));
 }
 
-export async function getSiteSettings() {
-  return fastDb(
+export async function getSiteSettings(): Promise<any> {
+  return fastDb<any>(
     prisma.siteSettings.findUnique({
       where: { id: "default" },
     }),
@@ -80,8 +80,8 @@ export async function getNewArrivalProducts() {
   return staticNewArrivals;
 }
 
-export async function getCategories() {
-  const dbCategories = await fastDb(
+export async function getCategories(): Promise<any[]> {
+  const dbCategories = await fastDb<any>(
     prisma.category.findMany({
       where: {
         isActive: true,

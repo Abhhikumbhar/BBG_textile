@@ -80,23 +80,27 @@ export default async function ProductDetailPage({ params }: Props) {
     console.warn("Failed to fetch settings:", err);
   }
 
-  // 2. Try fetching product from Database
+  // 2. Try fetching product from Database with 500ms fast guard
   try {
-    product = await prisma.product.findFirst({
-      where: {
-        OR: [{ slug }, { id: slug }],
-        isActive: true,
-      },
-      include: {
-        category: true,
-        images: {
-          orderBy: { displayOrder: "asc" },
+    const timeout = new Promise<null>((resolve) => setTimeout(() => resolve(null), 500));
+    product = await Promise.race([
+      prisma.product.findFirst({
+        where: {
+          OR: [{ slug }, { id: slug }],
+          isActive: true,
         },
-        variants: {
-          orderBy: { createdAt: "asc" },
+        include: {
+          category: true,
+          images: {
+            orderBy: { displayOrder: "asc" },
+          },
+          variants: {
+            orderBy: { createdAt: "asc" },
+          },
         },
-      },
-    });
+      }),
+      timeout,
+    ]);
   } catch (err) {
     console.warn("Prisma fetch failed, using static catalog fallback:", err);
   }
@@ -110,23 +114,27 @@ export default async function ProductDetailPage({ params }: Props) {
     notFound();
   }
 
-  // 4. Fetch related products safely
+  // 4. Fetch related products safely with 500ms fast guard
   try {
     if (product.categoryId) {
-      relatedProducts = await prisma.product.findMany({
-        where: {
-          categoryId: product.categoryId,
-          id: { not: product.id },
-          isActive: true,
-        },
-        take: 4,
-        orderBy: { createdAt: "desc" },
-        include: {
-          category: { select: { name: true, slug: true } },
-          images: { take: 1, orderBy: { displayOrder: "asc" } },
-          variants: true,
-        },
-      });
+      const timeout = new Promise<any[]>((resolve) => setTimeout(() => resolve([]), 500));
+      relatedProducts = await Promise.race([
+        prisma.product.findMany({
+          where: {
+            categoryId: product.categoryId,
+            id: { not: product.id },
+            isActive: true,
+          },
+          take: 4,
+          orderBy: { createdAt: "desc" },
+          include: {
+            category: { select: { name: true, slug: true } },
+            images: { take: 1, orderBy: { displayOrder: "asc" } },
+            variants: true,
+          },
+        }),
+        timeout,
+      ]);
     }
   } catch {
     // DB offline, fallback to catalog
