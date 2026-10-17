@@ -22,7 +22,23 @@ export const productVariantSchema = z.object({
 
 export const productImageSchema = z.object({
   id: z.string().optional(),
-  url: z.string().url("Valid image URL required"),
+  url: z
+    .string()
+    .min(1, "Valid image URL required")
+    .refine(
+      (val) => {
+        if (!val || typeof val !== "string") return false;
+        const trimmed = val.trim();
+        return (
+          trimmed.startsWith("/") ||
+          trimmed.startsWith("http://") ||
+          trimmed.startsWith("https://") ||
+          trimmed.startsWith("data:image/") ||
+          trimmed.startsWith("blob:")
+        );
+      },
+      { message: "Valid image URL required" }
+    ),
   publicId: z.string().nullable().optional(),
   altText: z.string().nullable().optional(),
   displayOrder: z.coerce.number().int().default(0),

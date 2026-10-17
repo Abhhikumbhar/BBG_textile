@@ -80,6 +80,23 @@ export default function ProductForm({
   const [uploading, setUploading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [manualImageUrl, setManualImageUrl] = useState("");
+
+  const handleAddManualImage = () => {
+    if (!manualImageUrl.trim()) return;
+    const url = manualImageUrl.trim();
+    setImages((prev) => [
+      ...prev,
+      {
+        url,
+        publicId: null,
+        altText: formData.name || "Product Image",
+        displayOrder: prev.length,
+        isPrimary: prev.length === 0,
+      },
+    ]);
+    setManualImageUrl("");
+  };
 
   // Auto-slug generator from name if not editing
   const handleNameChange = (val: string) => {
@@ -187,13 +204,30 @@ export default function ProductForm({
     setError(null);
 
     try {
+      // Clean and sanitize images
+      const validImages = images
+        .filter(
+          (img) =>
+            img &&
+            typeof img.url === "string" &&
+            img.url.trim().length > 0
+        )
+        .map((img, idx) => ({
+          ...img,
+          url: img.url.trim(),
+          displayOrder: idx,
+          isPrimary:
+            img.isPrimary ||
+            (idx === 0 && !images.some((i) => i.isPrimary)),
+        }));
+
       const payload = {
         ...formData,
         price: Number(formData.price),
         wholesalePrice:
           formData.wholesalePrice === "" ? null : Number(formData.wholesalePrice),
         stockQuantity: Number(formData.stockQuantity),
-        images,
+        images: validImages,
         variants: variants.map((v) => ({
           ...v,
           additionalPrice: Number(v.additionalPrice),
@@ -550,6 +584,31 @@ export default function ProductForm({
                 <span>Uploading and optimizing image files...</span>
               </div>
             )}
+
+            {/* Direct URL input bar for flexibility */}
+            <div className="flex gap-2 items-center bg-gray-50/80 p-2.5 rounded-xl border border-gray-200/80">
+              <input
+                type="text"
+                value={manualImageUrl}
+                onChange={(e) => setManualImageUrl(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    e.preventDefault();
+                    handleAddManualImage();
+                  }
+                }}
+                placeholder="Or paste image URL (e.g. https://... or /uploads/...)"
+                className="flex-1 px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-[#1A365D]"
+              />
+              <button
+                type="button"
+                onClick={handleAddManualImage}
+                disabled={!manualImageUrl.trim()}
+                className="px-3.5 py-1.5 bg-gray-800 hover:bg-black disabled:opacity-40 text-white rounded-lg text-xs font-semibold transition-colors shrink-0"
+              >
+                Add Link
+              </button>
+            </div>
 
             {/* Images Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
