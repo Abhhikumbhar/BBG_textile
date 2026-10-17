@@ -36,21 +36,33 @@ interface Product {
   images: { url: string }[];
 }
 
+// Module-level client cache for instant 0ms tab switching
+let cachedAdminProducts: Product[] | null = null;
+let cachedAdminCategories: Category[] | null = null;
+
 export default function ProductsAdminClient() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [products, setProducts] = useState<Product[]>(
+    () => cachedAdminProducts || []
+  );
+  const [categories, setCategories] = useState<Category[]>(
+    () => cachedAdminCategories || []
+  );
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(
+    () => !cachedAdminProducts || cachedAdminProducts.length === 0
+  );
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [notification, setNotification] = useState<{ type: string; msg: string } | null>(
     null
   );
 
-  const fetchProducts = async () => {
-    setLoading(true);
+  const fetchProducts = async (silent = false) => {
+    if (!silent && (!cachedAdminProducts || cachedAdminProducts.length === 0)) {
+      setLoading(true);
+    }
     try {
       const query = new URLSearchParams();
       if (search) query.set("search", search);
@@ -70,17 +82,29 @@ export default function ProductsAdminClient() {
       const prodData = await prodRes.json();
       const catData = await catRes.json();
 
-      setProducts(prodData.products || []);
-      setCategories(catData.categories || []);
-    } catch (err: any) {
-      setNotification({ type: "error", msg: "Failed to load products" });
+      const prodList = prodData.products || [];
+      const catList = catData.categories || [];
+
+      if (!search && !selectedCategory && !statusFilter) {
+        cachedAdminProducts = prodList;
+        cachedAdminCategories = catList;
+      }
+
+      setProducts(prodList);
+      setCategories(catList);
+    } catch {
+      if (!cachedAdminProducts || cachedAdminProducts.length === 0) {
+        setNotification({ type: "error", msg: "Failed to load products" });
+      }
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchProducts();
+    const isDefault = !search && !selectedCategory && !statusFilter;
+    const canSilent = isDefault && !!cachedAdminProducts && cachedAdminProducts.length > 0;
+    fetchProducts(canSilent);
   }, [search, selectedCategory, statusFilter]);
 
   const handleDelete = async (id: string) => {
@@ -94,7 +118,8 @@ export default function ProductsAdminClient() {
         type: "success",
         msg: json.message || "Product deleted successfully",
       });
-      fetchProducts();
+      cachedAdminProducts = null;
+      fetchProducts(false);
     } catch (err: any) {
       setNotification({ type: "error", msg: err.message || "Failed to delete" });
     } finally {
@@ -219,6 +244,12 @@ export default function ProductsAdminClient() {
                           }
                           alt={p.name}
                           fill
+                          sizes="48px"
+                          unoptimized={
+                            p.images[0]?.url
+                              ? p.images[0].url.startsWith("data:")
+                              : false
+                          }
                           className="object-cover"
                         />
                       </div>

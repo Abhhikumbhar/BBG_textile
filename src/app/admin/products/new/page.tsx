@@ -1,15 +1,10 @@
 import React from "react";
-import prisma from "@/lib/prisma";
 import ProductForm from "../ProductForm";
+import { getCategories } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 
 export default async function NewProductPage() {
-  const categories = await prisma.category.findMany({
-    where: { isActive: true },
-    orderBy: { displayOrder: "asc" },
-    select: { id: true, name: true },
-  });
-
+  const categories = await getCategories();
   return <ProductForm categories={categories} isEdit={false} />;
 }

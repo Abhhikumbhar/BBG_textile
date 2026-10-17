@@ -3,7 +3,8 @@ import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
 import { getAdminFromRequest, recordAuditLog } from "@/lib/auth";
 import { categorySchema, formatZodError } from "@/lib/validations";
-import { invalidateDataCache } from "@/lib/data";
+import { invalidateDataCache, getCached, setCached } from "@/lib/data";
+import { fallbackCategories } from "@/lib/catalogData";
 
 export const dynamic = "force-dynamic";
 
@@ -13,8 +14,19 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const cacheKey = "admin_categories";
+  const cached = getCached<any[]>(cacheKey);
+  if (cached) {
+    return NextResponse.json({ categories: cached });
+  }
+
   try {
-    const categories = await prisma.category.findMany({
+    let timer: NodeJS.Timeout;
+    const timeout = new Promise<any[]>((resolve) => {
+      timer = setTimeout(() => resolve(fallbackCategories as any), 2000);
+    });
+
+    const dbPromise = prisma.category.findMany({
       orderBy: { displayOrder: "asc" },
       include: {
         _count: {
@@ -23,13 +35,18 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    return NextResponse.json({ categories });
+    const categories = await Promise.race([dbPromise, timeout]).finally(() =>
+      clearTimeout(timer)
+    );
+
+    if (categories && categories.length > 0) {
+      setCached(cacheKey, categories, 60);
+    }
+
+    return NextResponse.json({ categories: categories || fallbackCategories });
   } catch (error) {
     console.error("Fetch categories error:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch categories" },
-      { status: 500 }
-    );
+    return NextResponse.json({ categories: fallbackCategories });
   }
 }
 

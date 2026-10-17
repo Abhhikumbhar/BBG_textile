@@ -125,7 +125,8 @@ export default function ProductForm({
     try {
       const data = new FormData();
       for (let i = 0; i < files.length; i++) {
-        const compressed = await compressImage(files[i], { maxWidth: 1600, quality: 0.82 });
+        // High-performance compression: max 1200px, WebP ~80KB
+        const compressed = await compressImage(files[i], { maxWidth: 1200, maxHeight: 1200, quality: 0.8 });
         data.append("files", compressed);
       }
 
@@ -645,6 +646,8 @@ export default function ProductForm({
                     src={img.url}
                     alt={img.altText || `Product Image ${idx + 1}`}
                     fill
+                    sizes="160px"
+                    unoptimized={img.url.startsWith("data:")}
                     className="object-cover"
                   />
 

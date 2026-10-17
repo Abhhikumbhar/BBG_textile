@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getAdminFromRequest } from "@/lib/auth";
+import { getCached, setCached } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 
@@ -8,6 +9,12 @@ export async function GET(req: NextRequest) {
   const admin = await getAdminFromRequest(req);
   if (!admin) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const cacheKey = "admin_dashboard_metrics";
+  const cached = getCached<any>(cacheKey);
+  if (cached) {
+    return NextResponse.json(cached);
   }
 
   try {
@@ -71,7 +78,7 @@ export async function GET(req: NextRequest) {
       }),
     ]);
 
-    return NextResponse.json({
+    const payload = {
       metrics: {
         totalProducts,
         activeProducts,
@@ -86,7 +93,11 @@ export async function GET(req: NextRequest) {
       recentOrders,
       recentEnquiries,
       recentProducts,
-    });
+    };
+
+    setCached(cacheKey, payload, 30);
+
+    return NextResponse.json(payload);
   } catch (error) {
     console.error("Dashboard API error:", error);
     return NextResponse.json(

@@ -26,9 +26,16 @@ interface Category {
   _count?: { products: number };
 }
 
+// Module-level client cache for instant 0ms tab switching
+let cachedClientCategories: Category[] | null = null;
+
 export default function CategoriesAdminClient() {
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState<Category[]>(
+    () => cachedClientCategories || []
+  );
+  const [loading, setLoading] = useState(
+    () => !cachedClientCategories || cachedClientCategories.length === 0
+  );
   const [modalOpen, setModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
 
@@ -48,8 +55,10 @@ export default function CategoriesAdminClient() {
     null
   );
 
-  const fetchCategories = async () => {
-    setLoading(true);
+  const fetchCategories = async (silent = false) => {
+    if (!silent && (!cachedClientCategories || cachedClientCategories.length === 0)) {
+      setLoading(true);
+    }
     try {
       const res = await fetch("/api/admin/categories");
       if (res.status === 401) {
@@ -57,16 +66,20 @@ export default function CategoriesAdminClient() {
         return;
       }
       const data = await res.json();
-      setCategories(data.categories || []);
+      const list = data.categories || [];
+      cachedClientCategories = list;
+      setCategories(list);
     } catch {
-      setNotification({ type: "error", msg: "Failed to load categories" });
+      if (!cachedClientCategories || cachedClientCategories.length === 0) {
+        setNotification({ type: "error", msg: "Failed to load categories" });
+      }
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchCategories();
+    fetchCategories(!!cachedClientCategories && cachedClientCategories.length > 0);
   }, []);
 
   const openCreateModal = () => {
@@ -118,8 +131,8 @@ export default function CategoriesAdminClient() {
     setUploading(true);
     setError(null);
     try {
-      // Automatically compress client-side to prevent 413 "Request Entity Too Large"
-      const optimizedFile = await compressImage(file, { maxWidth: 1600, quality: 0.82 });
+      // High-efficiency compression for category banners/thumbnails (max 800px, WebP ~40KB)
+      const optimizedFile = await compressImage(file, { maxWidth: 800, maxHeight: 800, quality: 0.8 });
 
       const data = new FormData();
       data.append("file", optimizedFile);
@@ -178,7 +191,8 @@ export default function CategoriesAdminClient() {
         msg: `Category "${formData.name}" saved successfully`,
       });
       setModalOpen(false);
-      fetchCategories();
+      cachedClientCategories = null;
+      fetchCategories(false);
     } catch (err: any) {
       setError(err.message || "Failed to save category");
     } finally {
@@ -203,7 +217,8 @@ export default function CategoriesAdminClient() {
       if (!res.ok) throw new Error(json.error || "Failed to delete");
 
       setNotification({ type: "success", msg: "Category deleted" });
-      fetchCategories();
+      cachedClientCategories = null;
+      fetchCategories(false);
     } catch (err: any) {
       setNotification({
         type: "error",
@@ -287,6 +302,8 @@ export default function CategoriesAdminClient() {
                             src={cat.imageUrl}
                             alt={cat.name}
                             fill
+                            sizes="48px"
+                            unoptimized={cat.imageUrl.startsWith("data:")}
                             className="object-cover"
                           />
                         ) : (
@@ -426,33 +443,49 @@ export default function CategoriesAdminClient() {
                 />
               </div>
 
-              {/* Image Upload */}
+              {/* Image Upload & URL input */}
               <div>
                 <label className="block text-xs font-bold text-gray-700 uppercase mb-1">
                   Category Photograph / Cover
                 </label>
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
                   {formData.imageUrl && (
-                    <div className="relative w-16 h-12 rounded-lg overflow-hidden border border-gray-200 shrink-0">
+                    <div className="relative w-16 h-12 rounded-lg overflow-hidden border border-gray-200 shrink-0 bg-gray-50">
                       <Image
                         src={formData.imageUrl}
                         alt="Preview"
                         fill
+                        sizes="64px"
+                        unoptimized={formData.imageUrl.startsWith("data:")}
                         className="object-cover"
                       />
                     </div>
                   )}
-                  <label className="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl text-xs font-bold cursor-pointer transition-colors flex items-center gap-1.5">
-                    <Upload className="w-3.5 h-3.5" />
-                    <span>{uploading ? "Uploading..." : "Upload Photo"}</span>
+                  <div className="flex-1 w-full flex items-center gap-2">
                     <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className="hidden"
+                      type="text"
+                      placeholder="Paste image URL (or upload below)"
+                      value={formData.imageUrl}
+                      onChange={(e) =>
+                        setFormData({ ...formData, imageUrl: e.target.value.trim() })
+                      }
+                      className="flex-1 px-3 py-2 rounded-xl border border-gray-200 text-xs focus:ring-2 focus:ring-[#1A365D]"
                     />
-                  </label>
+                    <label className="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-800 rounded-xl text-xs font-bold cursor-pointer transition-colors flex items-center gap-1.5 shrink-0">
+                      <Upload className="w-3.5 h-3.5" />
+                      <span>{uploading ? "Compressing..." : "Upload"}</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageUpload}
+                        className="hidden"
+                      />
+                    </label>
+                  </div>
                 </div>
+                <p className="text-[10px] text-gray-400 mt-1">
+                  Photos are automatically compressed to lightweight WebP (&lt;50KB) for instant loading.
+                </p>
               </div>
 
               <div className="grid grid-cols-2 gap-4">
