@@ -134,8 +134,8 @@ export default async function AboutPage() {
             {/* 3 Metrics Counter Badges */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto pt-6 border-t border-white/15">
               <div className="p-4 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
-                <div className="font-serif text-2xl sm:text-3xl font-bold text-amber-400">Since 2000</div>
-                <div className="text-xs text-gray-300 mt-1 uppercase tracking-wider">Mill Heritage</div>
+                <div className="font-serif text-xl sm:text-2xl font-bold text-amber-400">Since Early Years</div>
+                <div className="text-xs text-gray-300 mt-1 uppercase tracking-wider">Established Textile Heritage</div>
               </div>
               <div className="p-4 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
                 <div className="font-serif text-2xl sm:text-3xl font-bold text-amber-400">100%</div>
