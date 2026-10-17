@@ -5,7 +5,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import HeroVideo from "@/components/HeroVideo";
-import FlipkartBannerCarousel from "@/components/FlipkartBannerCarousel";
 import {
   getSiteSettings,
   getHomeBanners,
@@ -145,60 +144,55 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* MOBILE HERO: FLIPKART-STYLE SWIPEABLE BANNER CAROUSEL */}
-        <div className="md:hidden">
-          <FlipkartBannerCarousel />
-        </div>
-
-        {/* DESKTOP HERO SECTION (Hidden on mobile) */}
-        <section className="hidden md:flex relative bg-[#0B1120] text-white overflow-hidden min-h-[640px] sm:min-h-[700px] lg:min-h-[760px] pb-14 sm:pb-20 lg:pb-24 items-center">
+        {/* LUXURY EDITORIAL HERO SECTION (Unified on all viewports: Mobile & Laptop) */}
+        <section className="relative bg-[#0B1120] text-white overflow-hidden min-h-[540px] sm:min-h-[700px] lg:min-h-[760px] pb-14 sm:pb-20 lg:pb-24 flex items-center">
           {/* Autoplaying Background Video & Ambient Luxury Lighting */}
           <HeroVideo />
 
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-24 w-full">
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 lg:py-24 w-full">
             {/* Open Editorial Layout (No bounding box / No enclosed card) */}
             <div className="max-w-2xl lg:max-w-3xl">
               {/* Luxury Eyebrow Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.08] border border-white/20 text-slate-200 text-xs font-medium tracking-[0.16em] uppercase mb-6 backdrop-blur-md shadow-sm">
+              <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-white/[0.08] border border-white/20 text-slate-200 text-[11px] sm:text-xs font-medium tracking-[0.16em] uppercase mb-4 sm:mb-6 backdrop-blur-md shadow-sm">
                 <Crown className="w-3.5 h-3.5 text-amber-300" />
                 <span>New Arrival • 2026 Collection</span>
               </div>
 
               {/* Title - Modern Haute-Couture Editorial Display (Seamless Studio Match) */}
-              <h1 className="font-luxury text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-normal sm:font-medium tracking-[0.015em] leading-[1.08] mb-5 drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]">
+              <h1 className="font-luxury text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-normal sm:font-medium tracking-[0.015em] leading-[1.12] sm:leading-[1.08] mb-4 sm:mb-5 drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]">
                 <span className="text-studio-pearl block">
                   {activeBanner?.title || "4-Way Stretch Cotton Lycra Leggings"}
                 </span>
               </h1>
 
               {/* Subtitle - Refined High-Converting Textile Copy */}
-              <p className="text-base sm:text-lg text-slate-200/90 leading-relaxed mb-6 font-light max-w-xl drop-shadow-sm">
+              <p className="text-sm sm:text-lg text-slate-200/90 leading-relaxed mb-5 sm:mb-6 font-light max-w-xl drop-shadow-sm">
                 {activeBanner?.subtitle ||
                   "Super combed 95% cotton & 5% Lycra. Bio-washed for supreme softness, non-sheer all-day comfort, and graceful ankle gathers."}
               </p>
 
               {/* Feature Chips / Micro-Pills */}
-              <div className="flex flex-wrap items-center gap-2.5 mb-8">
-                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-white/[0.08] hover:bg-white/[0.12] text-slate-100 border border-white/15 backdrop-blur-md transition-colors">
+              <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 mb-6 sm:mb-8">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-medium bg-white/[0.08] hover:bg-white/[0.12] text-slate-100 border border-white/15 backdrop-blur-md transition-colors">
                   <Layers className="w-3 h-3 text-amber-300" /> 4-Way Super Stretch
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-white/[0.08] hover:bg-white/[0.12] text-slate-100 border border-white/15 backdrop-blur-md transition-colors">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-medium bg-white/[0.08] hover:bg-white/[0.12] text-slate-100 border border-white/15 backdrop-blur-md transition-colors">
                   <CheckCircle2 className="w-3 h-3 text-emerald-400" /> Bio-Washed & Non-Sheer
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-white/[0.08] hover:bg-white/[0.12] text-slate-100 border border-white/15 backdrop-blur-md transition-colors">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-medium bg-white/[0.08] hover:bg-white/[0.12] text-slate-100 border border-white/15 backdrop-blur-md transition-colors">
                   <Award className="w-3 h-3 text-amber-300" /> Sangli Direct Mill Rates
                 </span>
               </div>
 
               {/* Action Button - Direct Wholesale Enquiry */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-2">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-1 sm:pt-2">
                 <a
                   href={`https://wa.me/${cleanWhatsApp}?text=${encodeURIComponent(
                     "Hello BBG Textile, I am interested in wholesale inquiry for Cotton Lycra Leggings."
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-8 py-3.5 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 rounded-full font-bold text-sm tracking-wide shadow-xl shadow-amber-500/25 hover:shadow-amber-500/40 hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2.5"
+                  className="px-7 sm:px-8 py-3.5 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 rounded-full font-bold text-sm tracking-wide shadow-xl shadow-amber-500/25 hover:shadow-amber-500/40 hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2.5"
                 >
                   <WhatsAppIcon className="w-4 h-4 text-slate-950" />
                   <span>Wholesale Enquiries</span>

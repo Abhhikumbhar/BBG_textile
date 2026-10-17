@@ -9,7 +9,6 @@ import {
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import CartDrawer from "@/components/CartDrawer";
-import BottomNav from "@/components/BottomNav";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
 import SplashIntro from "@/components/SplashIntro";
 import { getSiteSettings } from "@/lib/data";
@@ -84,7 +83,6 @@ export default async function RootLayout({
         <CartProvider>
           {children}
           <CartDrawer />
-          <BottomNav />
           <WhatsAppWidget whatsappNumber={settings?.whatsappNumber || "918767322501"} />
         </CartProvider>
       </body>

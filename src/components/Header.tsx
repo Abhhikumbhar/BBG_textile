@@ -13,7 +13,6 @@ import {
   MapPin,
   ChevronRight,
   Crown,
-  Search,
 } from "lucide-react";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
@@ -226,23 +225,6 @@ export default function Header({ settings }: HeaderProps) {
               )}
             </button>
           </div>
-        </div>
-
-        {/* Mobile Search Bar - Flipkart Style */}
-        <div className="md:hidden max-w-7xl mx-auto px-4 pt-2">
-          <form
-            action="/products"
-            method="GET"
-            className="relative flex items-center"
-          >
-            <Search className="absolute left-3 w-4 h-4 text-gray-400 pointer-events-none" />
-            <input
-              type="search"
-              name="search"
-              placeholder="Search leggings, churidar, fabrics..."
-              className="w-full pl-9 pr-4 py-2 text-xs bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-1.5 focus:ring-[#1A365D] focus:bg-white text-gray-800 placeholder-gray-400 shadow-2xs transition-all"
-            />
-          </form>
         </div>
       </nav>
 
