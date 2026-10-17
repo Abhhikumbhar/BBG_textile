@@ -15,6 +15,7 @@ import {
   Loader2,
   ArrowLeft,
 } from "lucide-react";
+import { compressImage } from "@/lib/imageCompression";
 
 interface Category {
   id: string;
@@ -113,7 +114,7 @@ export default function ProductForm({
     }));
   };
 
-  // Image Upload handler
+  // Image Upload handler with automatic client-side compression
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (!files || files.length === 0) return;
@@ -124,7 +125,8 @@ export default function ProductForm({
     try {
       const data = new FormData();
       for (let i = 0; i < files.length; i++) {
-        data.append("files", files[i]);
+        const compressed = await compressImage(files[i], { maxWidth: 1600, quality: 0.82 });
+        data.append("files", compressed);
       }
 
       const res = await fetch("/api/admin/upload", {
@@ -132,10 +134,21 @@ export default function ProductForm({
         body: data,
       });
 
-      const json = await res.json();
+      const text = await res.text();
+      let json: any = {};
+      try {
+        json = JSON.parse(text);
+      } catch {
+        throw new Error(
+          res.status === 413
+            ? "One or more images are too large. Please select smaller photos."
+            : text.slice(0, 100) || "Failed to upload image"
+        );
+      }
+
       if (!res.ok) throw new Error(json.error || "Upload failed");
 
-      const newUploadedImages: ProductImage[] = json.images.map(
+      const newUploadedImages: ProductImage[] = (json.images || []).map(
         (img: any, idx: number) => ({
           url: img.url,
           publicId: img.publicId,
@@ -246,7 +259,14 @@ export default function ProductForm({
         body: JSON.stringify(payload),
       });
 
-      const json = await res.json();
+      const text = await res.text();
+      let json: any = {};
+      try {
+        json = JSON.parse(text);
+      } catch {
+        throw new Error(text.slice(0, 100) || "Failed to save product");
+      }
+
       if (!res.ok) throw new Error(json.error || "Save failed");
 
       router.push("/admin/products");

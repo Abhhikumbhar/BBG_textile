@@ -67,12 +67,52 @@ export default function ProductsClient({
 
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [pagination, setPagination] = useState(initialPagination);
+  const [liveCategories, setLiveCategories] = useState<Category[]>(categories);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const masterList = React.useRef<Product[]>(initialProducts);
   if (initialProducts.length > masterList.current.length) {
     masterList.current = initialProducts;
   }
+
+  // Seamless background sync on mount: keeps catalog and categories live with Supabase
+  useEffect(() => {
+    // 1. Sync categories
+    fetch("/api/public/categories")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.categories && Array.isArray(data.categories) && data.categories.length > 0) {
+          setLiveCategories(data.categories);
+        }
+      })
+      .catch(() => {});
+
+    // 2. Sync full catalog in background
+    fetch("/api/public/products?limit=100")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.products && Array.isArray(data.products) && data.products.length > 0) {
+          masterList.current = data.products;
+          const filtered = filterLocally(
+            data.products,
+            search,
+            selectedCategory,
+            sort,
+            featuredOnly,
+            newArrivalOnly,
+            bestSellerOnly
+          );
+          setProducts(filtered.slice((page - 1) * 12, page * 12));
+          setPagination({
+            page,
+            limit: 12,
+            total: filtered.length,
+            totalPages: Math.ceil(filtered.length / 12) || 1,
+          });
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   // Instant in-memory filter helper
   const filterLocally = (
@@ -153,6 +193,22 @@ export default function ProductsClient({
         totalPages: Math.ceil(filtered.length / 12) || 1,
       });
       setLoading(false);
+
+      // If category is selected but has 0 local products, query server directly in case new items were added
+      if (filtered.length === 0 && selectedCategory) {
+        fetch(`/api/public/products?category=${encodeURIComponent(selectedCategory)}&limit=24`)
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.products && Array.isArray(data.products) && data.products.length > 0) {
+              const existingIds = new Set(masterList.current.map((p) => p.id));
+              const fresh = data.products.filter((p: Product) => !existingIds.has(p.id));
+              masterList.current = [...masterList.current, ...fresh];
+              setProducts(data.products.slice(0, 12));
+              setPagination(data.pagination || { page: 1, limit: 12, total: data.products.length, totalPages: 1 });
+            }
+          })
+          .catch(() => {});
+      }
       return;
     }
 
@@ -303,7 +359,7 @@ export default function ProductsClient({
                 </span>
               </button>
 
-              {categories.map((cat) => {
+              {liveCategories.map((cat) => {
                 const isSelected = selectedCategory === cat.slug;
                 const cleanShortName = cat.name.replace(/^Women's\s+/i, "");
                 return (
@@ -421,9 +477,24 @@ export default function ProductsClient({
 
       {/* Products Grid / Status */}
       {loading && products.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-24">
-          <Loader2 className="w-8 h-8 text-[#1A365D] animate-spin mb-3" />
-          <p className="text-gray-500 text-sm">Loading authentic textiles...</p>
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-6">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div
+              key={i}
+              className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-2xs animate-pulse"
+            >
+              <div className="aspect-[7/6] bg-slate-200/80 w-full" />
+              <div className="p-3 sm:p-4 space-y-2.5">
+                <div className="h-3 bg-slate-200 rounded w-2/3" />
+                <div className="h-4 bg-slate-200 rounded w-4/5" />
+                <div className="h-3 bg-slate-200 rounded w-1/3" />
+                <div className="pt-2 flex justify-between items-center gap-2">
+                  <div className="h-4 bg-slate-200 rounded w-1/4" />
+                  <div className="h-7 sm:h-8 bg-slate-200 rounded-xl w-1/3" />
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       ) : error ? (
         <div className="text-center py-16 bg-red-50 rounded-2xl border border-red-200 p-8">

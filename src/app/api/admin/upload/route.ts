@@ -62,10 +62,10 @@ export async function POST(req: NextRequest) {
       url: uploaded[0]?.url,
       publicId: uploaded[0]?.publicId,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Upload error:", error);
     return NextResponse.json(
-      { error: "Failed to upload image. Please try again." },
+      { error: error?.message || "Failed to upload image. Please try again." },
       { status: 500 }
     );
   }

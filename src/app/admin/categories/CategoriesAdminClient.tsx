@@ -13,6 +13,7 @@ import {
   Loader2,
   Layers,
 } from "lucide-react";
+import { compressImage } from "@/lib/imageCompression";
 
 interface Category {
   id: string;
@@ -115,11 +116,27 @@ export default function CategoriesAdminClient() {
     if (!file) return;
 
     setUploading(true);
+    setError(null);
     try {
+      // Automatically compress client-side to prevent 413 "Request Entity Too Large"
+      const optimizedFile = await compressImage(file, { maxWidth: 1600, quality: 0.82 });
+
       const data = new FormData();
-      data.append("file", file);
+      data.append("file", optimizedFile);
       const res = await fetch("/api/admin/upload", { method: "POST", body: data });
-      const json = await res.json();
+      
+      const text = await res.text();
+      let json: any = {};
+      try {
+        json = JSON.parse(text);
+      } catch {
+        throw new Error(
+          res.status === 413
+            ? "Image size is too large. Please select a smaller photo."
+            : text.slice(0, 100) || "Failed to upload image"
+        );
+      }
+
       if (!res.ok) throw new Error(json.error || "Upload failed");
       setFormData((prev) => ({ ...prev, imageUrl: json.url }));
     } catch (err: any) {
@@ -146,7 +163,14 @@ export default function CategoriesAdminClient() {
         body: JSON.stringify(formData),
       });
 
-      const json = await res.json();
+      const text = await res.text();
+      let json: any = {};
+      try {
+        json = JSON.parse(text);
+      } catch {
+        throw new Error(text.slice(0, 100) || "Failed to save category");
+      }
+
       if (!res.ok) throw new Error(json.error || "Failed to save category");
 
       setNotification({

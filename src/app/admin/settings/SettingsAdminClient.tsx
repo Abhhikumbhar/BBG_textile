@@ -17,6 +17,7 @@ import {
   Trash2,
   Upload,
 } from "lucide-react";
+import { compressImage } from "@/lib/imageCompression";
 
 interface Banner {
   id: string;
@@ -127,10 +128,23 @@ export default function SettingsAdminClient() {
 
     setUploadingBanner(true);
     try {
+      const optimized = await compressImage(file, { maxWidth: 1920, quality: 0.82 });
       const data = new FormData();
-      data.append("file", file);
+      data.append("file", optimized);
       const res = await fetch("/api/admin/upload", { method: "POST", body: data });
-      const json = await res.json();
+      
+      const text = await res.text();
+      let json: any = {};
+      try {
+        json = JSON.parse(text);
+      } catch {
+        throw new Error(
+          res.status === 413
+            ? "Banner image is too large. Please select a smaller photo."
+            : text.slice(0, 100) || "Failed to upload banner photo"
+        );
+      }
+
       if (!res.ok) throw new Error(json.error || "Upload failed");
       setNewBanner((prev) => ({ ...prev, imageUrl: json.url }));
     } catch (err: any) {

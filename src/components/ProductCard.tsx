@@ -98,8 +98,8 @@ export default function ProductCard({ product, whatsappNumber = "918767322501" }
   };
 
   const primaryImage =
-    getStudioImage() ||
     product.images?.[0]?.url ||
+    getStudioImage() ||
     "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=600&q=80";
 
   const cleanWhatsApp = (whatsappNumber && whatsappNumber.trim() ? whatsappNumber : "918767322501").replace(/[^0-9]/g, "");

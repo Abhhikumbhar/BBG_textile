@@ -246,18 +246,21 @@ export default function ProductDetailClient({
       )
   );
 
-  // Prepend studio photo with flowerpot as primary showcase image only if available
-  const images: ProductImage[] = studioImg
-    ? [
-        {
-          id: `studio-${selectedColor || "primary"}`,
-          url: studioImg,
-          altText: `${product.name} Studio Presentation`,
-          isPrimary: true,
-        },
-        ...rawImages.filter((img) => img.url !== studioImg),
-      ]
-    : rawImages;
+  // If admin uploaded photos exist, show them first. Otherwise fallback to studio image
+  const images: ProductImage[] =
+    product.images && product.images.length > 0
+      ? rawImages
+      : studioImg
+      ? [
+          {
+            id: `studio-${selectedColor || "primary"}`,
+            url: studioImg,
+            altText: `${product.name} Studio Presentation`,
+            isPrimary: true,
+          },
+          ...rawImages.filter((img) => img.url !== studioImg),
+        ]
+      : rawImages;
 
   const cleanWhatsApp = (whatsappNumber && whatsappNumber.trim() ? whatsappNumber : "918767322501").replace(/[^0-9]/g, "");
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";

@@ -46,26 +46,69 @@ export async function uploadImageBuffer(
     });
   }
 
-  // Fallback: Store locally in public/uploads/ directory
-  const uploadsDir = path.join(process.cwd(), "public", "uploads");
-  if (!fs.existsSync(uploadsDir)) {
-    fs.mkdirSync(uploadsDir, { recursive: true });
+  // Fallback: If on Vercel/serverless and Cloudinary is not configured, return persistent data URI directly
+  if (process.env.VERCEL || !process.env.NODE_ENV || process.env.NODE_ENV === "production") {
+    try {
+      const ext = path.extname(filename).toLowerCase();
+      const mime =
+        ext === ".png"
+          ? "image/png"
+          : ext === ".svg"
+          ? "image/svg+xml"
+          : ext === ".webp"
+          ? "image/webp"
+          : "image/jpeg";
+
+      const base64Data = buffer.toString("base64");
+      return {
+        url: `data:${mime};base64,${base64Data}`,
+        publicId: `data_${Date.now()}`,
+      };
+    } catch (e) {
+      console.error("Data URI creation failed:", e);
+    }
   }
 
-  const ext = path.extname(filename) || ".jpg";
-  const cleanBase = path
-    .basename(filename, ext)
-    .replace(/[^a-zA-Z0-9-_]/g, "_")
-    .substring(0, 40);
-  const uniqueName = `${cleanBase}_${Date.now()}${ext}`;
-  const filePath = path.join(uploadsDir, uniqueName);
+  // Fallback: Store locally in public/uploads/ if writable
+  try {
+    const uploadsDir = path.join(process.cwd(), "public", "uploads");
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
+    }
 
-  await fs.promises.writeFile(filePath, buffer);
+    const ext = path.extname(filename) || ".webp";
+    const cleanBase = path
+      .basename(filename, ext)
+      .replace(/[^a-zA-Z0-9-_]/g, "_")
+      .substring(0, 40);
+    const uniqueName = `${cleanBase}_${Date.now()}${ext}`;
+    const filePath = path.join(uploadsDir, uniqueName);
 
-  return {
-    url: `/uploads/${uniqueName}`,
-    publicId: `local_${uniqueName}`,
-  };
+    await fs.promises.writeFile(filePath, buffer);
+
+    return {
+      url: `/uploads/${uniqueName}`,
+      publicId: `local_${uniqueName}`,
+    };
+  } catch (fsErr) {
+    console.warn("Local storage unavailable (e.g. read-only serverless on Vercel), falling back to optimized data URI:", fsErr);
+    // Determine mime type from filename or default to webp
+    const ext = path.extname(filename).toLowerCase();
+    const mime =
+      ext === ".png"
+        ? "image/png"
+        : ext === ".svg"
+        ? "image/svg+xml"
+        : ext === ".webp"
+        ? "image/webp"
+        : "image/jpeg";
+
+    const base64Data = buffer.toString("base64");
+    return {
+      url: `data:${mime};base64,${base64Data}`,
+      publicId: `data_${Date.now()}`,
+    };
+  }
 }
 
 export async function deleteImage(publicId: string): Promise<boolean> {
