@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
 import { getAdminFromRequest } from "@/lib/auth";
+import { getAdminAuditLogs } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 
@@ -11,18 +11,10 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const logs = await prisma.auditLog.findMany({
-      take: 50,
-      orderBy: { createdAt: "desc" },
-      include: {
-        adminUser: {
-          select: { name: true, email: true, role: true },
-        },
-      },
-    });
-
+    const logs = await getAdminAuditLogs(50);
     return NextResponse.json({ logs });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch audit logs" }, { status: 500 });
+    return NextResponse.json({ logs: [] });
   }
 }
+

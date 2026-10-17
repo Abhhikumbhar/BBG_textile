@@ -12,15 +12,23 @@ export const dynamic = "force-dynamic";
 export default async function AdminOrderDetailPage({ params }: Props) {
   const { id } = await params;
 
-  const order = await prisma.order.findUnique({
-    where: { id },
-    include: {
-      items: true,
-      statusHistory: {
-        orderBy: { createdAt: "desc" },
-      },
-    },
+  let timer: NodeJS.Timeout;
+  const timeout = new Promise<null>((resolve) => {
+    timer = setTimeout(() => resolve(null), 1500);
   });
+
+  const order = await Promise.race([
+    prisma.order.findUnique({
+      where: { id },
+      include: {
+        items: true,
+        statusHistory: {
+          orderBy: { createdAt: "desc" },
+        },
+      },
+    }),
+    timeout,
+  ]).finally(() => clearTimeout(timer));
 
   if (!order) {
     notFound();
@@ -28,3 +36,4 @@ export default async function AdminOrderDetailPage({ params }: Props) {
 
   return <OrderDetailAdminClient order={order} />;
 }
+

@@ -30,46 +30,62 @@ interface Banner {
   isActive: boolean;
 }
 
-export default function SettingsAdminClient() {
+interface SettingsAdminClientProps {
+  initialSettings?: any;
+  initialBanners?: Banner[];
+}
+
+export default function SettingsAdminClient({
+  initialSettings,
+  initialBanners = [],
+}: SettingsAdminClientProps) {
   const [activeTab, setActiveTab] = useState<"general" | "hero" | "about" | "banners">("general");
 
-  const [settings, setSettings] = useState({
-    businessName: "SBBG TEXTILE EXPORTER",
-    tagline: "Excellence in Quality Fabrics & Garments",
-    phone: "+91 87673 22501",
-    whatsappNumber: "8767322501",
-    email: "bbgtextilebharat1@gmail.com",
+  const [settings, setSettings] = useState(() => ({
+    businessName: initialSettings?.businessName || "SBBG TEXTILE EXPORTER",
+    tagline: initialSettings?.tagline || "Excellence in Quality Fabrics & Garments",
+    phone: initialSettings?.phone || "+91 87673 22501",
+    whatsappNumber: initialSettings?.whatsappNumber || "8767322501",
+    email: initialSettings?.email || "bbgtextilebharat1@gmail.com",
     address:
+      initialSettings?.address ||
       "GROUND FLOOR, KHARE MALA, S.NO-204 PLOT NO 28, Kupwad MIDC Area, Madhavnagar, Sangli, Maharashtra - 416436, OLD KUPWAD ROAD, SANGLI - 416416",
-    city: "Sangli",
-    state: "Maharashtra",
-    pincode: "416416",
-    googleMapsUrl: "https://maps.google.com/?q=Kupwad+MIDC+Sangli+Maharashtra",
-    onlineShoppingEnabled: true,
-    currencySymbol: "₹",
+    city: initialSettings?.city || "Sangli",
+    state: initialSettings?.state || "Maharashtra",
+    pincode: initialSettings?.pincode || "416416",
+    googleMapsUrl: initialSettings?.googleMapsUrl || "https://maps.google.com/?q=Kupwad+MIDC+Sangli+Maharashtra",
+    onlineShoppingEnabled: initialSettings?.onlineShoppingEnabled ?? true,
+    currencySymbol: initialSettings?.currencySymbol || "₹",
     announcementText:
+      initialSettings?.announcementText ||
       "Premium Fabrics & Garments — Direct Mill Wholesale Supply",
-    heroTitle: "Crafting Timeless Quality in Every Thread",
+    heroTitle: initialSettings?.heroTitle || "Crafting Timeless Quality in Every Thread",
     heroSubtitle:
+      initialSettings?.heroSubtitle ||
       "Renowned manufacturer & supplier of fine shirting, premium suiting, uniform textiles, and authentic ethnic weaves based in Sangli, Maharashtra.",
-    aboutTitle: "The BBG Textile Legacy",
+    aboutTitle: initialSettings?.aboutTitle || "The BBG Textile Legacy",
     aboutStory:
+      initialSettings?.aboutStory ||
       "BBG Textile has been a dedicated cornerstone of quality fabric production and wholesale distribution in Maharashtra. Situated in the heart of Sangli's Kupwad MIDC industrial hub, we bridge traditional craftsmanship with modern textile innovation.",
     aboutMission:
+      initialSettings?.aboutMission ||
       "To deliver unmatched fabric reliability, transparent pricing, and swift dispatch for wholesale partners, garment manufacturers, and discerning retail clients.",
     aboutSpecialties:
+      initialSettings?.aboutSpecialties ||
       "• Pure Cotton & Giza Shirting\n• Wrinkle-Resistant Poly-Viscose Suiting\n• Custom Dyeing & Mill-Finish Linens\n• High-Tenacity Uniform & Workwear Fabrics\n• Traditional Ethnic & Festive Kurta Materials",
-    seoTitle: "BBG Textile | Premium Fabrics & Textiles in Sangli, Maharashtra",
+    seoTitle: initialSettings?.seoTitle || "BBG Textile | Premium Fabrics & Textiles in Sangli, Maharashtra",
     seoDescription:
+      initialSettings?.seoDescription ||
       "BBG Textile in Kupwad MIDC, Sangli. Manufacturer and wholesale supplier of premium shirting, suiting, and ethnic fabrics.",
-    instagramUrl: "https://instagram.com/bbgtextile",
-    facebookUrl: "https://facebook.com/bbgtextile",
-  });
+    instagramUrl: initialSettings?.instagramUrl || "https://instagram.com/bbgtextile",
+    facebookUrl: initialSettings?.facebookUrl || "https://facebook.com/bbgtextile",
+  }));
 
-  const [banners, setBanners] = useState<Banner[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [banners, setBanners] = useState<Banner[]>(initialBanners);
+  const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [notification, setNotification] = useState<{ type: string; msg: string } | null>(null);
+
 
   // New banner form state
   const [newBanner, setNewBanner] = useState({
@@ -197,15 +213,6 @@ export default function SettingsAdminClient() {
       alert("Failed to delete banner");
     }
   };
-
-  if (loading) {
-    return (
-      <div className="flex flex-col items-center justify-center py-24">
-        <Loader2 className="w-8 h-8 text-[#1A365D] animate-spin mb-3" />
-        <p className="text-gray-400 text-xs">Loading website content settings...</p>
-      </div>
-    );
-  }
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">

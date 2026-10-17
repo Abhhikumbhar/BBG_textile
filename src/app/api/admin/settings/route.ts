@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
 import { getAdminFromRequest, recordAuditLog } from "@/lib/auth";
 import { siteSettingsSchema, formatZodError } from "@/lib/validations";
+import { getSiteSettings, invalidateDataCache } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 
@@ -13,28 +14,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    let settings = await prisma.siteSettings.findUnique({
-      where: { id: "default" },
-    });
-
-    if (!settings) {
-      settings = await prisma.siteSettings.create({
-        data: {
-          id: "default",
-          businessName: "BBG TEXTILE",
-          address:
-            "GROUND FLOOR, KHARE MALA, S.NO-204 PLOT NO 28, Kupwad MIDC Area, Madhavnagar, Sangli, Maharashtra - 416436, OLD KUPWAD ROAD, SANGLI - 416416",
-          city: "Sangli",
-          state: "Maharashtra",
-          pincode: "416416",
-          phone: "+91 87673 22501",
-          whatsappNumber: "918767322501",
-          email: "bbgtextilebharat1@gmail.com",
-          aboutStory: "Premier textile manufacturer in Sangli.",
-        },
-      });
-    }
-
+    const settings = await getSiteSettings();
     return NextResponse.json({ settings });
   } catch (error) {
     console.error("Fetch settings error:", error);
@@ -76,6 +56,8 @@ export async function PUT(req: NextRequest) {
       details: "Updated website content and site settings",
       adminUserId: admin.id,
     });
+
+    invalidateDataCache();
 
     try {
       revalidatePath("/");

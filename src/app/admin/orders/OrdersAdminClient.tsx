@@ -28,14 +28,17 @@ interface Order {
   _count: { items: number };
 }
 
-export default function OrdersAdminClient() {
-  const [orders, setOrders] = useState<Order[]>([]);
+interface OrdersAdminClientProps {
+  initialOrders?: Order[];
+}
+
+export default function OrdersAdminClient({ initialOrders = [] }: OrdersAdminClientProps) {
+  const [orders, setOrders] = useState<Order[]>(initialOrders);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const fetchOrders = async () => {
-    setLoading(true);
     try {
       const query = new URLSearchParams();
       if (search) query.set("search", search);
@@ -43,7 +46,9 @@ export default function OrdersAdminClient() {
 
       const res = await fetch(`/api/admin/orders?${query.toString()}`);
       const data = await res.json();
-      setOrders(data.orders || []);
+      if (data?.orders) {
+        setOrders(data.orders);
+      }
     } catch {
       console.error("Failed to fetch orders");
     } finally {
@@ -54,6 +59,7 @@ export default function OrdersAdminClient() {
   useEffect(() => {
     fetchOrders();
   }, [search, statusFilter]);
+
 
   const getStatusBadge = (status: string) => {
     switch (status) {
@@ -116,7 +122,7 @@ export default function OrdersAdminClient() {
 
       {/* Orders Table */}
       <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-        {loading ? (
+        {loading && orders.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20">
             <Loader2 className="w-6 h-6 text-[#1A365D] animate-spin mb-2" />
             <p className="text-gray-400 text-xs">Querying orders...</p>

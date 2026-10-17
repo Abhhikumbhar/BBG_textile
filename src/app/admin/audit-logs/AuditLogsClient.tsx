@@ -12,16 +12,21 @@ interface AuditLog {
   adminUser?: { name: string; email: string; role: string } | null;
 }
 
-export default function AuditLogsClient() {
-  const [logs, setLogs] = useState<AuditLog[]>([]);
-  const [loading, setLoading] = useState(true);
+interface AuditLogsClientProps {
+  initialLogs?: AuditLog[];
+}
+
+export default function AuditLogsClient({ initialLogs = [] }: AuditLogsClientProps) {
+  const [logs, setLogs] = useState<AuditLog[]>(initialLogs);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetch("/api/admin/audit-logs")
       .then((res) => res.json())
-      .then((data) => setLogs(data.logs || []))
-      .catch(() => console.error("Failed to load logs"))
-      .finally(() => setLoading(false));
+      .then((data) => {
+        if (data?.logs) setLogs(data.logs);
+      })
+      .catch(() => console.error("Failed to load logs"));
   }, []);
 
   const getActionBadge = (action: string) => {
@@ -45,7 +50,7 @@ export default function AuditLogsClient() {
       </div>
 
       <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-        {loading ? (
+        {loading && logs.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20">
             <Loader2 className="w-6 h-6 text-[#1A365D] animate-spin mb-2" />
             <p className="text-gray-400 text-xs">Querying security audit logs...</p>

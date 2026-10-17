@@ -28,11 +28,15 @@ interface Enquiry {
   createdAt: string;
 }
 
-export default function EnquiriesAdminClient() {
-  const [enquiries, setEnquiries] = useState<Enquiry[]>([]);
+interface EnquiriesAdminClientProps {
+  initialEnquiries?: Enquiry[];
+}
+
+export default function EnquiriesAdminClient({ initialEnquiries = [] }: EnquiriesAdminClientProps) {
+  const [enquiries, setEnquiries] = useState<Enquiry[]>(initialEnquiries);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // Modal / Drawer state for editing status & notes
   const [selectedEnquiry, setSelectedEnquiry] = useState<Enquiry | null>(null);
@@ -44,7 +48,6 @@ export default function EnquiriesAdminClient() {
   );
 
   const fetchEnquiries = async () => {
-    setLoading(true);
     try {
       const query = new URLSearchParams();
       if (search) query.set("search", search);
@@ -52,7 +55,9 @@ export default function EnquiriesAdminClient() {
 
       const res = await fetch(`/api/admin/enquiries?${query.toString()}`);
       const data = await res.json();
-      setEnquiries(data.enquiries || []);
+      if (data?.enquiries) {
+        setEnquiries(data.enquiries);
+      }
     } catch {
       console.error("Failed to fetch enquiries");
     } finally {
@@ -63,6 +68,7 @@ export default function EnquiriesAdminClient() {
   useEffect(() => {
     fetchEnquiries();
   }, [search, statusFilter]);
+
 
   const openEditModal = (enq: Enquiry) => {
     setSelectedEnquiry(enq);
@@ -189,7 +195,7 @@ export default function EnquiriesAdminClient() {
 
       {/* Enquiries Table */}
       <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-        {loading ? (
+        {loading && enquiries.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20">
             <Loader2 className="w-6 h-6 text-[#1A365D] animate-spin mb-2" />
             <p className="text-gray-400 text-xs">Loading inquiries...</p>

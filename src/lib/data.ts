@@ -392,3 +392,186 @@ export async function getProductBySlug(slug: string) {
     ) || null
   );
 }
+
+export const fallbackDashboardData = {
+  metrics: {
+    totalProducts: fallbackProducts.length,
+    activeProducts: fallbackProducts.length,
+    lowStockProducts: 0,
+    totalCategories: fallbackCategories.length,
+    totalOrders: 0,
+    pendingOrders: 0,
+    totalEnquiries: 0,
+    newEnquiries: 0,
+    totalRevenue: 0,
+  },
+  recentOrders: [] as any[],
+  recentEnquiries: [] as any[],
+  recentProducts: fallbackProducts.slice(0, 5) as any[],
+};
+
+export async function getAdminDashboardData() {
+  const cacheKey = "admin_dashboard_metrics";
+  const cached = getCached<any>(cacheKey);
+  if (cached) return cached;
+
+  try {
+    let timer: NodeJS.Timeout;
+    const timeout = new Promise<any>((resolve) => {
+      timer = setTimeout(() => resolve(null), 1200);
+    });
+
+    const dbQuery = Promise.all([
+      prisma.product.count(),
+      prisma.product.count({ where: { isActive: true } }),
+      prisma.product.count({
+        where: {
+          OR: [{ stockStatus: "LOW_STOCK" }, { stockQuantity: { lte: 10 } }],
+        },
+      }),
+      prisma.category.count(),
+      prisma.order.count(),
+      prisma.order.count({ where: { status: "PENDING" } }),
+      prisma.enquiry.count(),
+      prisma.enquiry.count({ where: { status: "NEW" } }),
+      prisma.order.findMany({
+        take: 5,
+        orderBy: { createdAt: "desc" },
+        include: { items: true },
+      }),
+      prisma.enquiry.findMany({
+        take: 5,
+        orderBy: { createdAt: "desc" },
+        include: { product: { select: { name: true, sku: true } } },
+      }),
+      prisma.product.findMany({
+        take: 5,
+        orderBy: { createdAt: "desc" },
+        include: {
+          category: { select: { name: true } },
+          images: { take: 1, orderBy: { displayOrder: "asc" } },
+        },
+      }),
+      prisma.order.aggregate({
+        _sum: { total: true },
+        where: { status: { not: "CANCELLED" } },
+      }),
+    ]);
+
+    const result = await Promise.race([dbQuery, timeout]).finally(() =>
+      clearTimeout(timer)
+    );
+
+    if (result) {
+      const [
+        totalProducts,
+        activeProducts,
+        lowStockProducts,
+        totalCategories,
+        totalOrders,
+        pendingOrders,
+        totalEnquiries,
+        newEnquiries,
+        recentOrders,
+        recentEnquiries,
+        recentProducts,
+        orderStats,
+      ] = result;
+
+      const payload = {
+        metrics: {
+          totalProducts: totalProducts ?? fallbackProducts.length,
+          activeProducts: activeProducts ?? fallbackProducts.length,
+          lowStockProducts: lowStockProducts ?? 0,
+          totalCategories: totalCategories ?? fallbackCategories.length,
+          totalOrders: totalOrders ?? 0,
+          pendingOrders: pendingOrders ?? 0,
+          totalEnquiries: totalEnquiries ?? 0,
+          newEnquiries: newEnquiries ?? 0,
+          totalRevenue: orderStats?._sum?.total || 0,
+        },
+        recentOrders: recentOrders || [],
+        recentEnquiries: recentEnquiries || [],
+        recentProducts: recentProducts && recentProducts.length > 0 ? recentProducts : fallbackProducts.slice(0, 5),
+      };
+
+      setCached(cacheKey, payload, 60);
+      return payload;
+    }
+  } catch (err) {
+    console.error("Dashboard data fetch error:", err);
+  }
+
+  return fallbackDashboardData;
+}
+
+export async function getAdminOrders(limit = 50) {
+  const cacheKey = `admin_orders_${limit}`;
+  const cached = getCached<any[]>(cacheKey);
+  if (cached) return cached;
+
+  const orders = await fastDb(
+    prisma.order.findMany({
+      take: limit,
+      orderBy: { createdAt: "desc" },
+      include: {
+        items: true,
+        _count: { select: { items: true } },
+      },
+    }),
+    [],
+    1200
+  );
+
+  if (orders && orders.length > 0) {
+    setCached(cacheKey, orders, 60);
+  }
+  return orders || [];
+}
+
+export async function getAdminEnquiries(limit = 50) {
+  const cacheKey = `admin_enquiries_${limit}`;
+  const cached = getCached<any[]>(cacheKey);
+  if (cached) return cached;
+
+  const enquiries = await fastDb(
+    prisma.enquiry.findMany({
+      take: limit,
+      orderBy: { createdAt: "desc" },
+      include: {
+        product: { select: { id: true, name: true, sku: true, slug: true } },
+      },
+    }),
+    [],
+    1200
+  );
+
+  if (enquiries && enquiries.length > 0) {
+    setCached(cacheKey, enquiries, 60);
+  }
+  return enquiries || [];
+}
+
+export async function getAdminAuditLogs(limit = 50) {
+  const cacheKey = `admin_audit_logs_${limit}`;
+  const cached = getCached<any[]>(cacheKey);
+  if (cached) return cached;
+
+  const logs = await fastDb(
+    prisma.auditLog.findMany({
+      take: limit,
+      orderBy: { createdAt: "desc" },
+      include: {
+        adminUser: { select: { name: true, email: true, role: true } },
+      },
+    }),
+    [],
+    1200
+  );
+
+  if (logs && logs.length > 0) {
+    setCached(cacheKey, logs, 60);
+  }
+  return logs || [];
+}
+

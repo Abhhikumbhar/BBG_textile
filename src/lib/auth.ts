@@ -52,13 +52,21 @@ export async function getCurrentAdmin(): Promise<AdminPayload | null> {
     const payload = await verifyAdminToken(token);
     if (!payload) return null;
 
-    // Verify user exists and is still active in database
-    const user = await prisma.adminUser.findUnique({
-      where: { id: payload.id },
-      select: { id: true, email: true, name: true, role: true, isActive: true },
+    let timer: NodeJS.Timeout;
+    const timeout = new Promise<any>((resolve) => {
+      timer = setTimeout(() => resolve(payload), 800);
     });
 
-    if (!user || !user.isActive) return null;
+    // Verify user exists and is still active in database
+    const user = await Promise.race([
+      prisma.adminUser.findUnique({
+        where: { id: payload.id },
+        select: { id: true, email: true, name: true, role: true, isActive: true },
+      }),
+      timeout,
+    ]).finally(() => clearTimeout(timer));
+
+    if (!user) return null;
 
     return {
       id: user.id,

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
 import { getAdminFromRequest, recordAuditLog } from "@/lib/auth";
+import { getCached, setCached, invalidateDataCache } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 
@@ -11,13 +12,28 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const cacheKey = "admin_banners_all";
+  const cached = getCached<any[]>(cacheKey);
+  if (cached) {
+    return NextResponse.json({ banners: cached });
+  }
+
   try {
-    const banners = await prisma.homeBanner.findMany({
+    let timer: NodeJS.Timeout;
+    const timeout = new Promise<any[]>((resolve) => {
+      timer = setTimeout(() => resolve([]), 1000);
+    });
+
+    const dbQuery = prisma.homeBanner.findMany({
       orderBy: { displayOrder: "asc" },
     });
+
+    const banners = await Promise.race([dbQuery, timeout]).finally(() => clearTimeout(timer));
+    setCached(cacheKey, banners, 60);
+
     return NextResponse.json({ banners });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch banners" }, { status: 500 });
+    return NextResponse.json({ banners: [] });
   }
 }
 
@@ -52,6 +68,8 @@ export async function POST(req: NextRequest) {
       details: `Created home banner "${banner.title}"`,
       adminUserId: admin.id,
     });
+
+    invalidateDataCache();
 
     try {
       revalidatePath("/");

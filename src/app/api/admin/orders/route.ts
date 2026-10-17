@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getAdminFromRequest } from "@/lib/auth";
+import { getCached, setCached } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 
@@ -29,8 +30,26 @@ export async function GET(req: NextRequest) {
     where.status = status;
   }
 
+  const isDefaultQuery = !search && (!status || status === "ALL");
+  const cacheKey = "admin_orders_default";
+
+  if (isDefaultQuery) {
+    const cached = getCached<any[]>(cacheKey);
+    if (cached) {
+      return NextResponse.json(
+        { orders: cached },
+        { headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120" } }
+      );
+    }
+  }
+
   try {
-    const orders = await prisma.order.findMany({
+    let timer: NodeJS.Timeout;
+    const timeout = new Promise<any[]>((resolve) => {
+      timer = setTimeout(() => resolve([]), 1000);
+    });
+
+    const dbQuery = prisma.order.findMany({
       where,
       orderBy: { createdAt: "desc" },
       include: {
@@ -41,12 +60,18 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    return NextResponse.json({ orders });
+    const orders = await Promise.race([dbQuery, timeout]).finally(() => clearTimeout(timer));
+
+    if (isDefaultQuery && orders && orders.length > 0) {
+      setCached(cacheKey, orders, 60);
+    }
+
+    return NextResponse.json(
+      { orders },
+      { headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=120" } }
+    );
   } catch (error) {
     console.error("Fetch orders error:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch orders" },
-      { status: 500 }
-    );
+    return NextResponse.json({ orders: [] });
   }
 }
