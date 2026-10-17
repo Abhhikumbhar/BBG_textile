@@ -57,8 +57,8 @@ export default async function HomePage() {
               <div className="w-12 h-12 sm:w-15 sm:h-15 rounded-full p-0.5 bg-gradient-to-tr from-[#1A365D] to-amber-500 shadow-xs group-hover:scale-105 transition-transform flex items-center justify-center">
                 <div className="w-full h-full rounded-full bg-white p-1 overflow-hidden flex items-center justify-center">
                   <Image
-                    src="/images/logo/bbg-logo-full.png"
-                    alt="All Products"
+                    src="/images/logo/bbg-logo-icon.png"
+                    alt="All Products - SBBG Textile Exporter"
                     width={56}
                     height={56}
                     className="w-full h-full object-contain"

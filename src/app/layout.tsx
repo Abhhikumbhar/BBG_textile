@@ -48,13 +48,15 @@ export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings();
   return {
     title: {
-      default: settings?.seoTitle || "BBG TEXTILE EXPORTER | Premium Fabrics & Garments in Sangli",
-      template: "%s | BBG Textile Exporter",
+      default: settings?.seoTitle || "SBBG TEXTILE EXPORTER | Premium Fabrics & Garments in Sangli",
+      template: "%s | SBBG Textile Exporter",
     },
     description:
       settings?.seoDescription ||
       "Premier manufacturer & wholesale supplier of cotton shirting, suiting, linens, and uniform fabrics in Kupwad MIDC, Sangli, Maharashtra.",
     keywords: [
+      "SBBG TEXTILE EXPORTER",
+      "SBBG Textile",
       "BBG TEXTILE EXPORTER",
       "BBG Textile",
       "Textiles Sangli",

@@ -44,7 +44,7 @@ export const fallbackCategories = [
 
 export const fallbackSiteSettings = {
   id: "default",
-  businessName: "BBG TEXTILE EXPORTER",
+  businessName: "SBBG TEXTILE EXPORTER",
   tagline: "Excellence in Quality Fabrics & Garments",
   phone: "+91 87673 22501",
   whatsappNumber: "918767322501",
@@ -57,7 +57,7 @@ export const fallbackSiteSettings = {
   onlineShoppingEnabled: true,
   currencySymbol: "₹",
   announcementText: "Premium Fabrics & Garments — Direct Mill Wholesale Supply",
-  seoTitle: "BBG Textile | Premium Fabrics & Garments in Sangli",
+  seoTitle: "SBBG TEXTILE EXPORTER | Premium Fabrics & Garments in Sangli",
   seoDescription: "Premier manufacturer & wholesale supplier of cotton shirting, suiting, linens, and uniform fabrics in Kupwad MIDC, Sangli, Maharashtra.",
   instagramUrl: "https://instagram.com/bbgtextile",
   facebookUrl: "https://facebook.com/bbgtextile"

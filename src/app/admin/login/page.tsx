@@ -58,7 +58,7 @@ export default function AdminLoginPage() {
         <div className="inline-flex w-20 h-20 rounded-2xl bg-white p-2.5 border border-[#DFD3C3] shadow-[0_10px_25px_rgba(140,110,65,0.12)] mb-4 items-center justify-center backdrop-blur-md">
           <Image
             src="/images/logo/bbg-logo-icon.png"
-            alt="BBG Textile Logo"
+            alt="SBBG Textile Logo"
             width={72}
             height={72}
             priority

@@ -57,7 +57,7 @@ export default function Header({ settings }: HeaderProps) {
     { name: "Contact", href: "/contact" },
   ];
 
-  const businessName = settings?.businessName || "BBG TEXTILE EXPORTER";
+  const businessName = settings?.businessName || "SBBG TEXTILE EXPORTER";
   const phone = settings?.phone || "+91 87673 22501";
   const whatsapp = settings?.whatsappNumber || "918767322501";
   const cleanWhatsApp = whatsapp.replace(/[^0-9]/g, "");
@@ -149,7 +149,7 @@ export default function Header({ settings }: HeaderProps) {
           <Link href="/" className="flex items-center group py-0.5">
             <Image
               src="/images/logo/bbg-logo-horizontal.png"
-              alt="BBG TEXTILE EXPORTER - Premium Fabrics & Garments"
+              alt="SBBG TEXTILE EXPORTER - Premium Fabrics & Garments"
               width={390}
               height={100}
               priority

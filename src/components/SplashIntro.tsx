@@ -78,39 +78,22 @@ export default function SplashIntro() {
         }`}
       >
         {/* Pure Transparent 3D Embossed Logo (NO Card, NO Box, NO Borders) */}
-        <div className="relative w-[280px] sm:w-[420px] md:w-[490px] aspect-[760/525] flex items-center justify-center">
+        <div className="relative w-[280px] sm:w-[380px] md:w-[440px] flex items-center justify-center">
           <Image
             src="/images/logo/bbg-logo-full.png"
-            alt="BBG TEXTILE - Premium Fabrics & Garments"
-            width={760}
-            height={525}
+            alt="SBBG TEXTILE EXPORTER - Premium Fabrics & Garments"
+            width={550}
+            height={420}
             priority
             className="w-full h-auto object-contain drop-shadow-[0_8px_25px_rgba(15,36,68,0.14)]"
           />
 
-          {/* Golden Glint / Sparkle Animation along the Gold Swatch */}
+          {/* Golden Glint / Sparkle Animation along the Gold Crest */}
           <div
             className={`absolute top-[28%] left-[45%] w-2 h-2 rounded-full bg-white shadow-[0_0_12px_4px_rgba(245,208,97,0.9)] pointer-events-none transition-all duration-700 ${
               stage === "glow" ? "opacity-100 scale-125 animate-ping" : "opacity-0 scale-50"
             }`}
           />
-        </div>
-
-        {/* Subtle Luxury Location Accent */}
-        <div
-          className={`mt-2 flex items-center gap-3 transition-all duration-700 delay-150 ${
-            stage === "glow"
-              ? "opacity-90 translate-y-0"
-              : stage === "zoom"
-              ? "opacity-0 -translate-y-4"
-              : "opacity-0 translate-y-2"
-          }`}
-        >
-          <span className="w-10 sm:w-16 h-[1px] bg-gradient-to-r from-transparent via-[#C68D2B] to-transparent opacity-60" />
-          <span className="font-serif tracking-[0.3em] uppercase text-[9px] sm:text-[11px] text-[#0F2444] font-semibold">
-            Kupwad MIDC • Sangli
-          </span>
-          <span className="w-10 sm:w-16 h-[1px] bg-gradient-to-r from-transparent via-[#C68D2B] to-transparent opacity-60" />
         </div>
       </div>
     </div>

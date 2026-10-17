@@ -428,7 +428,7 @@ export default async function AboutPage() {
                 </div>
                 <div>
                   <h3 className="font-serif text-2xl font-bold text-gray-900 mb-1">
-                    {settings?.businessName || "BBG TEXTILE EXPORTER"}
+                    {settings?.businessName || "SBBG TEXTILE EXPORTER"}
                   </h3>
                   <p className="text-amber-800 text-xs font-semibold uppercase tracking-wider mb-2">
                     Direct Mill Works & Head Office

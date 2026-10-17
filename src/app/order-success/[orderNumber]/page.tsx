@@ -98,7 +98,7 @@ export default async function OrderSuccessPage({ params }: Props) {
             <div className="flex justify-between items-start pb-6 border-b border-gray-200">
               <div>
                 <h2 className="font-serif text-xl font-bold text-gray-900">
-                  {settings?.businessName || "BBG TEXTILE EXPORTER"}
+                  {settings?.businessName || "SBBG TEXTILE EXPORTER"}
                 </h2>
                 <p className="text-xs text-gray-500 mt-0.5">
                   Sangli, Maharashtra | Registered Works

@@ -91,7 +91,7 @@ export default function AdminLayoutClient({ children }: AdminLayoutProps) {
             <div className="w-10 h-10 rounded-xl bg-white p-1 flex items-center justify-center shrink-0 border border-amber-600/30 shadow-xs group-hover:scale-105 transition-transform">
               <Image
                 src="/images/logo/bbg-logo-icon.png"
-                alt="BBG Logo"
+                alt="SBBG Logo"
                 width={36}
                 height={36}
                 className="w-full h-full object-contain"
@@ -99,7 +99,7 @@ export default function AdminLayoutClient({ children }: AdminLayoutProps) {
             </div>
             <div>
               <span className="font-serif text-lg font-bold text-[#0F2444] tracking-wide block leading-none">
-                BBG TEXTILE
+                SBBG TEXTILE
               </span>
               <span className="text-[10px] uppercase font-bold text-amber-800 tracking-wider">
                 Admin Console
@@ -181,13 +181,13 @@ export default function AdminLayoutClient({ children }: AdminLayoutProps) {
           <div className="w-8 h-8 rounded-lg bg-amber-500/10 p-0.5 flex items-center justify-center shrink-0 border border-amber-600/20">
             <Image
               src="/images/logo/bbg-logo-icon.png"
-              alt="BBG Logo"
+              alt="SBBG Logo"
               width={28}
               height={28}
               className="w-full h-full object-contain"
             />
           </div>
-          <span className="font-serif font-bold text-base text-[#0F2444]">BBG Textile Admin</span>
+          <span className="font-serif font-bold text-base text-[#0F2444]">SBBG Textile Admin</span>
         </Link>
 
         <div className="flex items-center gap-1.5">

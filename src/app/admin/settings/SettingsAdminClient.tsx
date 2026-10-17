@@ -33,7 +33,7 @@ export default function SettingsAdminClient() {
   const [activeTab, setActiveTab] = useState<"general" | "hero" | "about" | "banners">("general");
 
   const [settings, setSettings] = useState({
-    businessName: "BBG TEXTILE EXPORTER",
+    businessName: "SBBG TEXTILE EXPORTER",
     tagline: "Excellence in Quality Fabrics & Garments",
     phone: "+91 87673 22501",
     whatsappNumber: "8767322501",
