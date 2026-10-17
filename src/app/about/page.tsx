@@ -131,22 +131,18 @@ export default async function AboutPage() {
               Crafting premium 4-way stretch cotton lycra garments, churidar leggings, and fine mill fabrics with uncompromising craftsmanship, modern circular knitting, and trusted direct-mill wholesale supply.
             </p>
 
-            {/* 4 Metrics Counter Badges */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto pt-6 border-t border-white/15">
+            {/* 3 Metrics Counter Badges */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto pt-6 border-t border-white/15">
               <div className="p-4 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
-                <div className="font-serif text-2xl sm:text-3xl font-bold text-amber-400">25+</div>
-                <div className="text-xs text-gray-300 mt-1 uppercase tracking-wider">Years Mill Heritage</div>
-              </div>
-              <div className="p-4 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
-                <div className="font-serif text-2xl sm:text-3xl font-bold text-amber-400">5,00,000+</div>
-                <div className="text-xs text-gray-300 mt-1 uppercase tracking-wider">Meters Monthly Weave</div>
+                <div className="font-serif text-2xl sm:text-3xl font-bold text-amber-400">Since 2000</div>
+                <div className="text-xs text-gray-300 mt-1 uppercase tracking-wider">Mill Heritage</div>
               </div>
               <div className="p-4 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
                 <div className="font-serif text-2xl sm:text-3xl font-bold text-amber-400">100%</div>
                 <div className="text-xs text-gray-300 mt-1 uppercase tracking-wider">Bio-Washed Combed Cotton</div>
               </div>
               <div className="p-4 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
-                <div className="font-serif text-2xl sm:text-3xl font-bold text-amber-400">1,000+</div>
+                <div className="font-serif text-2xl sm:text-3xl font-bold text-amber-400">100+</div>
                 <div className="text-xs text-gray-300 mt-1 uppercase tracking-wider">Wholesale Partners</div>
               </div>
             </div>
