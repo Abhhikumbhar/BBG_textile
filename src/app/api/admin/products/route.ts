@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
   try {
     let timer: NodeJS.Timeout;
     const timeout = new Promise<any[]>((resolve) => {
-      timer = setTimeout(() => resolve(fallbackProducts as any), 2500);
+      timer = setTimeout(() => resolve(fallbackProducts as any), 1200);
     });
 
     const dbPromise = prisma.product.findMany({
@@ -70,7 +70,7 @@ export async function GET(req: NextRequest) {
     );
 
     if (products && products.length > 0) {
-      setCached(cacheKey, products, 45);
+      setCached(cacheKey, products, 180);
     }
 
     return NextResponse.json({ products: products || fallbackProducts });

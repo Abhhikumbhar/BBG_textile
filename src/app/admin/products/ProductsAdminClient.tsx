@@ -40,29 +40,35 @@ interface Product {
 let cachedAdminProducts: Product[] | null = null;
 let cachedAdminCategories: Category[] | null = null;
 
-export default function ProductsAdminClient() {
-  const [products, setProducts] = useState<Product[]>(
-    () => cachedAdminProducts || []
-  );
-  const [categories, setCategories] = useState<Category[]>(
-    () => cachedAdminCategories || []
-  );
+interface ProductsAdminClientProps {
+  initialProducts?: Product[];
+  initialCategories?: Category[];
+}
+
+export default function ProductsAdminClient({
+  initialProducts = [],
+  initialCategories = [],
+}: ProductsAdminClientProps) {
+  const [products, setProducts] = useState<Product[]>(() => {
+    if (initialProducts && initialProducts.length > 0) return initialProducts;
+    if (cachedAdminProducts && cachedAdminProducts.length > 0) return cachedAdminProducts;
+    return [];
+  });
+  const [categories, setCategories] = useState<Category[]>(() => {
+    if (initialCategories && initialCategories.length > 0) return initialCategories;
+    if (cachedAdminCategories && cachedAdminCategories.length > 0) return cachedAdminCategories;
+    return [];
+  });
   const [search, setSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
-  const [loading, setLoading] = useState(
-    () => !cachedAdminProducts || cachedAdminProducts.length === 0
-  );
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [notification, setNotification] = useState<{ type: string; msg: string } | null>(
     null
   );
 
-  const fetchProducts = async (silent = false) => {
-    if (!silent && (!cachedAdminProducts || cachedAdminProducts.length === 0)) {
-      setLoading(true);
-    }
+  const fetchProducts = async () => {
     try {
       const query = new URLSearchParams();
       if (search) query.set("search", search);
@@ -85,26 +91,20 @@ export default function ProductsAdminClient() {
       const prodList = prodData.products || [];
       const catList = catData.categories || [];
 
-      if (!search && !selectedCategory && !statusFilter) {
+      if (!search && !selectedCategory && !statusFilter && prodList.length > 0) {
         cachedAdminProducts = prodList;
         cachedAdminCategories = catList;
       }
 
       setProducts(prodList);
-      setCategories(catList);
+      if (catList.length > 0) setCategories(catList);
     } catch {
-      if (!cachedAdminProducts || cachedAdminProducts.length === 0) {
-        setNotification({ type: "error", msg: "Failed to load products" });
-      }
-    } finally {
-      setLoading(false);
+      // Keep displaying current products quietly
     }
   };
 
   useEffect(() => {
-    const isDefault = !search && !selectedCategory && !statusFilter;
-    const canSilent = isDefault && !!cachedAdminProducts && cachedAdminProducts.length > 0;
-    fetchProducts(canSilent);
+    fetchProducts();
   }, [search, selectedCategory, statusFilter]);
 
   const handleDelete = async (id: string) => {
@@ -119,7 +119,7 @@ export default function ProductsAdminClient() {
         msg: json.message || "Product deleted successfully",
       });
       cachedAdminProducts = null;
-      fetchProducts(false);
+      fetchProducts();
     } catch (err: any) {
       setNotification({ type: "error", msg: err.message || "Failed to delete" });
     } finally {
@@ -208,12 +208,7 @@ export default function ProductsAdminClient() {
 
       {/* Products Table */}
       <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-        {loading ? (
-          <div className="flex flex-col items-center justify-center py-24">
-            <Loader2 className="w-6 h-6 text-[#1A365D] animate-spin mb-2" />
-            <p className="text-gray-400 text-xs">Loading database records...</p>
-          </div>
-        ) : products.length === 0 ? (
+        {products.length === 0 ? (
           <div className="text-center py-16 text-gray-400 text-xs">
             No products found matching the criteria.
           </div>

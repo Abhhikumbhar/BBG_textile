@@ -23,7 +23,7 @@ export async function GET(req: NextRequest) {
   try {
     let timer: NodeJS.Timeout;
     const timeout = new Promise<any[]>((resolve) => {
-      timer = setTimeout(() => resolve(fallbackCategories as any), 2000);
+      timer = setTimeout(() => resolve(fallbackCategories as any), 1000);
     });
 
     const dbPromise = prisma.category.findMany({
@@ -40,7 +40,7 @@ export async function GET(req: NextRequest) {
     );
 
     if (categories && categories.length > 0) {
-      setCached(cacheKey, categories, 60);
+      setCached(cacheKey, categories, 180);
     }
 
     return NextResponse.json({ categories: categories || fallbackCategories });

@@ -39,7 +39,7 @@ export default function AdminLayoutClient({ children }: AdminLayoutProps) {
   const isLoginPage = pathname === "/admin/login";
 
   useEffect(() => {
-    if (!isLoginPage) {
+    if (!isLoginPage && !adminUser) {
       fetch("/api/auth/me")
         .then((res) => {
           if (!res.ok) {
@@ -55,7 +55,7 @@ export default function AdminLayoutClient({ children }: AdminLayoutProps) {
           router.push("/admin/login");
         });
     }
-  }, [pathname, isLoginPage, router]);
+  }, [isLoginPage, adminUser, router]);
 
   const handleLogout = async () => {
     try {
@@ -121,6 +121,7 @@ export default function AdminLayoutClient({ children }: AdminLayoutProps) {
               <Link
                 key={item.name}
                 href={item.href}
+                prefetch={true}
                 className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all ${
                   isActive
                     ? "bg-amber-500/15 text-[#0F2444] font-bold border-l-4 border-amber-600 shadow-xs"
@@ -222,6 +223,7 @@ export default function AdminLayoutClient({ children }: AdminLayoutProps) {
               <Link
                 key={item.name}
                 href={item.href}
+                prefetch={true}
                 onClick={() => setMobileMenuOpen(false)}
                 className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium ${
                   isActive

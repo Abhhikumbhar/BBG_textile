@@ -29,13 +29,18 @@ interface Category {
 // Module-level client cache for instant 0ms tab switching
 let cachedClientCategories: Category[] | null = null;
 
-export default function CategoriesAdminClient() {
-  const [categories, setCategories] = useState<Category[]>(
-    () => cachedClientCategories || []
-  );
-  const [loading, setLoading] = useState(
-    () => !cachedClientCategories || cachedClientCategories.length === 0
-  );
+interface CategoriesAdminClientProps {
+  initialCategories?: Category[];
+}
+
+export default function CategoriesAdminClient({
+  initialCategories = [],
+}: CategoriesAdminClientProps) {
+  const [categories, setCategories] = useState<Category[]>(() => {
+    if (initialCategories && initialCategories.length > 0) return initialCategories;
+    if (cachedClientCategories && cachedClientCategories.length > 0) return cachedClientCategories;
+    return [];
+  });
   const [modalOpen, setModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<Category | null>(null);
 
@@ -55,10 +60,7 @@ export default function CategoriesAdminClient() {
     null
   );
 
-  const fetchCategories = async (silent = false) => {
-    if (!silent && (!cachedClientCategories || cachedClientCategories.length === 0)) {
-      setLoading(true);
-    }
+  const fetchCategories = async () => {
     try {
       const res = await fetch("/api/admin/categories");
       if (res.status === 401) {
@@ -67,19 +69,17 @@ export default function CategoriesAdminClient() {
       }
       const data = await res.json();
       const list = data.categories || [];
-      cachedClientCategories = list;
-      setCategories(list);
-    } catch {
-      if (!cachedClientCategories || cachedClientCategories.length === 0) {
-        setNotification({ type: "error", msg: "Failed to load categories" });
+      if (list.length > 0) {
+        cachedClientCategories = list;
+        setCategories(list);
       }
-    } finally {
-      setLoading(false);
+    } catch {
+      // Keep displaying current categories quietly
     }
   };
 
   useEffect(() => {
-    fetchCategories(!!cachedClientCategories && cachedClientCategories.length > 0);
+    fetchCategories();
   }, []);
 
   const openCreateModal = () => {
@@ -192,7 +192,7 @@ export default function CategoriesAdminClient() {
       });
       setModalOpen(false);
       cachedClientCategories = null;
-      fetchCategories(false);
+      fetchCategories();
     } catch (err: any) {
       setError(err.message || "Failed to save category");
     } finally {
@@ -218,7 +218,7 @@ export default function CategoriesAdminClient() {
 
       setNotification({ type: "success", msg: "Category deleted" });
       cachedClientCategories = null;
-      fetchCategories(false);
+      fetchCategories();
     } catch (err: any) {
       setNotification({
         type: "error",
@@ -269,12 +269,7 @@ export default function CategoriesAdminClient() {
 
       {/* Categories Table */}
       <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
-        {loading ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <Loader2 className="w-6 h-6 text-[#1A365D] animate-spin mb-2" />
-            <p className="text-gray-400 text-xs">Loading categories...</p>
-          </div>
-        ) : categories.length === 0 ? (
+        {categories.length === 0 ? (
           <div className="text-center py-16 text-gray-400 text-xs">
             No categories found. Click &quot;Add New Category&quot; to create one.
           </div>
