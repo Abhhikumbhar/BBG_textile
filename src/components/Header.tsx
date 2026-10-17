@@ -77,17 +77,23 @@ export default function Header({ settings }: HeaderProps) {
       <div className="bg-[#0B1220] text-[#F7FAFC] px-3 sm:px-4 py-2 text-xs font-medium border-b border-white/10">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-1.5 md:gap-3">
           {/* Announcement / Tagline */}
-          {!settings?.announcementText ||
-          settings.announcementText.includes("Welcome to BBG Textile") ? (
-            <div className="flex items-center justify-center md:justify-start gap-1.5 text-center md:text-left flex-wrap">
-              <div className="inline-flex items-center gap-1.5">
-                <Crown className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-                <span className="font-serif uppercase font-bold text-amber-300 tracking-wider text-[11px] sm:text-xs">
-                  Premium Fabrics & Garments
-                </span>
-              </div>
-              <span className="text-gray-500 hidden sm:inline">•</span>
-              <span className="text-gray-100 font-medium text-[11px] sm:text-xs">
+          <div className="flex items-center justify-center md:justify-start gap-1.5 text-center md:text-left">
+            {/* Mobile-only concise text */}
+            <div className="sm:hidden flex items-center gap-1.5">
+              <Crown className="w-3 h-3 text-amber-400 shrink-0" />
+              <span className="font-serif uppercase font-bold text-amber-300 tracking-wider text-[11px]">
+                Direct Mill Wholesale • Sangli
+              </span>
+            </div>
+
+            {/* Desktop full text */}
+            <div className="hidden sm:flex items-center gap-1.5 flex-wrap">
+              <Crown className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+              <span className="font-serif uppercase font-bold text-amber-300 tracking-wider text-xs">
+                Premium Fabrics & Garments
+              </span>
+              <span className="text-gray-500">•</span>
+              <span className="text-gray-100 font-medium text-xs">
                 Direct Mill Wholesale Supply
               </span>
               <span className="hidden lg:inline text-gray-500">•</span>
@@ -95,16 +101,11 @@ export default function Header({ settings }: HeaderProps) {
                 Sangli Mill Hub
               </span>
             </div>
-          ) : (
-            <div className="flex items-center justify-center md:justify-start gap-1.5 text-center md:text-left">
-              <Crown className="w-3.5 h-3.5 text-amber-400 shrink-0" />
-              <span className="text-[11px] sm:text-xs text-gray-100">{settings.announcementText}</span>
-            </div>
-          )}
+          </div>
 
-          {/* Location Address & Direct Contact Actions */}
-          <div className="flex items-center justify-center flex-wrap gap-x-3 gap-y-1 text-[11px] sm:text-xs text-gray-300">
-            {/* Address / Location - visible on mobile and desktop */}
+          {/* Location Address & Direct Contact Actions - Desktop only to save space on mobile */}
+          <div className="hidden md:flex items-center justify-center flex-wrap gap-x-3 gap-y-1 text-xs text-gray-300">
+            {/* Address / Location */}
             <a
               href={mapsUrl}
               target="_blank"

@@ -66,7 +66,8 @@ export default async function HomePage() {
                 </div>
               </div>
               <span className="text-[11px] sm:text-xs font-semibold text-gray-800 group-hover:text-[#1A365D]">
-                All Products
+                <span className="sm:hidden">All</span>
+                <span className="hidden sm:inline">All Products</span>
               </span>
             </Link>
 
@@ -84,6 +85,13 @@ export default async function HomePage() {
                 (idx % 2 === 0
                   ? "/images/products/bbg-studio-hd-crimson-red.jpg"
                   : "/images/products/bbg-studio-hd-cs-white.jpg");
+
+              const shortName =
+                cat.name.toLowerCase().includes("churidar") || cat.name.toLowerCase().includes("legging")
+                  ? "Churidar"
+                  : cat.name.toLowerCase().includes("tight") || cat.name.toLowerCase().includes("short") || cat.name.toLowerCase().includes("cycling")
+                  ? "Shorts"
+                  : cat.name.replace(/Women's /i, "").trim();
 
               return (
                 <Link
@@ -105,8 +113,9 @@ export default async function HomePage() {
                       />
                     </div>
                   </div>
-                  <span className="text-[11px] sm:text-xs font-semibold text-gray-800 group-hover:text-[#1A365D] max-w-[85px] sm:max-w-[110px] truncate">
-                    {cat.name}
+                  <span className="text-[11px] sm:text-xs font-semibold text-gray-800 group-hover:text-[#1A365D] max-w-[85px] sm:max-w-[120px] truncate">
+                    <span className="sm:hidden">{shortName}</span>
+                    <span className="hidden sm:inline">{cat.name}</span>
                   </span>
                 </Link>
               );
@@ -146,59 +155,70 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* LUXURY EDITORIAL HERO SECTION (Unified on all viewports: Mobile & Laptop) */}
-        <section className="relative bg-[#0B1120] text-white overflow-hidden min-h-[540px] sm:min-h-[700px] lg:min-h-[760px] pb-14 sm:pb-20 lg:pb-24 flex items-center">
+        {/* LUXURY EDITORIAL HERO SECTION */}
+        <section className="relative bg-[#0B1120] text-white overflow-hidden min-h-[440px] sm:min-h-[700px] lg:min-h-[760px] pb-10 sm:pb-20 lg:pb-24 flex items-center">
           {/* Autoplaying Background Video & Ambient Luxury Lighting */}
           <HeroVideo />
 
-          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-20 lg:py-24 w-full">
-            {/* Open Editorial Layout (No bounding box / No enclosed card) */}
+          <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-20 lg:py-24 w-full">
+            {/* Open Editorial Layout */}
             <div className="max-w-2xl lg:max-w-3xl">
-              {/* Luxury Eyebrow Badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full bg-white/[0.08] border border-white/20 text-slate-200 text-[11px] sm:text-xs font-medium tracking-[0.16em] uppercase mb-4 sm:mb-6 backdrop-blur-md shadow-sm">
-                <Crown className="w-3.5 h-3.5 text-amber-300" />
-                <span>New Arrival • 2026 Collection</span>
+              {/* Luxury Eyebrow Badge - Compact on Mobile, Full on Desktop */}
+              <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-white/[0.08] border border-white/20 text-slate-200 text-[10px] sm:text-xs font-medium tracking-[0.16em] uppercase mb-3 sm:mb-6 backdrop-blur-md shadow-sm">
+                <Crown className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300" />
+                <span className="sm:hidden">2026 Collection</span>
+                <span className="hidden sm:inline">New Arrival • 2026 Collection</span>
               </div>
 
-              {/* Title - Modern Haute-Couture Editorial Display (Seamless Studio Match) */}
-              <h1 className="font-luxury text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-normal sm:font-medium tracking-[0.015em] leading-[1.12] sm:leading-[1.08] mb-4 sm:mb-5 drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]">
-                <span className="text-studio-pearl block">
-                  {activeBanner?.title || "4-Way Stretch Cotton Lycra Leggings"}
+              {/* Title - Punchy & Short on Mobile, Full Editorial on Desktop */}
+              <h1 className="font-luxury text-2xl sm:text-5xl lg:text-6xl xl:text-7xl font-normal sm:font-medium tracking-[0.015em] leading-[1.18] sm:leading-[1.08] mb-3 sm:mb-5 drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]">
+                <span className="text-studio-pearl">
+                  {/* Mobile concise title */}
+                  <span className="sm:hidden block">
+                    4-Way Stretch Cotton Lycra Leggings
+                  </span>
+                  {/* Desktop original full title */}
+                  <span className="hidden sm:block">
+                    {activeBanner?.title || "4-Way Stretch Cotton Lycra Leggings"}
+                  </span>
                 </span>
               </h1>
 
-              {/* Subtitle - Refined High-Converting Textile Copy */}
-              <p className="text-sm sm:text-lg text-slate-200/90 leading-relaxed mb-5 sm:mb-6 font-light max-w-xl drop-shadow-sm">
+              {/* Subtitle - Short 1-line tag on mobile, Full copy on desktop */}
+              <p className="sm:hidden text-xs text-slate-200/90 mb-4 font-light drop-shadow-sm">
+                Super combed 95% cotton • Bio-washed 4-way stretch
+              </p>
+              <p className="hidden sm:block text-base sm:text-lg text-slate-200/90 leading-relaxed mb-6 font-light max-w-xl drop-shadow-sm">
                 {activeBanner?.subtitle ||
                   "Super combed 95% cotton & 5% Lycra. Bio-washed for supreme softness, non-sheer all-day comfort, and graceful ankle gathers."}
               </p>
 
-              {/* Feature Chips / Micro-Pills */}
-              <div className="flex flex-wrap items-center gap-2 sm:gap-2.5 mb-6 sm:mb-8">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-medium bg-white/[0.08] hover:bg-white/[0.12] text-slate-100 border border-white/15 backdrop-blur-md transition-colors">
+              {/* Feature Chips - Hidden on mobile to eliminate clutter, Full on desktop */}
+              <div className="hidden sm:flex flex-wrap items-center gap-2.5 mb-8">
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-white/[0.08] hover:bg-white/[0.12] text-slate-100 border border-white/15 backdrop-blur-md transition-colors">
                   <Layers className="w-3 h-3 text-amber-300" /> 4-Way Super Stretch
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-medium bg-white/[0.08] hover:bg-white/[0.12] text-slate-100 border border-white/15 backdrop-blur-md transition-colors">
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-white/[0.08] hover:bg-white/[0.12] text-slate-100 border border-white/15 backdrop-blur-md transition-colors">
                   <CheckCircle2 className="w-3 h-3 text-emerald-400" /> Bio-Washed & Non-Sheer
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full text-[11px] sm:text-xs font-medium bg-white/[0.08] hover:bg-white/[0.12] text-slate-100 border border-white/15 backdrop-blur-md transition-colors">
+                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-medium bg-white/[0.08] hover:bg-white/[0.12] text-slate-100 border border-white/15 backdrop-blur-md transition-colors">
                   <Award className="w-3 h-3 text-amber-300" /> Sangli Direct Mill Rates
                 </span>
               </div>
 
               {/* Action Button - Direct Wholesale Enquiry */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-1 sm:pt-2">
+              <div className="flex items-center gap-4 pt-1">
                 <a
                   href={`https://wa.me/${cleanWhatsApp}?text=${encodeURIComponent(
                     "Hello BBG Textile, I am interested in wholesale inquiry for Cotton Lycra Leggings."
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-7 sm:px-8 py-3.5 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 rounded-full font-bold text-sm tracking-wide shadow-xl shadow-amber-500/25 hover:shadow-amber-500/40 hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2.5"
+                  className="px-6 sm:px-8 py-2.5 sm:py-3.5 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 rounded-full font-bold text-xs sm:text-sm tracking-wide shadow-xl shadow-amber-500/25 hover:shadow-amber-500/40 hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2"
                 >
                   <WhatsAppIcon className="w-4 h-4 text-slate-950" />
                   <span>Wholesale Enquiries</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </a>
               </div>
             </div>
