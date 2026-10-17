@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductDetailClient from "./ProductDetailClient";
-import { getSiteSettings } from "@/lib/data";
+import { getSiteSettings, getProductBySlug } from "@/lib/data";
 import {
   getAllCatalogProducts,
   getCatalogProductBySlug,
@@ -80,32 +80,14 @@ export default async function ProductDetailPage({ params }: Props) {
     console.warn("Failed to fetch settings:", err);
   }
 
-  // 2. Try fetching product from Database with 500ms fast guard
+  // 2. Fetch product with in-memory caching and resilient fallback
   try {
-    const timeout = new Promise<null>((resolve) => setTimeout(() => resolve(null), 500));
-    product = await Promise.race([
-      prisma.product.findFirst({
-        where: {
-          OR: [{ slug }, { id: slug }],
-          isActive: true,
-        },
-        include: {
-          category: true,
-          images: {
-            orderBy: { displayOrder: "asc" },
-          },
-          variants: {
-            orderBy: { createdAt: "asc" },
-          },
-        },
-      }),
-      timeout,
-    ]);
+    product = await getProductBySlug(slug);
   } catch (err) {
-    console.warn("Prisma fetch failed, using static catalog fallback:", err);
+    console.warn("getProductBySlug failed, using static catalog fallback:", err);
   }
 
-  // 3. Resilient fallback to static catalog (essential for Vercel deployment)
+  // 3. Fallback to static catalog if still not found
   if (!product) {
     product = getCatalogProductBySlug(slug);
   }

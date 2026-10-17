@@ -39,7 +39,7 @@ export default async function CategoriesPage() {
           </div>
 
           {/* Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 max-w-5xl mx-auto gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto gap-6 sm:gap-8">
             {categories.map((cat) => (
               <Link
                 key={cat.id}
@@ -54,6 +54,7 @@ export default async function CategoriesPage() {
                     }
                     alt={cat.name}
                     fill
+                    unoptimized={cat.imageUrl?.startsWith("data:")}
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover group-hover:scale-105 transition-transform duration-500"
                   />

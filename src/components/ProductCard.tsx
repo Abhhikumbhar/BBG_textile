@@ -143,8 +143,8 @@ export default function ProductCard({ product, whatsappNumber = "918767322501" }
           src={primaryImage}
           alt={product.images?.[0]?.altText || product.name}
           fill
-          unoptimized
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          unoptimized={primaryImage.startsWith("data:")}
+          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           className="object-cover object-[15%_center] group-hover:scale-105 transition-transform duration-500 ease-out"
         />
 

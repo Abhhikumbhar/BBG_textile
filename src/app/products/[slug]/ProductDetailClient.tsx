@@ -377,6 +377,7 @@ export default function ProductDetailClient({
                     alt={img.altText || `${product.name} view ${idx + 1}`}
                     fill
                     priority={idx === 0}
+                    unoptimized={img.url.startsWith("data:")}
                     sizes="(max-width: 1024px) 100vw, 50vw"
                     draggable={false}
                     className={`transition-all duration-300 pointer-events-none select-none ${
@@ -523,6 +524,7 @@ export default function ProductDetailClient({
                       src={images[2].url}
                       alt="Ankle Gathers"
                       fill
+                      unoptimized={images[2].url.startsWith("data:")}
                       className="object-cover scale-[2.4] object-bottom"
                     />
                   </div>
@@ -546,6 +548,7 @@ export default function ProductDetailClient({
                       src={images[3].url}
                       alt="Gentle Waistband"
                       fill
+                      unoptimized={images[3].url.startsWith("data:")}
                       className="object-cover scale-[2.2] object-top"
                     />
                   </div>
@@ -594,6 +597,7 @@ export default function ProductDetailClient({
                     src={img.url}
                     alt={img.altText || `Product view ${idx + 1}`}
                     fill
+                    unoptimized={img.url.startsWith("data:")}
                     sizes="80px"
                     className={`object-cover ${idx === 0 && img.url.includes("bbg-studio-hd") ? "object-[24%_center]" : "object-center mix-blend-multiply"}`}
                   />

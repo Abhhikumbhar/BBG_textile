@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
 import { getAdminFromRequest, recordAuditLog } from "@/lib/auth";
 import { categorySchema, formatZodError } from "@/lib/validations";
+import { invalidateDataCache } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 
@@ -80,6 +81,8 @@ export async function POST(req: NextRequest) {
       details: `Created category "${category.name}"`,
       adminUserId: admin.id,
     });
+
+    invalidateDataCache();
 
     try {
       revalidatePath("/categories");

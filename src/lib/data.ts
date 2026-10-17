@@ -6,7 +6,28 @@ import {
   CatalogProduct,
 } from "./catalogData";
 
-async function fastDb<T>(promise: Promise<T>, fallback: T, timeoutMs = 500): Promise<T> {
+// Global In-Memory Cache for ultra-fast, zero-latency website loading
+const cacheMap = new Map<string, { data: any; expiry: number }>();
+
+export function getCached<T>(key: string): T | null {
+  const item = cacheMap.get(key);
+  if (!item) return null;
+  if (Date.now() > item.expiry) {
+    cacheMap.delete(key);
+    return null;
+  }
+  return item.data as T;
+}
+
+export function setCached<T>(key: string, data: T, ttlSeconds = 60): void {
+  cacheMap.set(key, { data, expiry: Date.now() + ttlSeconds * 1000 });
+}
+
+export function invalidateDataCache(): void {
+  cacheMap.clear();
+}
+
+async function fastDb<T>(promise: Promise<T>, fallback: T, timeoutMs = 2500): Promise<T> {
   let timer: NodeJS.Timeout;
   const timeout = new Promise<T>((resolve) => {
     timer = setTimeout(() => resolve(fallback), timeoutMs);
@@ -20,39 +41,58 @@ async function fastDb<T>(promise: Promise<T>, fallback: T, timeoutMs = 500): Pro
 }
 
 export async function getSiteSettings(): Promise<any> {
-  return fastDb<any>(
+  const cacheKey = "site_settings";
+  const cached = getCached<any>(cacheKey);
+  if (cached) return cached;
+
+  const data = await fastDb<any>(
     prisma.siteSettings.findUnique({
       where: { id: "default" },
     }),
     fallbackSiteSettings,
-    500
+    2500
   );
+  if (data) setCached(cacheKey, data, 120);
+  return data;
 }
 
 export async function getHomeBanners() {
-  return fastDb(
+  const cacheKey = "home_banners";
+  const cached = getCached<any[]>(cacheKey);
+  if (cached) return cached;
+
+  const data = await fastDb(
     prisma.homeBanner.findMany({
       where: { isActive: true },
       orderBy: { displayOrder: "asc" },
     }),
     [],
-    500
+    2500
   );
+  if (data) setCached(cacheKey, data, 120);
+  return data;
 }
 
 export async function getFeaturedProducts() {
-  const staticFeatured = fallbackProducts
-    .filter((p) => p.categorySlug === "churidar-leggings" || p.category?.slug === "churidar-leggings")
-    .slice(0, 8);
+  const cacheKey = "featured_products";
+  const cached = getCached<any[]>(cacheKey);
+  if (cached) return cached;
 
+  // Query products across ANY category marked featured or top priority
   const dbProducts = await fastDb(
     prisma.product.findMany({
       where: {
         isActive: true,
-        category: { slug: "churidar-leggings" },
+        OR: [
+          { isFeatured: true },
+          { category: { slug: "churidar-leggings" } },
+        ],
       },
       take: 8,
-      orderBy: { createdAt: "desc" },
+      orderBy: [
+        { isFeatured: "desc" },
+        { createdAt: "desc" },
+      ],
       include: {
         category: { select: { id: true, name: true, slug: true } },
         images: { orderBy: { displayOrder: "asc" } },
@@ -60,25 +100,39 @@ export async function getFeaturedProducts() {
       },
     }),
     null,
-    600
+    2500
   );
-  if (dbProducts && dbProducts.length > 0) return dbProducts;
+  if (dbProducts && dbProducts.length > 0) {
+    setCached(cacheKey, dbProducts, 60);
+    return dbProducts;
+  }
+
+  const staticFeatured = fallbackProducts
+    .filter((p) => p.isFeatured || p.categorySlug === "churidar-leggings" || p.category?.slug === "churidar-leggings")
+    .slice(0, 8);
   return staticFeatured;
 }
 
 export async function getNewArrivalProducts() {
-  const staticNewArrivals = fallbackProducts
-    .filter((p) => p.categorySlug === "cycling-shorts" || p.categorySlug === "tight-shorts" || p.category?.slug === "cycling-shorts")
-    .slice(0, 8);
+  const cacheKey = "new_arrival_products";
+  const cached = getCached<any[]>(cacheKey);
+  if (cached) return cached;
 
+  // Query products across ANY category marked new arrival
   const dbProducts = await fastDb(
     prisma.product.findMany({
       where: {
         isActive: true,
-        category: { slug: { in: ["cycling-shorts", "tight-shorts"] } },
+        OR: [
+          { isNewArrival: true },
+          { category: { slug: { in: ["cycling-shorts", "tight-shorts"] } } },
+        ],
       },
       take: 8,
-      orderBy: { createdAt: "desc" },
+      orderBy: [
+        { isNewArrival: "desc" },
+        { createdAt: "desc" },
+      ],
       include: {
         category: { select: { id: true, name: true, slug: true } },
         images: { orderBy: { displayOrder: "asc" } },
@@ -86,13 +140,24 @@ export async function getNewArrivalProducts() {
       },
     }),
     null,
-    600
+    2500
   );
-  if (dbProducts && dbProducts.length > 0) return dbProducts;
+  if (dbProducts && dbProducts.length > 0) {
+    setCached(cacheKey, dbProducts, 60);
+    return dbProducts;
+  }
+
+  const staticNewArrivals = fallbackProducts
+    .filter((p) => p.isNewArrival || p.categorySlug === "cycling-shorts" || p.categorySlug === "tight-shorts" || p.category?.slug === "cycling-shorts")
+    .slice(0, 8);
   return staticNewArrivals;
 }
 
 export async function getCategories(): Promise<any[]> {
+  const cacheKey = "site_categories";
+  const cached = getCached<any[]>(cacheKey);
+  if (cached) return cached;
+
   const dbCategories = await fastDb<any>(
     prisma.category.findMany({
       where: {
@@ -106,9 +171,12 @@ export async function getCategories(): Promise<any[]> {
       },
     }),
     null,
-    500
+    2500
   );
-  if (dbCategories && dbCategories.length > 0) return dbCategories;
+  if (dbCategories && dbCategories.length > 0) {
+    setCached(cacheKey, dbCategories, 60);
+    return dbCategories;
+  }
   return fallbackCategories;
 }
 
@@ -126,6 +194,10 @@ export interface GetProductsOptions {
 }
 
 export async function getProducts(options: GetProductsOptions = {}) {
+  const cacheKey = `products_${JSON.stringify(options)}`;
+  const cached = getCached<any>(cacheKey);
+  if (cached) return cached;
+
   const page = Math.max(1, options.page || 1);
   const limit = Math.min(50, Math.max(1, options.limit || 12));
 
@@ -187,12 +259,12 @@ export async function getProducts(options: GetProductsOptions = {}) {
         }),
       ]),
       null,
-      700
+      2500
     );
 
     if (dbData && dbData[1] && dbData[1].length > 0) {
       const [total, products] = dbData;
-      return {
+      const res = {
         products,
         pagination: {
           page,
@@ -201,6 +273,8 @@ export async function getProducts(options: GetProductsOptions = {}) {
           totalPages: Math.ceil(total / limit),
         },
       };
+      setCached(cacheKey, res, 45);
+      return res;
     }
   } catch (error) {
     // fast fallback
@@ -285,9 +359,16 @@ export async function getProducts(options: GetProductsOptions = {}) {
 }
 
 export async function getProductBySlug(slug: string) {
+  const cacheKey = `product_${slug}`;
+  const cached = getCached<any>(cacheKey);
+  if (cached) return cached;
+
   const product = await fastDb(
-    prisma.product.findUnique({
-      where: { slug },
+    prisma.product.findFirst({
+      where: {
+        OR: [{ slug }, { id: slug }],
+        isActive: true,
+      },
       include: {
         category: true,
         images: { orderBy: { displayOrder: "asc" } },
@@ -295,9 +376,12 @@ export async function getProductBySlug(slug: string) {
       },
     }),
     null,
-    500
+    2500
   );
-  if (product) return product;
+  if (product) {
+    setCached(cacheKey, product, 60);
+    return product;
+  }
 
   return (
     fallbackProducts.find(

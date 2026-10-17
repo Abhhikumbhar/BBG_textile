@@ -47,12 +47,12 @@ export default async function HomePage() {
       <Header settings={settings || undefined} />
 
       <main className="flex-1">
-        {/* FLIPKART-STYLE QUICK CATEGORIES BAR */}
+        {/* FLIPKART-STYLE QUICK CATEGORIES BAR - DYNAMICALLY POWERED BY ADMIN CATEGORIES */}
         <section className="bg-white border-b border-gray-200/70 py-2.5 sm:py-3.5 overflow-x-auto scrollbar-none shadow-2xs">
-          <div className="max-w-7xl mx-auto px-4 flex items-center gap-4 sm:gap-8 min-w-max sm:min-w-0 sm:justify-center">
+          <div className="max-w-7xl mx-auto px-4 flex items-center gap-4 sm:gap-7 min-w-max sm:min-w-0 sm:justify-center">
             <Link
               href="/products"
-              className="flex flex-col items-center gap-1 group text-center"
+              className="flex flex-col items-center gap-1 group text-center shrink-0"
             >
               <div className="w-12 h-12 sm:w-15 sm:h-15 rounded-full p-0.5 bg-gradient-to-tr from-[#1A365D] to-amber-500 shadow-xs group-hover:scale-105 transition-transform flex items-center justify-center">
                 <div className="w-full h-full rounded-full bg-white p-1 overflow-hidden flex items-center justify-center">
@@ -70,49 +70,51 @@ export default async function HomePage() {
               </span>
             </Link>
 
-            <Link
-              href="/products?category=churidar-leggings"
-              className="flex flex-col items-center gap-1 group text-center"
-            >
-              <div className="w-12 h-12 sm:w-15 sm:h-15 rounded-full p-0.5 bg-gradient-to-tr from-amber-400 to-[#1A365D] shadow-xs group-hover:scale-105 transition-transform flex items-center justify-center">
-                <div className="w-full h-full rounded-full bg-white p-0.5 overflow-hidden">
-                  <Image
-                    src="/images/products/bbg-studio-hd-crimson-red.jpg"
-                    alt="Churidar Leggings"
-                    width={56}
-                    height={56}
-                    className="w-full h-full object-cover object-top"
-                  />
-                </div>
-              </div>
-              <span className="text-[11px] sm:text-xs font-semibold text-gray-800 group-hover:text-[#1A365D]">
-                Churidar
-              </span>
-            </Link>
+            {categories.map((cat, idx) => {
+              const borderGradients = [
+                "from-amber-400 to-[#1A365D]",
+                "from-emerald-500 to-amber-400",
+                "from-[#1A365D] to-indigo-500",
+                "from-rose-500 to-amber-400",
+                "from-teal-500 to-[#1A365D]",
+              ];
+              const borderGradient = borderGradients[idx % borderGradients.length];
+              const catImage =
+                cat.imageUrl ||
+                (idx % 2 === 0
+                  ? "/images/products/bbg-studio-hd-crimson-red.jpg"
+                  : "/images/products/bbg-studio-hd-cs-white.jpg");
 
-            <Link
-              href="/products?category=cycling-shorts"
-              className="flex flex-col items-center gap-1 group text-center"
-            >
-              <div className="w-12 h-12 sm:w-15 sm:h-15 rounded-full p-0.5 bg-gradient-to-tr from-emerald-500 to-amber-400 shadow-xs group-hover:scale-105 transition-transform flex items-center justify-center">
-                <div className="w-full h-full rounded-full bg-white p-0.5 overflow-hidden">
-                  <Image
-                    src="/images/products/bbg-studio-hd-cs-white.jpg"
-                    alt="Tight Shorts"
-                    width={56}
-                    height={56}
-                    className="w-full h-full object-cover object-top"
-                  />
-                </div>
-              </div>
-              <span className="text-[11px] sm:text-xs font-semibold text-gray-800 group-hover:text-[#1A365D]">
-                Tight Shorts
-              </span>
-            </Link>
+              return (
+                <Link
+                  key={cat.id}
+                  href={`/products?category=${encodeURIComponent(cat.slug)}`}
+                  className="flex flex-col items-center gap-1 group text-center shrink-0"
+                >
+                  <div
+                    className={`w-12 h-12 sm:w-15 sm:h-15 rounded-full p-0.5 bg-gradient-to-tr ${borderGradient} shadow-xs group-hover:scale-105 transition-transform flex items-center justify-center`}
+                  >
+                    <div className="w-full h-full rounded-full bg-white p-0.5 overflow-hidden">
+                      <Image
+                        src={catImage}
+                        alt={cat.name}
+                        width={56}
+                        height={56}
+                        unoptimized={catImage.startsWith("data:")}
+                        className="w-full h-full object-cover object-top"
+                      />
+                    </div>
+                  </div>
+                  <span className="text-[11px] sm:text-xs font-semibold text-gray-800 group-hover:text-[#1A365D] max-w-[85px] sm:max-w-[110px] truncate">
+                    {cat.name}
+                  </span>
+                </Link>
+              );
+            })}
 
             <Link
               href="/categories"
-              className="flex flex-col items-center gap-1 group text-center"
+              className="flex flex-col items-center gap-1 group text-center shrink-0"
             >
               <div className="w-12 h-12 sm:w-15 sm:h-15 rounded-full p-0.5 bg-gradient-to-tr from-amber-500 to-amber-200 shadow-xs group-hover:scale-105 transition-transform flex items-center justify-center">
                 <div className="w-full h-full rounded-full bg-[#0B1220] flex items-center justify-center text-amber-300">
@@ -130,7 +132,7 @@ export default async function HomePage() {
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex flex-col items-center gap-1 group text-center"
+              className="flex flex-col items-center gap-1 group text-center shrink-0"
             >
               <div className="w-12 h-12 sm:w-15 sm:h-15 rounded-full p-0.5 bg-gradient-to-tr from-emerald-500 to-emerald-300 shadow-xs group-hover:scale-105 transition-transform flex items-center justify-center">
                 <div className="w-full h-full rounded-full bg-[#25D366] flex items-center justify-center text-white">
@@ -298,21 +300,21 @@ export default async function HomePage() {
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-10">
               <div>
                 <span className="text-xs font-bold uppercase tracking-wider text-amber-700 mb-1 flex items-center gap-2">
-                  <span>FLAGSHIP ETHNIC BOTTOM WEAR</span>
+                  <span>FLAGSHIP MILL COLLECTION</span>
                   <span className="w-8 h-[1.5px] bg-amber-600/50 inline-block" />
                 </span>
                 <h2 className="font-serif text-3xl sm:text-4xl font-bold text-[#0F2444]">
-                  Premium Churidar Leggings (Full Length)
+                  Featured Textile & Garments
                 </h2>
                 <p className="text-xs sm:text-sm text-gray-500 mt-1">
-                  Super combed 4-way stretch cotton lycra churidar pants with authentic ankle gathers in 8 rich shades.
+                  Premium 4-way stretch fabrics, churidars, tight shorts & bottom wear manufactured with highest precision.
                 </p>
               </div>
               <Link
-                href="/products?category=churidar-leggings"
+                href="/products"
                 className="mt-4 sm:mt-0 text-sm font-bold text-[#1A365D] hover:text-[#2A4365] flex items-center gap-1 group"
               >
-                <span>View All Churidar Leggings</span>
+                <span>View Full Catalog</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
@@ -335,27 +337,27 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* ACTIVEWEAR SECTION: 4-WAY STRETCH TIGHT SHORTS */}
+        {/* NEW ARRIVALS & TRENDING COLLECTION */}
         {newArrivals.length > 0 && (
           <section className="py-10 sm:py-20 bg-gray-50 border-t border-gray-200">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 sm:mb-10">
                 <div>
                   <span className="text-xs font-bold uppercase tracking-wider text-amber-700 mb-1 block">
-                    Activewear & Loungewear
+                    Fresh Off The Loom
                   </span>
                   <h2 className="font-serif text-2xl sm:text-4xl font-bold text-gray-900">
-                    4-Way Stretch Cotton Tight Shorts
+                    New Arrivals & Trending Wear
                   </h2>
                   <p className="text-xs sm:text-sm text-gray-500 mt-1">
-                    Mid-thigh comfort cotton lycra tight shorts for active gym, sports, kurti innerwear & home wear.
+                    Newly launched colors, sizes, and styles crafted with highest grade combed cotton.
                   </p>
                 </div>
                 <Link
-                  href="/products?category=cycling-shorts"
+                  href="/products"
                   className="mt-3 sm:mt-0 text-xs sm:text-sm font-bold text-[#1A365D] hover:text-[#2A4365] flex items-center gap-1 group"
                 >
-                  <span>View All Tight Shorts</span>
+                  <span>Explore All Items</span>
                   <ArrowRight className="w-3.5 sm:w-4 h-3.5 sm:h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>

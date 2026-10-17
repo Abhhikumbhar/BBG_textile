@@ -1,6 +1,7 @@
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
 import path from "path";
+import sharp from "sharp";
 
 const isCloudinaryConfigured = Boolean(
   process.env.CLOUDINARY_CLOUD_NAME &&
@@ -22,6 +23,17 @@ export async function uploadImageBuffer(
   filename: string,
   folder = "bbg-textile"
 ): Promise<{ url: string; publicId: string }> {
+  // Compress and resize image using sharp to lightweight WebP (reduces 5MB to ~120KB)
+  let optimizedBuffer = buffer;
+  try {
+    optimizedBuffer = await sharp(buffer)
+      .resize({ width: 1200, height: 1200, fit: "inside", withoutEnlargement: true })
+      .webp({ quality: 80, effort: 4 })
+      .toBuffer();
+  } catch (err) {
+    console.warn("Image optimization fallback to original buffer:", err);
+  }
+
   // If Cloudinary is configured, upload to Cloudinary
   if (isCloudinaryConfigured) {
     return new Promise((resolve, reject) => {
@@ -42,31 +54,50 @@ export async function uploadImageBuffer(
           }
         }
       );
-      uploadStream.end(buffer);
+      uploadStream.end(optimizedBuffer);
     });
   }
 
-  // Fallback: If on Vercel/serverless and Cloudinary is not configured, return persistent data URI directly
-  if (process.env.VERCEL || !process.env.NODE_ENV || process.env.NODE_ENV === "production") {
+  // Fallback: If on Vercel/serverless and Cloudinary is not configured, return lightweight WebP data URI
+  if (process.env.VERCEL) {
     try {
-      const ext = path.extname(filename).toLowerCase();
-      const mime =
-        ext === ".png"
-          ? "image/png"
-          : ext === ".svg"
-          ? "image/svg+xml"
-          : ext === ".webp"
-          ? "image/webp"
-          : "image/jpeg";
-
-      const base64Data = buffer.toString("base64");
+      const base64Data = optimizedBuffer.toString("base64");
       return {
-        url: `data:${mime};base64,${base64Data}`,
+        url: `data:image/webp;base64,${base64Data}`,
         publicId: `data_${Date.now()}`,
       };
     } catch (e) {
       console.error("Data URI creation failed:", e);
     }
+  }
+
+  // Fallback: Store locally in public/uploads/ as optimized .webp
+  try {
+    const uploadsDir = path.join(process.cwd(), "public", "uploads");
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
+    }
+
+    const cleanBase = path
+      .basename(filename, path.extname(filename))
+      .replace(/[^a-zA-Z0-9-_]/g, "_")
+      .substring(0, 40);
+    const uniqueName = `${cleanBase}_${Date.now()}.webp`;
+    const filePath = path.join(uploadsDir, uniqueName);
+
+    await fs.promises.writeFile(filePath, optimizedBuffer);
+
+    return {
+      url: `/uploads/${uniqueName}`,
+      publicId: `local_${uniqueName}`,
+    };
+  } catch (fsErr) {
+    console.warn("Local storage write failed, using WebP data URI fallback:", fsErr);
+    const base64Data = optimizedBuffer.toString("base64");
+    return {
+      url: `data:image/webp;base64,${base64Data}`,
+      publicId: `data_${Date.now()}`,
+    };
   }
 
   // Fallback: Store locally in public/uploads/ if writable

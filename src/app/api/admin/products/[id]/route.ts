@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import prisma from "@/lib/prisma";
 import { getAdminFromRequest, recordAuditLog } from "@/lib/auth";
 import { productSchema, formatZodError } from "@/lib/validations";
+import { invalidateDataCache } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
 
@@ -150,6 +151,8 @@ export async function PUT(
       adminUserId: admin.id,
     });
 
+    invalidateDataCache();
+
     try {
       revalidatePath("/products");
       revalidatePath(`/products/${updated.slug}`);
@@ -197,6 +200,8 @@ export async function DELETE(
         data: { isActive: false },
       });
 
+      invalidateDataCache();
+
       try {
         revalidatePath("/products");
         revalidatePath(`/products/${product.slug}`);
@@ -219,6 +224,8 @@ export async function DELETE(
       details: `Deleted product "${product.name}" (SKU: ${product.sku})`,
       adminUserId: admin.id,
     });
+
+    invalidateDataCache();
 
     try {
       revalidatePath("/products");
