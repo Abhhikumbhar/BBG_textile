@@ -148,7 +148,7 @@ export default function Header({ settings }: HeaderProps) {
           {/* Logo & Brand */}
           <Link href="/" className="flex items-center group py-0.5">
             <Image
-              src="/images/logo/bbg-logo-horizontal.png"
+              src="/images/logo/sbbg-header-logo-v2.png"
               alt="SBBG TEXTILE EXPORTER - Premium Fabrics & Garments"
               width={390}
               height={100}

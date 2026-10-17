@@ -93,7 +93,7 @@ export default function Footer({ settings }: FooterProps) {
           <div>
             <div className="mb-5 inline-block bg-white rounded-xl px-3 py-1.5 shadow-sm">
               <Image
-                src="/images/logo/bbg-logo-horizontal.png"
+                src="/images/logo/sbbg-header-logo-v2.png"
                 alt="SBBG TEXTILE EXPORTER - Premium Fabrics & Garments"
                 width={280}
                 height={72}
