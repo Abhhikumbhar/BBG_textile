@@ -5,6 +5,7 @@ import CartDrawer from "@/components/CartDrawer";
 import BottomNav from "@/components/BottomNav";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
 
+// Storefront Pages
 import HomePage from "@/pages/HomePage";
 import ProductsPage from "@/pages/ProductsPage";
 import ProductDetailPage from "@/pages/ProductDetailPage";
@@ -14,6 +15,15 @@ import CheckoutPage from "@/pages/CheckoutPage";
 import OrderSuccessPage from "@/pages/OrderSuccessPage";
 import AboutPage from "@/pages/AboutPage";
 import ContactPage from "@/pages/ContactPage";
+
+// Admin Panel Pages
+import AdminLogin from "@/admin/AdminLogin";
+import AdminDashboard from "@/admin/AdminDashboard";
+import AdminProducts from "@/admin/AdminProducts";
+import AdminCategories from "@/admin/AdminCategories";
+import AdminOrders from "@/admin/AdminOrders";
+import AdminEnquiries from "@/admin/AdminEnquiries";
+import AdminSettings from "@/admin/AdminSettings";
 
 // Scroll to top on route change
 function ScrollToTop() {
@@ -25,10 +35,14 @@ function ScrollToTop() {
 }
 
 export default function App() {
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith("/admin");
+
   return (
     <CartProvider>
       <ScrollToTop />
       <Routes>
+        {/* Customer Storefront Routes */}
         <Route path="/" element={<HomePage />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/products/:slug" element={<ProductDetailPage />} />
@@ -38,13 +52,28 @@ export default function App() {
         <Route path="/order-success/:orderNumber" element={<OrderSuccessPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
+
+        {/* Admin Panel Routes */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/admin/products" element={<AdminProducts />} />
+        <Route path="/admin/categories" element={<AdminCategories />} />
+        <Route path="/admin/orders" element={<AdminOrders />} />
+        <Route path="/admin/enquiries" element={<AdminEnquiries />} />
+        <Route path="/admin/settings" element={<AdminSettings />} />
+
+        {/* Catch-all fallback */}
         <Route path="*" element={<HomePage />} />
       </Routes>
 
-      {/* Global Interactive Elements */}
-      <CartDrawer />
-      <BottomNav />
-      <WhatsAppWidget />
+      {/* Global Interactive Elements for Storefront */}
+      {!isAdmin && (
+        <>
+          <CartDrawer />
+          <BottomNav />
+          <WhatsAppWidget />
+        </>
+      )}
     </CartProvider>
   );
 }
