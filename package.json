@@ -3,17 +3,19 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --webpack",
-    "build": "next build --webpack",
-    "start": "next start",
-    "lint": "eslint",
-    "postinstall": "prisma generate"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "next:dev": "next dev --webpack",
+    "next:build": "next build --webpack"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
+    "@tailwindcss/vite": "^4.3.3",
+    "@vitejs/plugin-react": "^6.1.2",
     "bcryptjs": "^3.0.3",
     "cloudinary": "^2.11.0",
     "jose": "^6.2.12",
@@ -21,6 +23,8 @@
     "next": "16.4.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
+    "react-router-dom": "^7.18.4",
+    "vite": "^8.3.4",
     "zod": "^4.6.7"
   },
   "devDependencies": {

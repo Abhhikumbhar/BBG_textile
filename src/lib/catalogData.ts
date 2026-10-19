@@ -44,8 +44,8 @@ export const fallbackCategories = [
 
 export const fallbackSiteSettings = {
   id: "default",
-  businessName: "SBBG TEXTILE EXPORTER",
-  tagline: "Excellence in Quality Fabrics & Garments",
+  businessName: "SBBG BHARAT TEXTILE",
+  tagline: "Made in Bharat • Excellence in Quality Fabrics & Garments",
   phone: "+91 87673 22501",
   whatsappNumber: "918767322501",
   email: "bbgtextilebharat1@gmail.com",
@@ -56,9 +56,9 @@ export const fallbackSiteSettings = {
   googleMapsUrl: "https://maps.google.com/?q=Kupwad+MIDC+Sangli+Maharashtra",
   onlineShoppingEnabled: true,
   currencySymbol: "₹",
-  announcementText: "Premium Fabrics & Garments — Direct Mill Wholesale Supply",
-  seoTitle: "SBBG TEXTILE EXPORTER | Premium Fabrics & Garments in Sangli",
-  seoDescription: "Premier manufacturer & wholesale supplier of cotton shirting, suiting, linens, and uniform fabrics in Kupwad MIDC, Sangli, Maharashtra.",
+  announcementText: "SBBG BHARAT TEXTILE — Made in Bharat • Direct Mill Wholesale Supply",
+  seoTitle: "SBBG BHARAT TEXTILE | Made in Bharat | Premium Fabrics in Sangli",
+  seoDescription: "SBBG Bharat Textile - Premier manufacturer & wholesale supplier of cotton shirting, suiting, linens, and 4-way stretch bottom wear in Kupwad MIDC, Sangli, Maharashtra.",
   instagramUrl: "https://instagram.com/bbgtextile",
   facebookUrl: "https://facebook.com/bbgtextile"
 };

@@ -57,13 +57,13 @@ export default function ProductsClient({
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  const [search, setSearch] = useState(searchParams.get("search") || "");
-  const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category") || "");
-  const [sort, setSort] = useState(searchParams.get("sort") || "newest");
-  const [featuredOnly, setFeaturedOnly] = useState(searchParams.get("featured") === "true");
-  const [newArrivalOnly, setNewArrivalOnly] = useState(searchParams.get("newArrival") === "true");
-  const [bestSellerOnly, setBestSellerOnly] = useState(searchParams.get("bestSeller") === "true");
-  const [page, setPage] = useState(parseInt(searchParams.get("page") || "1"));
+  const [search, setSearch] = useState(searchParams?.get("search") || "");
+  const [selectedCategory, setSelectedCategory] = useState(searchParams?.get("category") || "");
+  const [sort, setSort] = useState(searchParams?.get("sort") || "newest");
+  const [featuredOnly, setFeaturedOnly] = useState(searchParams?.get("featured") === "true");
+  const [newArrivalOnly, setNewArrivalOnly] = useState(searchParams?.get("newArrival") === "true");
+  const [bestSellerOnly, setBestSellerOnly] = useState(searchParams?.get("bestSeller") === "true");
+  const [page, setPage] = useState(parseInt(searchParams?.get("page") || "1"));
 
   const [products, setProducts] = useState<Product[]>(initialProducts);
   const [pagination, setPagination] = useState(initialPagination);

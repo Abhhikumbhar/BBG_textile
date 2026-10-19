@@ -115,7 +115,7 @@ export default function AdminLayoutClient({ children }: AdminLayoutProps) {
             const isActive =
               item.href === "/admin"
                 ? pathname === "/admin"
-                : pathname.startsWith(item.href);
+                : Boolean(pathname?.startsWith(item.href));
 
             return (
               <Link
@@ -217,7 +217,7 @@ export default function AdminLayoutClient({ children }: AdminLayoutProps) {
             const isActive =
               item.href === "/admin"
                 ? pathname === "/admin"
-                : pathname.startsWith(item.href);
+                : Boolean(pathname?.startsWith(item.href));
 
             return (
               <Link

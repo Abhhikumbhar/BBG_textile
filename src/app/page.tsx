@@ -163,11 +163,26 @@ export default async function HomePage() {
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-20 lg:py-24 w-full">
             {/* Open Editorial Layout */}
             <div className="max-w-2xl lg:max-w-3xl">
-              {/* Luxury Eyebrow Badge - Compact on Mobile, Full on Desktop */}
-              <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-white/[0.08] border border-white/20 text-slate-200 text-[10px] sm:text-xs font-medium tracking-[0.16em] uppercase mb-3 sm:mb-6 backdrop-blur-md shadow-sm">
-                <Crown className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300" />
-                <span className="sm:hidden">2026 Collection</span>
-                <span className="hidden sm:inline">New Arrival • 2026 Collection</span>
+              {/* Luxury Brand & Collection Eyebrow Badges */}
+              <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3 sm:mb-6">
+                <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 via-amber-400/15 to-amber-500/20 border border-amber-400/40 text-amber-300 text-[11px] sm:text-xs font-bold tracking-[0.14em] uppercase backdrop-blur-md shadow-sm">
+                  <div className="w-4 h-4 rounded-full bg-white p-0.5 flex items-center justify-center shrink-0 shadow-2xs">
+                    <Image
+                      src="/images/logo/bbg-logo-icon.png"
+                      alt="SBBG Textile Exporter Logo"
+                      width={16}
+                      height={16}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <span>SBBG Textile Exporter</span>
+                </div>
+
+                <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-white/[0.08] border border-white/20 text-slate-200 text-[10px] sm:text-xs font-medium tracking-[0.16em] uppercase backdrop-blur-md shadow-sm">
+                  <Crown className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-300" />
+                  <span className="sm:hidden">2026 Collection</span>
+                  <span className="hidden sm:inline">New Arrival • 2026 Collection</span>
+                </div>
               </div>
 
               {/* Title - Punchy & Short on Mobile, Full Editorial on Desktop */}
@@ -210,7 +225,7 @@ export default async function HomePage() {
               <div className="flex items-center gap-4 pt-1">
                 <a
                   href={`https://wa.me/${cleanWhatsApp}?text=${encodeURIComponent(
-                    "Hello BBG Textile, I am interested in wholesale inquiry for Cotton Lycra Leggings."
+                    "Hello SBBG Textile Exporter, I am interested in wholesale inquiry for Cotton Lycra Leggings."
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"

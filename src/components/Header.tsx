@@ -164,7 +164,7 @@ export default function Header({ settings }: HeaderProps) {
               const isActive =
                 link.href === "/"
                   ? pathname === "/"
-                  : pathname.startsWith(link.href);
+                  : Boolean(pathname?.startsWith(link.href));
               return (
                 <Link
                   key={link.name}
@@ -243,7 +243,7 @@ export default function Header({ settings }: HeaderProps) {
                 const isActive =
                   link.href === "/"
                     ? pathname === "/"
-                    : pathname.startsWith(link.href);
+                    : Boolean(pathname?.startsWith(link.href));
                 return (
                   <Link
                     key={link.name}

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <!-- Exact Warm Ivory / Natural Linen Tone From Reference Design (#F7F2EC) -->
+  <rect width="32" height="32" fill="#F7F2EC"/>
+  
+  <!-- Subtle Weft Threads (Horizontal) -->
+  <path d="M0 4h32 M0 12h32 M0 20h32 M0 28h32" stroke="#E3D7C5" stroke-width="1" stroke-opacity="0.32"/>
+  <path d="M0 4h32 M0 12h32 M0 20h32 M0 28h32" stroke="#FFFFFF" stroke-width="0.5" stroke-opacity="0.35" stroke-dasharray="3,5"/>
+  
+  <!-- Subtle Warp Threads (Vertical) -->
+  <path d="M4 0v32 M12 0v32 M20 0v32 M28 0v32" stroke="#DDD0BC" stroke-width="1" stroke-opacity="0.28"/>
+  <path d="M4 0v32 M12 0v32 M20 0v32 M28 0v32" stroke="#FFFFFF" stroke-width="0.5" stroke-opacity="0.35" stroke-dasharray="5,3"/>
+  
+  <!-- Woven Plain-Weave Texture Intersections -->
+  <rect x="3.2" y="3.2" width="1.6" height="1.6" fill="#CBBDA8" fill-opacity="0.18" rx="0.3"/>
+  <rect x="11.2" y="11.2" width="1.6" height="1.6" fill="#CBBDA8" fill-opacity="0.18" rx="0.3"/>
+  <rect x="19.2" y="19.2" width="1.6" height="1.6" fill="#CBBDA8" fill-opacity="0.18" rx="0.3"/>
+  <rect x="27.2" y="27.2" width="1.6" height="1.6" fill="#CBBDA8" fill-opacity="0.18" rx="0.3"/>
+  <rect x="19.2" y="3.2" width="1.6" height="1.6" fill="#CBBDA8" fill-opacity="0.15" rx="0.3"/>
+  <rect x="3.2" y="19.2" width="1.6" height="1.6" fill="#CBBDA8" fill-opacity="0.15" rx="0.3"/>
+  <rect x="11.2" y="27.2" width="1.6" height="1.6" fill="#CBBDA8" fill-opacity="0.15" rx="0.3"/>
+  <rect x="27.2" y="11.2" width="1.6" height="1.6" fill="#CBBDA8" fill-opacity="0.15" rx="0.3"/>
+  
+  <!-- Fine Organic Canvas / Linen Slub Diagonal Fibers -->
+  <path d="M0 0l32 32 M0 16l16 16 M16 0l16 16 M0 32L32 0 M0 16L16 0 M16 32L32 16" stroke="#ECE2D2" stroke-width="0.6" stroke-opacity="0.25"/>
+</svg>
