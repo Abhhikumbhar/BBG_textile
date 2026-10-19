@@ -88,18 +88,12 @@ export default function AboutPage() {
           </div>
 
           {/* Stats Bar */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16">
             <div className="bg-white p-6 rounded-3xl border border-gray-200 text-center shadow-xs">
-              <div className="font-serif text-3xl sm:text-4xl font-bold text-[#1A365D] mb-1">
-                30+
+              <div className="font-serif text-2xl sm:text-3xl font-bold text-[#1A365D] mb-1">
+                Since Early Years
               </div>
-              <div className="text-xs text-gray-500 font-medium">Years Textile Heritage</div>
-            </div>
-            <div className="bg-white p-6 rounded-3xl border border-gray-200 text-center shadow-xs">
-              <div className="font-serif text-3xl sm:text-4xl font-bold text-amber-600 mb-1">
-                50,000+
-              </div>
-              <div className="text-xs text-gray-500 font-medium">Monthly Garment Capacity</div>
+              <div className="text-xs text-gray-500 font-medium">Textile Heritage</div>
             </div>
             <div className="bg-white p-6 rounded-3xl border border-gray-200 text-center shadow-xs">
               <div className="font-serif text-3xl sm:text-4xl font-bold text-emerald-600 mb-1">

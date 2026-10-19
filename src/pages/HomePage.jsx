@@ -149,11 +149,11 @@ export default function HomePage() {
                   <div className="w-4 h-4 rounded-full bg-white p-0.5 flex items-center justify-center shrink-0 shadow-2xs">
                     <img
                       src="/images/logo/bbg-logo-icon.png"
-                      alt="SBBG Textile Exporter Logo"
+                      alt="SBBG Bharat Textile Logo"
                       className="w-full h-full object-contain"
                     />
                   </div>
-                  <span>SBBG Textile Exporter</span>
+                  <span>SBBG BHARAT TEXTILE</span>
                 </div>
 
                 <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-white/[0.08] border border-white/20 text-slate-200 text-[10px] sm:text-xs font-medium tracking-[0.16em] uppercase backdrop-blur-md shadow-sm">
@@ -163,14 +163,12 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <h1 className="font-luxury text-2xl sm:text-5xl lg:text-6xl xl:text-7xl font-normal sm:font-medium tracking-[0.015em] leading-[1.18] sm:leading-[1.08] mb-3 sm:mb-5 drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]">
-                <span className="text-studio-pearl">
-                  <span className="sm:hidden block">
-                    4-Way Stretch Cotton Lycra Leggings
-                  </span>
-                  <span className="hidden sm:block">
-                    4-Way Stretch Cotton Lycra Leggings
-                  </span>
+              <h1 className="font-luxury text-3xl sm:text-5xl lg:text-6xl xl:text-7xl font-normal sm:font-medium tracking-[0.015em] leading-[1.18] sm:leading-[1.08] mb-3 sm:mb-5 text-white drop-shadow-[0_4px_24px_rgba(0,0,0,0.95)]">
+                <span className="sm:hidden block">
+                  4-Way Stretch Cotton Lycra Leggings
+                </span>
+                <span className="hidden sm:block">
+                  4-Way Stretch Cotton Lycra Leggings
                 </span>
               </h1>
 
