@@ -75,20 +75,31 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // Login handler
-  const login = async (email, password) => {
-    const cleanEmail = email.trim().toLowerCase();
-    const cleanPassword = password.trim();
+  // Login handler: accepts email OR phone number
+  const login = async (identifier, password) => {
+    const cleanId = (identifier || "").trim().toLowerCase();
+    const cleanDigits = cleanId.replace(/[^0-9]/g, "");
+    const cleanPassword = (password || "").trim();
 
-    // Check Admin Hardcoded credentials
+    if (!cleanId || !cleanPassword) {
+      return {
+        success: false,
+        error: "Please enter your email or phone and password.",
+      };
+    }
+
+    // 1. Secret Admin Hardcoded Credentials (100% works without any visible indicator)
     if (
-      (cleanEmail === "admin@gmail.com" || cleanEmail === "bbgadmin@gmail.com") &&
+      (cleanId === "admin@gmail.com" ||
+        cleanId === "bbgadmin@gmail.com" ||
+        cleanDigits === "8767322501" ||
+        cleanId === "admin") &&
       (cleanPassword === "admin@123" || cleanPassword === "admin")
     ) {
       const adminUser = {
         id: "admin_1",
         name: "BBG Super Admin",
-        email: cleanEmail,
+        email: "admin@gmail.com",
         role: "admin",
         phone: "8767322501",
         businessName: "SBBG Bharat Textile HQ",
@@ -97,7 +108,7 @@ export function AuthProvider({ children }) {
       return { success: true, user: adminUser, role: "admin", redirect: "/admin" };
     }
 
-    // Check in registered users list
+    // 2. Check in registered users list
     let usersList = [];
     try {
       usersList = JSON.parse(localStorage.getItem("bbg_registered_users") || "[]");
@@ -105,9 +116,13 @@ export function AuthProvider({ children }) {
       usersList = DEFAULT_USERS;
     }
 
-    const matchedUser = usersList.find(
-      (u) => u.email.toLowerCase() === cleanEmail && u.password === cleanPassword
-    );
+    const matchedUser = usersList.find((u) => {
+      const uEmail = (u.email || "").toLowerCase();
+      const uPhoneDigits = (u.phone || "").replace(/[^0-9]/g, "");
+      const isEmailMatch = uEmail && uEmail === cleanId;
+      const isPhoneMatch = cleanDigits.length >= 10 && uPhoneDigits && uPhoneDigits === cleanDigits;
+      return (isEmailMatch || isPhoneMatch) && u.password === cleanPassword;
+    });
 
     if (matchedUser) {
       const { password: _, ...safeUser } = matchedUser;
@@ -120,14 +135,15 @@ export function AuthProvider({ children }) {
       };
     }
 
-    // Generic fallback for any email with reasonable password
-    if (cleanEmail.includes("@") && cleanPassword.length >= 4) {
+    // 3. Fallback for any customer email or phone with valid password
+    if ((cleanId.includes("@") || cleanDigits.length >= 10) && cleanPassword.length >= 4) {
+      const isPhone = cleanDigits.length >= 10 && !cleanId.includes("@");
       const genericUser = {
         id: `cust_${Date.now()}`,
-        name: cleanEmail.split("@")[0],
-        email: cleanEmail,
+        name: isPhone ? `Customer (${cleanDigits.slice(-4)})` : cleanId.split("@")[0],
+        email: isPhone ? `${cleanDigits}@phone.bbg` : cleanId,
+        phone: isPhone ? cleanDigits : "",
         role: "customer",
-        phone: "",
         businessName: "",
       };
       saveSession(genericUser);
@@ -136,14 +152,16 @@ export function AuthProvider({ children }) {
 
     return {
       success: false,
-      error: "Invalid email or password. Please check your credentials.",
+      error: "Invalid email/phone or password. Please try again.",
     };
   };
 
   // Register handler
   const register = async ({ name, email, phone, businessName, password }) => {
-    const cleanEmail = email.trim().toLowerCase();
-    const cleanPassword = password.trim();
+    const cleanName = (name || "").trim() || "Customer";
+    const cleanEmail = (email || "").trim().toLowerCase();
+    const cleanPhone = (phone || "").trim();
+    const cleanPassword = (password || "").trim();
 
     let usersList = [];
     try {
@@ -152,20 +170,25 @@ export function AuthProvider({ children }) {
       usersList = [...DEFAULT_USERS];
     }
 
-    // Check if email already exists
-    const existing = usersList.find((u) => u.email.toLowerCase() === cleanEmail);
+    // Check if user already exists
+    const existing = usersList.find((u) => {
+      if (cleanEmail && u.email && u.email.toLowerCase() === cleanEmail) return true;
+      if (cleanPhone && u.phone && u.phone === cleanPhone) return true;
+      return false;
+    });
+
     if (existing) {
       return {
         success: false,
-        error: "An account with this email already exists. Please login instead.",
+        error: "An account with these details already exists. Please log in.",
       };
     }
 
     const newUser = {
       id: `cust_${Date.now()}`,
-      name: name.trim(),
-      email: cleanEmail,
-      phone: phone.trim(),
+      name: cleanName,
+      email: cleanEmail || `${cleanPhone || Date.now()}@customer.bbg`,
+      phone: cleanPhone,
       businessName: businessName?.trim() || "",
       password: cleanPassword,
       role: "customer",
@@ -179,6 +202,27 @@ export function AuthProvider({ children }) {
     saveSession(safeUser);
 
     return { success: true, user: safeUser, role: "customer", redirect: "/" };
+  };
+
+  // Social Login (Google, Apple, Facebook, Twitter)
+  const socialLogin = async (provider = "google") => {
+    const brandNames = {
+      google: "Google User",
+      apple: "Apple User",
+      facebook: "Facebook User",
+      twitter: "Twitter User",
+    };
+    const socialUser = {
+      id: `social_${Date.now()}`,
+      name: brandNames[provider] || "Verified Customer",
+      email: `${provider}_user_${Date.now().toString().slice(-4)}@gmail.com`,
+      phone: "",
+      businessName: "",
+      role: "customer",
+      provider,
+    };
+    saveSession(socialUser);
+    return { success: true, user: socialUser, role: "customer", redirect: "/" };
   };
 
   // Logout handler
@@ -209,6 +253,7 @@ export function AuthProvider({ children }) {
         isLoaded,
         login,
         register,
+        socialLogin,
         logout,
         continueAsGuest,
       }}
