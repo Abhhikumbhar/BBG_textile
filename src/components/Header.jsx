@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 import {
   ShoppingBag,
   Menu,
@@ -9,6 +10,9 @@ import {
   MapPin,
   ChevronRight,
   Crown,
+  User,
+  ShieldCheck,
+  LogOut,
 } from "lucide-react";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
@@ -16,6 +20,7 @@ export default function Header({ settings }) {
   const location = useLocation();
   const pathname = location.pathname;
   const { totalItems, setIsOpen } = useCart();
+  const { user, isAuthenticated, isAdmin, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -60,59 +65,61 @@ export default function Header({ settings }) {
                 "Direct Mill Wholesale & Export — Sangli Works: +91 87673 22501"}
             </p>
           </div>
-          <div className="hidden md:flex items-center gap-5 text-[11px] text-gray-300">
+          <div className="hidden sm:flex items-center gap-4 text-xs">
+            {isAdmin && (
+              <Link
+                to="/admin"
+                className="flex items-center gap-1 font-bold text-amber-300 hover:text-amber-200 transition-colors"
+              >
+                <Crown className="w-3.5 h-3.5 text-amber-400" />
+                <span>Admin Panel</span>
+              </Link>
+            )}
             <a
-              href={`https://wa.me/${cleanWhatsApp}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 hover:text-amber-400 transition-colors"
+              href={`tel:${settings?.phoneNumber || "8767322501"}`}
+              className="flex items-center gap-1.5 text-gray-300 hover:text-white transition-colors"
             >
-              <WhatsAppIcon className="w-3.5 h-3.5 text-emerald-400" />
-              <span>WhatsApp Direct</span>
+              <Phone className="w-3.5 h-3.5 text-amber-400" />
+              <span>+91 87673 22501</span>
             </a>
-            <span className="text-gray-600">|</span>
-            <span className="flex items-center gap-1 text-gray-400">
-              <MapPin className="w-3.5 h-3.5 text-amber-400" />
-              <span>Sangli, Maharashtra</span>
-            </span>
           </div>
         </div>
       </div>
 
-      {/* Main Sticky Navbar */}
+      {/* Main Luxury Header */}
       <header
-        className={`sticky top-0 z-40 transition-all duration-300 ${
-          scrolled
-            ? "bg-[#0D1B2A]/95 backdrop-blur-md shadow-md py-3"
-            : "bg-[#0D1B2A] py-3.5 sm:py-4"
-        } border-b border-amber-500/20`}
+        className={`sticky top-0 z-30 transition-all duration-300 bg-[#0B1220]/95 backdrop-blur-md border-b border-white/10 ${
+          scrolled ? "shadow-xl py-2.5 sm:py-3" : "py-3 sm:py-4"
+        }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between gap-4">
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-3 group shrink-0">
-              <div className="relative w-10 h-10 sm:w-11 sm:h-11 rounded-full p-0.5 bg-gradient-to-tr from-amber-400 to-amber-200 flex items-center justify-center shadow-sm">
-                <img
-                  src="/images/logo/bbg-logo-icon.png"
-                  alt="SBBG Textile Logo"
-                  className="w-full h-full rounded-full object-cover bg-white"
-                  onError={(e) => {
-                    e.currentTarget.style.display = "none";
-                  }}
-                />
+          <div className="flex items-center justify-between">
+            {/* Brand Logo & Name */}
+            <Link to="/" className="flex items-center gap-2.5 sm:gap-3 group">
+              <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full p-0.5 bg-gradient-to-tr from-amber-400 via-amber-200 to-amber-500 shadow-lg group-hover:scale-105 transition-transform flex items-center justify-center">
+                <div className="w-full h-full rounded-full bg-white p-0.5 flex items-center justify-center overflow-hidden">
+                  <img
+                    src="/images/logo/bbg-logo-icon.png"
+                    alt="SBBG Logo"
+                    className="w-full h-full object-contain"
+                    onError={(e) => {
+                      e.currentTarget.style.display = "none";
+                    }}
+                  />
+                </div>
               </div>
               <div className="flex flex-col">
-                <span className="font-serif text-lg sm:text-xl font-bold tracking-tight text-white group-hover:text-amber-300 transition-colors">
+                <span className="font-serif text-base sm:text-xl font-bold tracking-tight text-white group-hover:text-amber-300 transition-colors">
                   {businessName}
                 </span>
-                <span className="text-[10px] tracking-widest text-amber-400/90 font-medium uppercase">
-                  Made in Bharat
+                <span className="text-[10px] text-amber-400/90 font-medium tracking-widest uppercase">
+                  Sangli Textile Works
                 </span>
               </div>
             </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center gap-8">
+            {/* Desktop Navigation Links */}
+            <nav className="hidden md:flex items-center space-x-7">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href;
                 return (
@@ -135,7 +142,7 @@ export default function Header({ settings }) {
             </nav>
 
             {/* Right Action Icons */}
-            <div className="flex items-center gap-3 sm:gap-4">
+            <div className="flex items-center gap-2 sm:gap-3">
               {/* WhatsApp Quick Link */}
               <a
                 href={`https://wa.me/${cleanWhatsApp}?text=${encodeURIComponent(
@@ -143,11 +150,35 @@ export default function Header({ settings }) {
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20 text-xs font-medium transition-all"
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20 text-xs font-medium transition-all"
               >
                 <WhatsAppIcon className="w-3.5 h-3.5" />
                 <span>Chat</span>
               </a>
+
+              {/* User Account / Profile Button */}
+              {isAuthenticated ? (
+                <Link
+                  to="/account"
+                  className="flex items-center gap-1.5 py-1.5 px-2.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-medium text-gray-200 transition-colors"
+                  title="My Account"
+                >
+                  <div className="w-5 h-5 rounded-full bg-amber-400 text-[#0B1220] flex items-center justify-center font-bold text-[10px]">
+                    {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
+                  </div>
+                  <span className="hidden lg:inline-block max-w-[90px] truncate">
+                    {user?.name?.split(" ")[0]}
+                  </span>
+                </Link>
+              ) : (
+                <Link
+                  to="/login"
+                  className="hidden sm:inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full bg-amber-500/15 border border-amber-400/30 text-amber-300 hover:bg-amber-500/25 text-xs font-bold transition-colors"
+                >
+                  <User className="w-3.5 h-3.5" />
+                  <span>Login</span>
+                </Link>
+              )}
 
               {/* Cart Button */}
               <button
@@ -156,9 +187,9 @@ export default function Header({ settings }) {
                 className="relative p-2 text-gray-300 hover:text-amber-400 hover:bg-white/5 rounded-full transition-all"
                 aria-label="Shopping Cart"
               >
-                <ShoppingBag className="w-6 h-6" />
+                <ShoppingBag className="w-5 h-5 sm:w-6 sm:h-6" />
                 {totalItems > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-amber-500 text-[#0D1B2A] text-[11px] font-bold h-5 min-w-[20px] px-1 rounded-full flex items-center justify-center shadow-md animate-pulse">
+                  <span className="absolute -top-1 -right-1 bg-amber-500 text-[#0D1B2A] text-[10px] sm:text-[11px] font-bold h-4 sm:h-5 min-w-[16px] sm:min-w-[20px] px-1 rounded-full flex items-center justify-center shadow-md animate-pulse">
                     {totalItems}
                   </span>
                 )}
@@ -202,6 +233,32 @@ export default function Header({ settings }) {
                   </Link>
                 );
               })}
+
+              {/* Account Link in Mobile Menu */}
+              <Link
+                to={isAuthenticated ? "/account" : "/login"}
+                className="flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium text-amber-300 bg-amber-400/10 border border-amber-400/20"
+              >
+                <div className="flex items-center gap-2">
+                  <User className="w-4 h-4 text-amber-400" />
+                  <span>{isAuthenticated ? `माझे खाते (${user?.name})` : "लॉगिन / Register करा"}</span>
+                </div>
+                <ChevronRight className="w-4 h-4 text-amber-400" />
+              </Link>
+
+              {isAdmin && (
+                <Link
+                  to="/admin"
+                  className="flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-bold text-amber-400 bg-amber-500/20 border border-amber-500/40"
+                >
+                  <div className="flex items-center gap-2">
+                    <Crown className="w-4 h-4 text-amber-400" />
+                    <span>Admin Dashboard</span>
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-amber-400" />
+                </Link>
+              )}
+
               <div className="pt-4 border-t border-white/10 flex flex-col gap-2">
                 <a
                   href={`https://wa.me/${cleanWhatsApp}`}

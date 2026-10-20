@@ -34,6 +34,7 @@ export default function AdminLayout({ children }) {
 
   const handleLogout = () => {
     localStorage.removeItem("bbg_admin_logged_in");
+    localStorage.removeItem("bbg_user_session");
     navigate("/admin/login");
   };
 
