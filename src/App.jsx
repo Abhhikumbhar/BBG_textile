@@ -7,17 +7,17 @@ import BottomNav from "@/components/BottomNav";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
 
 // Storefront Pages
-import HomePage from "@/pages/HomePage";
-import ProductsPage from "@/pages/ProductsPage";
-import ProductDetailPage from "@/pages/ProductDetailPage";
-import CategoriesPage from "@/pages/CategoriesPage";
-import CartPage from "@/pages/CartPage";
-import CheckoutPage from "@/pages/CheckoutPage";
-import OrderSuccessPage from "@/pages/OrderSuccessPage";
-import AboutPage from "@/pages/AboutPage";
-import ContactPage from "@/pages/ContactPage";
-import AuthPage from "@/pages/AuthPage";
-import AccountPage from "@/pages/AccountPage";
+import HomePage from "@/views/HomePage";
+import ProductsPage from "@/views/ProductsPage";
+import ProductDetailPage from "@/views/ProductDetailPage";
+import CategoriesPage from "@/views/CategoriesPage";
+import CartPage from "@/views/CartPage";
+import CheckoutPage from "@/views/CheckoutPage";
+import OrderSuccessPage from "@/views/OrderSuccessPage";
+import AboutPage from "@/views/AboutPage";
+import ContactPage from "@/views/ContactPage";
+import AuthPage from "@/views/AuthPage";
+import AccountPage from "@/views/AccountPage";
 
 // Admin Panel Pages
 import AdminLogin from "@/admin/AdminLogin";

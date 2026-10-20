@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Package, LayoutGrid, ShoppingBag } from "lucide-react";
+import { Home, Package, LayoutGrid, ShoppingBag, User } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 
 export default function BottomNav() {
@@ -87,6 +87,16 @@ export default function BottomNav() {
             </span>
           )}
         </button>
+
+        {/* 5. Account / Login */}
+        <Link
+          href="/admin/login"
+          className="relative w-11 h-11 flex items-center justify-center text-gray-400 hover:text-amber-400 active:scale-90 transition-all duration-200"
+          aria-label="Account"
+          title="Account"
+        >
+          <User className="w-5 h-5 stroke-[2]" />
+        </Link>
       </nav>
     </div>
   );

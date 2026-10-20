@@ -13,6 +13,8 @@ import {
   MapPin,
   ChevronRight,
   Crown,
+  User,
+  ShieldCheck,
 } from "lucide-react";
 import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
@@ -199,6 +201,15 @@ export default function Header({ settings }: HeaderProps) {
               <span>Wholesale Enquiry</span>
             </a>
 
+            {/* Account / Login Button */}
+            <Link
+              href="/admin/login"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-50 border border-amber-200 text-amber-900 hover:bg-amber-100 text-xs font-bold transition-all"
+            >
+              <User className="w-3.5 h-3.5 text-amber-700" />
+              <span>Login / Account</span>
+            </Link>
+
             {/* Shopping Cart Button */}
             <button
               onClick={() => setIsOpen(true)}
@@ -260,6 +271,32 @@ export default function Header({ settings }: HeaderProps) {
                   </Link>
                 );
               })}
+
+              {/* Login / Register in Mobile Drawer */}
+              <Link
+                href="/admin/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-between px-3.5 py-3 rounded-xl font-serif text-base tracking-wide font-medium bg-amber-50 text-amber-950 border border-amber-200 transition-colors"
+              >
+                <div className="flex items-center gap-2.5">
+                  <User className="w-5 h-5 text-amber-700" />
+                  <span>Login / Register (खाते लॉगिन करा)</span>
+                </div>
+                <ChevronRight className="w-4 h-4 text-amber-700" />
+              </Link>
+
+              {/* Admin Panel in Mobile Drawer */}
+              <Link
+                href="/admin"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-between px-3.5 py-3 rounded-xl font-serif text-base tracking-wide font-medium bg-[#1A365D]/10 text-[#1A365D] border border-[#1A365D]/20 transition-colors"
+              >
+                <div className="flex items-center gap-2.5">
+                  <ShieldCheck className="w-5 h-5 text-[#1A365D]" />
+                  <span>Admin Panel</span>
+                </div>
+                <ChevronRight className="w-4 h-4 text-[#1A365D]" />
+              </Link>
 
               <div className="pt-3 border-t border-gray-100 flex flex-col gap-2.5">
                 <a
