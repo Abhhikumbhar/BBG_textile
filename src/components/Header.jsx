@@ -42,6 +42,7 @@ export default function Header({ settings }) {
     { name: "Home", href: "/" },
     { name: "Products", href: "/products" },
     { name: "Categories", href: "/categories" },
+    { name: "Track Order", href: "/track-order" },
     { name: "About Us", href: "/about" },
     { name: "Contact", href: "/contact" },
   ];

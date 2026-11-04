@@ -16,6 +16,7 @@ import {
   ShieldCheck,
   Building2,
   Phone,
+  Mail,
 } from "lucide-react";
 
 export default function TrackOrderPage() {
@@ -344,16 +345,17 @@ export default function TrackOrderPage() {
                 Order Not Found
               </h3>
               <p className="text-xs text-gray-600 leading-relaxed">
-                We could not find an order matching <strong className="text-gray-900 font-mono">"{orderQuery}"</strong>. Please verify the order number from your confirmation SMS/WhatsApp.
+                We could not find an order matching <strong className="text-gray-900 font-mono">"{orderQuery}"</strong>. Please verify the order number from your confirmation email or order receipt.
               </p>
               <div className="pt-2">
                 <a
-                  href={`https://wa.me/${siteSettings?.whatsappNumber || "918767322501"}?text=Hello%20BBG%20Textile,%20I%20need%20help%20tracking%20my%20order.`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition-all shadow-xs"
+                  href={`mailto:${siteSettings?.email || "bbgtextilebharat1@gmail.com"}?subject=${encodeURIComponent(
+                    `Need Help Tracking Order #${orderQuery}`
+                  )}`}
+                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#1A365D] hover:bg-[#0F2444] text-white text-xs font-bold transition-all shadow-xs"
                 >
-                  <span>Ask Support on WhatsApp</span>
+                  <Mail className="w-4 h-4 text-white" />
+                  <span>Email Tracking Support Desk</span>
                 </a>
               </div>
             </div>

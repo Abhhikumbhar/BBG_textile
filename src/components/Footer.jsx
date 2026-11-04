@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import {
   MapPin,
-  Phone,
   Mail,
   ShieldCheck,
   Truck,
@@ -124,6 +123,11 @@ export default function Footer({ settings }) {
                 </Link>
               </li>
               <li>
+                <Link to="/track-order" className="hover:text-amber-400 transition-colors">
+                  Track Order
+                </Link>
+              </li>
+              <li>
                 <Link to="/about" className="hover:text-amber-400 transition-colors">
                   About BBG Textile
                 </Link>
@@ -191,15 +195,6 @@ export default function Footer({ settings }) {
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-4 h-4 text-amber-400 shrink-0 mt-1" />
                 <span className="text-xs leading-relaxed">{address}</span>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <Phone className="w-4 h-4 text-amber-400 shrink-0" />
-                <a
-                  href={`tel:${phone}`}
-                  className="text-xs hover:text-white transition-colors"
-                >
-                  {phone}
-                </a>
               </div>
               <div className="flex items-center gap-2.5">
                 <Mail className="w-4 h-4 text-amber-400 shrink-0" />

@@ -3,7 +3,6 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   MapPin,
-  Phone,
   Mail,
   ShieldCheck,
   Truck,
@@ -234,15 +233,6 @@ export default function Footer({ settings }: FooterProps) {
                 <span className="text-gray-300 leading-snug">
                   {address}
                 </span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-amber-400 shrink-0" />
-                <a
-                  href={`tel:${phone}`}
-                  className="hover:text-white transition-colors"
-                >
-                  {phone}
-                </a>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-amber-400 shrink-0" />
