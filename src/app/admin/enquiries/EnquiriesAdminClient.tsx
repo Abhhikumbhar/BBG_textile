@@ -14,7 +14,6 @@ import {
   AlertCircle,
   Calendar,
 } from "lucide-react";
-import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 interface Enquiry {
   id: string;
@@ -230,15 +229,15 @@ export default function EnquiriesAdminClient({ initialEnquiries = [] }: Enquirie
                             {enq.phone}
                           </span>
                           <a
-                            href={`https://wa.me/${cleanPhone}?text=${encodeURIComponent(
-                              `Hello ${enq.name}, thank you for contacting BBG Textile. Regarding your enquiry:`
+                            href={`mailto:${enq.email || "bbgtextilebharat1@gmail.com"}?subject=${encodeURIComponent(
+                              `Reply to BBG Textile Enquiry`
+                            )}&body=${encodeURIComponent(
+                              `Hello ${enq.name},\n\nThank you for contacting BBG Textile regarding your enquiry:\n"${enq.message}"\n\n`
                             )}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-emerald-600 hover:text-emerald-700"
-                            title="Reply on WhatsApp"
+                            className="text-[#1A365D] hover:text-[#0F2444]"
+                            title="Reply via Email"
                           >
-                            <WhatsAppIcon className="w-3.5 h-3.5" />
+                            <Mail className="w-3.5 h-3.5" />
                           </a>
                         </div>
                         {enq.email && (

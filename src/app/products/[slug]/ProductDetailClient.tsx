@@ -18,8 +18,8 @@ import {
   ChevronLeft,
   Info,
   Phone,
+  Mail,
 } from "lucide-react";
-import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 interface Variant {
   id: string;
@@ -58,13 +58,11 @@ interface ProductDetailProps {
     variants: Variant[];
   };
   relatedProducts: any[];
-  whatsappNumber?: string;
 }
 
 export default function ProductDetailClient({
   product,
   relatedProducts,
-  whatsappNumber = "918767322501",
 }: ProductDetailProps) {
   const { addItem } = useCart();
 
@@ -233,7 +231,7 @@ export default function ProductDetailClient({
       : [
           {
             id: "default",
-            url: studioImg || "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=1200&q=80",
+            url: studioImg || "/images/products/bbg-studio-hd-crimson-red.jpg",
             altText: product.name,
             isPrimary: true,
           },
@@ -262,17 +260,22 @@ export default function ProductDetailClient({
         ]
       : rawImages;
 
-  const cleanWhatsApp = (whatsappNumber && whatsappNumber.trim() ? whatsappNumber : "918767322501").replace(/[^0-9]/g, "");
   const currentUrl = typeof window !== "undefined" ? window.location.href : "";
 
-  const whatsappMessage = encodeURIComponent(
-    `Hello BBG Textile,\n\nI am inquiring about *${product.name}* (SKU: ${product.sku}).\n` +
-      (selectedColor ? `• Color / Shade: ${selectedColor}\n` : "") +
-      (selectedSize ? `• Length / Cut: ${selectedSize}\n` : "") +
-      (quantity > 1 ? `• Quantity: ${quantity}\n` : "") +
-      `Product Link: ${currentUrl || `https://bbgtextile.com/products/${product.slug}`}\n\n` +
-      `Please provide wholesale quotation and delivery timeline.`
+  const emailSubject = encodeURIComponent(
+    `Wholesale Quotation Request: ${product.name} (SKU: ${product.sku})`
   );
+  const emailBody = encodeURIComponent(
+    `Hello BBG Textile,\n\nI am inquiring about wholesale quotation for:\n` +
+      `Product: ${product.name}\n` +
+      `SKU: ${product.sku}\n` +
+      (selectedColor ? `Color / Shade: ${selectedColor}\n` : "") +
+      (selectedSize ? `Length / Cut: ${selectedSize}\n` : "") +
+      (quantity > 1 ? `Quantity: ${quantity}\n` : "") +
+      `Product Link: ${currentUrl || `https://bbgtextile.com/products/${product.slug}`}\n\n` +
+      `Please provide quotation and delivery timeline.\n\nThank you!`
+  );
+  const emailLink = `mailto:bbgtextilebharat1@gmail.com?subject=${emailSubject}&body=${emailBody}`;
 
   const handleAddToCart = () => {
     addItem({
@@ -563,7 +566,7 @@ export default function ProductDetailClient({
             <div className="absolute right-2.5 sm:right-3.5 bottom-2.5 sm:bottom-3.5 z-20 pointer-events-none flex">
               <div className="px-2.5 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-gradient-to-r from-amber-500/90 via-amber-600/90 to-amber-700/90 text-white text-[9px] sm:text-[11px] font-bold shadow-lg border border-amber-300/60 backdrop-blur-md flex items-center gap-1 sm:gap-1.5">
                 <span>✨</span>
-                <span>परंपरेची आधुनिक पावलं</span>
+                <span>Modern Touch of Tradition</span>
               </div>
             </div>
           </div>
@@ -745,15 +748,13 @@ export default function ProductDetailClient({
 
           {/* Action CTAs: Dedicated Wholesale Enquiry Only */}
           <div className="flex flex-col sm:flex-row gap-3.5 mb-8">
-            {/* Primary WhatsApp Enquiry */}
+            {/* Primary Email Enquiry */}
             <a
-              href={`https://wa.me/${cleanWhatsApp}?text=${whatsappMessage}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1 py-4 px-6 bg-[#25D366] hover:bg-[#20BD5A] text-white rounded-xl font-bold text-base shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2.5"
+              href={emailLink}
+              className="flex-1 py-4 px-6 bg-[#1A365D] hover:bg-[#0F2444] text-white rounded-xl font-bold text-base shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2.5"
             >
-              <WhatsAppIcon className="w-5 h-5 text-white" />
-              <span>Enquire on WhatsApp</span>
+              <Mail className="w-5 h-5 text-white" />
+              <span>Enquire via Email</span>
             </a>
 
             {/* Direct Call for Booking */}
@@ -823,7 +824,6 @@ export default function ProductDetailClient({
               <ProductCard
                 key={rel.id}
                 product={rel}
-                whatsappNumber={whatsappNumber}
               />
             ))}
           </div>
@@ -842,13 +842,11 @@ export default function ProductDetailClient({
             <ChevronLeft className="w-5 h-5" />
           </Link>
           <a
-            href={`https://wa.me/${cleanWhatsApp}?text=${whatsappMessage}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 py-2.5 px-4 bg-[#25D366] hover:bg-[#20BD5A] active:bg-[#1DA851] text-white rounded-full font-bold text-sm shadow-md flex items-center justify-center gap-2 active:scale-98 transition-all"
+            href={emailLink}
+            className="flex-1 py-2.5 px-4 bg-[#1A365D] hover:bg-[#0F2444] active:bg-[#0A192F] text-white rounded-full font-bold text-sm shadow-md flex items-center justify-center gap-2 active:scale-98 transition-all"
           >
-            <WhatsAppIcon className="w-5 h-5 text-white" />
-            <span>Enquire on WhatsApp</span>
+            <Mail className="w-4 h-4 text-white" />
+            <span>Enquire via Email</span>
           </a>
           <a
             href="tel:+918767322501"

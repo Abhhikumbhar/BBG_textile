@@ -20,7 +20,7 @@ export default function CartPage() {
     <div className="min-h-screen flex flex-col bg-[#FDFDFD]">
       <Header settings={siteSettings} />
 
-      <main className="flex-1 py-12 sm:py-16">
+      <main className="flex-1 py-12 sm:py-16 pb-28 sm:pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mb-8">
             Your Fabric Cart ({items.reduce((s, i) => s + i.quantity, 0)} items)
@@ -90,7 +90,9 @@ export default function CartPage() {
                         </span>
                         <button
                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                          className="px-2.5 py-1 text-gray-600 hover:bg-gray-100"
+                          disabled={item.quantity >= 5}
+                          className="px-2.5 py-1 text-gray-600 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed"
+                          title={item.quantity >= 5 ? "Maximum 5 items per order" : "Add one"}
                         >
                           <Plus className="w-3.5 h-3.5" />
                         </button>

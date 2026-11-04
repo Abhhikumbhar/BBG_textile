@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import AdminLayout from "./AdminLayout";
 import {
@@ -8,6 +8,7 @@ import {
   getEnquiries,
   getSiteSettings,
 } from "@/lib/catalogService";
+import { syncOrdersFromCloud } from "@/lib/cloudSync";
 import {
   Package,
   Layers,
@@ -25,9 +26,15 @@ import {
 export default function AdminDashboard() {
   const products = getAllProducts();
   const categories = getCategories();
-  const orders = getOrders();
+  const [orders, setOrders] = useState(getOrders());
   const enquiries = getEnquiries();
   const settings = getSiteSettings();
+
+  useEffect(() => {
+    syncOrdersFromCloud().then((cloudOrders) => {
+      if (cloudOrders) setOrders(cloudOrders);
+    });
+  }, []);
 
   const totalRevenue = orders.reduce((sum, o) => sum + (o.total || 0), 0);
   const pendingOrders = orders.filter((o) => o.status === "PENDING" || !o.status).length;

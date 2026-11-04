@@ -12,15 +12,6 @@ const DEFAULT_USERS = [
     phone: "8767322501",
     businessName: "SBBG Bharat Textile HQ",
   },
-  {
-    id: "demo_cust_1",
-    name: "Wholesale Partner",
-    email: "customer@gmail.com",
-    password: "user@123",
-    role: "customer",
-    phone: "9876543210",
-    businessName: "Sangli Cloth Center",
-  },
 ];
 
 export function AuthProvider({ children }) {
@@ -28,7 +19,7 @@ export function AuthProvider({ children }) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [guestMode, setGuestMode] = useState(false);
 
-  // Initialize Auth from localStorage
+  // Initialize Auth from storage
   useEffect(() => {
     try {
       // Initialize registered users pool if empty
@@ -37,10 +28,12 @@ export function AuthProvider({ children }) {
         localStorage.setItem("bbg_registered_users", JSON.stringify(DEFAULT_USERS));
       }
 
-      // Check active session
+      // Check active user session (persisted across launches)
       const session = localStorage.getItem("bbg_user_session");
       const isAdminLoggedIn = localStorage.getItem("bbg_admin_logged_in") === "true";
-      const guest = localStorage.getItem("bbg_guest_mode") === "true";
+      
+      // Guest mode is session-based (active during current launch, not permanent)
+      const guestSession = sessionStorage.getItem("bbg_app_guest_session") === "true";
 
       if (session) {
         setUser(JSON.parse(session));
@@ -53,7 +46,7 @@ export function AuthProvider({ children }) {
         });
       }
 
-      if (guest) {
+      if (guestSession) {
         setGuestMode(true);
       }
     } catch (e) {
@@ -63,10 +56,11 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  // Save session when user changes
+  // Save session when user logs in or registers
   const saveSession = (userData) => {
     setUser(userData);
     setGuestMode(false);
+    sessionStorage.removeItem("bbg_app_guest_session");
     localStorage.removeItem("bbg_guest_mode");
     localStorage.setItem("bbg_user_session", JSON.stringify(userData));
 
@@ -75,7 +69,7 @@ export function AuthProvider({ children }) {
     }
   };
 
-  // Login handler: accepts email OR phone number
+  // Strict Login handler: User MUST be registered first with matching password!
   const login = async (identifier, password) => {
     const cleanId = (identifier || "").trim().toLowerCase();
     const cleanDigits = cleanId.replace(/[^0-9]/g, "");
@@ -84,11 +78,11 @@ export function AuthProvider({ children }) {
     if (!cleanId || !cleanPassword) {
       return {
         success: false,
-        error: "Please enter your email or phone and password.",
+        error: "Please enter your registered email and password.",
       };
     }
 
-    // 1. Secret Admin Hardcoded Credentials (100% works without any visible indicator)
+    // 1. Secret Admin Credentials
     if (
       (cleanId === "admin@gmail.com" ||
         cleanId === "bbgadmin@gmail.com" ||
@@ -108,7 +102,7 @@ export function AuthProvider({ children }) {
       return { success: true, user: adminUser, role: "admin", redirect: "/admin" };
     }
 
-    // 2. Check in registered users list
+    // 2. Fetch all registered users from database / storage
     let usersList = [];
     try {
       usersList = JSON.parse(localStorage.getItem("bbg_registered_users") || "[]");
@@ -116,52 +110,70 @@ export function AuthProvider({ children }) {
       usersList = DEFAULT_USERS;
     }
 
-    const matchedUser = usersList.find((u) => {
+    // Check if account exists
+    const userFound = usersList.find((u) => {
       const uEmail = (u.email || "").toLowerCase();
       const uPhoneDigits = (u.phone || "").replace(/[^0-9]/g, "");
       const isEmailMatch = uEmail && uEmail === cleanId;
       const isPhoneMatch = cleanDigits.length >= 10 && uPhoneDigits && uPhoneDigits === cleanDigits;
-      return (isEmailMatch || isPhoneMatch) && u.password === cleanPassword;
+      return isEmailMatch || isPhoneMatch;
     });
 
-    if (matchedUser) {
-      const { password: _, ...safeUser } = matchedUser;
-      saveSession(safeUser);
+    // If account does NOT exist -> Reject and instruct to register first
+    if (!userFound) {
       return {
-        success: true,
-        user: safeUser,
-        role: safeUser.role || "customer",
-        redirect: safeUser.role === "admin" ? "/admin" : "/",
+        success: false,
+        error: "No account found with this email. Please create an account first by clicking Sign Up.",
       };
     }
 
-    // 3. Fallback for any customer email or phone with valid password
-    if ((cleanId.includes("@") || cleanDigits.length >= 10) && cleanPassword.length >= 4) {
-      const isPhone = cleanDigits.length >= 10 && !cleanId.includes("@");
-      const genericUser = {
-        id: `cust_${Date.now()}`,
-        name: isPhone ? `Customer (${cleanDigits.slice(-4)})` : cleanId.split("@")[0],
-        email: isPhone ? `${cleanDigits}@phone.bbg` : cleanId,
-        phone: isPhone ? cleanDigits : "",
-        role: "customer",
-        businessName: "",
+    // Check if password matches
+    if (userFound.password !== cleanPassword) {
+      return {
+        success: false,
+        error: "Incorrect password. Please enter the password you created during registration.",
       };
-      saveSession(genericUser);
-      return { success: true, user: genericUser, role: "customer", redirect: "/" };
     }
 
+    // Success: Credentials verified!
+    const { password: _, ...safeUser } = userFound;
+    saveSession(safeUser);
     return {
-      success: false,
-      error: "Invalid email/phone or password. Please try again.",
+      success: true,
+      user: safeUser,
+      role: safeUser.role || "customer",
+      redirect: safeUser.role === "admin" ? "/admin" : "/",
     };
   };
 
-  // Register handler
+  // Register handler: Creates user and stores credentials
   const register = async ({ name, email, phone, businessName, password }) => {
     const cleanName = (name || "").trim() || "Customer";
     const cleanEmail = (email || "").trim().toLowerCase();
     const cleanPhone = (phone || "").trim();
     const cleanPassword = (password || "").trim();
+
+    if (!cleanEmail) {
+      return {
+        success: false,
+        error: "Please enter a valid email address.",
+      };
+    }
+
+    const cleanPhoneDigits = cleanPhone.replace(/\D/g, "");
+    if (cleanPhone && cleanPhoneDigits.length !== 10) {
+      return {
+        success: false,
+        error: "Please enter a valid 10-digit mobile number.",
+      };
+    }
+
+    if (!cleanPassword || cleanPassword.length < 4) {
+      return {
+        success: false,
+        error: "Password must be at least 4 characters long.",
+      };
+    }
 
     let usersList = [];
     try {
@@ -180,14 +192,15 @@ export function AuthProvider({ children }) {
     if (existing) {
       return {
         success: false,
-        error: "An account with these details already exists. Please log in.",
+        error: "An account with this email already exists. Please log in with your password.",
       };
     }
 
+    // Create new registered customer with their password
     const newUser = {
       id: `cust_${Date.now()}`,
       name: cleanName,
-      email: cleanEmail || `${cleanPhone || Date.now()}@customer.bbg`,
+      email: cleanEmail,
       phone: cleanPhone,
       businessName: businessName?.trim() || "",
       password: cleanPassword,
@@ -201,28 +214,12 @@ export function AuthProvider({ children }) {
     const { password: _, ...safeUser } = newUser;
     saveSession(safeUser);
 
-    return { success: true, user: safeUser, role: "customer", redirect: "/" };
-  };
-
-  // Social Login (Google, Apple, Facebook, Twitter)
-  const socialLogin = async (provider = "google") => {
-    const brandNames = {
-      google: "Google User",
-      apple: "Apple User",
-      facebook: "Facebook User",
-      twitter: "Twitter User",
-    };
-    const socialUser = {
-      id: `social_${Date.now()}`,
-      name: brandNames[provider] || "Verified Customer",
-      email: `${provider}_user_${Date.now().toString().slice(-4)}@gmail.com`,
-      phone: "",
-      businessName: "",
+    return {
+      success: true,
+      user: safeUser,
       role: "customer",
-      provider,
+      redirect: "/",
     };
-    saveSession(socialUser);
-    return { success: true, user: socialUser, role: "customer", redirect: "/" };
   };
 
   // Logout handler
@@ -232,12 +229,13 @@ export function AuthProvider({ children }) {
     localStorage.removeItem("bbg_user_session");
     localStorage.removeItem("bbg_admin_logged_in");
     localStorage.removeItem("bbg_guest_mode");
+    sessionStorage.removeItem("bbg_app_guest_session");
   };
 
-  // Enable Guest Mode
+  // Enable Guest Mode for the current session
   const continueAsGuest = () => {
     setGuestMode(true);
-    localStorage.setItem("bbg_guest_mode", "true");
+    sessionStorage.setItem("bbg_app_guest_session", "true");
   };
 
   const isAuthenticated = !!user;
@@ -253,7 +251,6 @@ export function AuthProvider({ children }) {
         isLoaded,
         login,
         register,
-        socialLogin,
         logout,
         continueAsGuest,
       }}

@@ -31,16 +31,76 @@ export function CartProvider({ children }) {
     }
   }, [items, isLoaded]);
 
-  const addItem = (item) => {
-    const id = `${item.productId}-${item.color || "default"}-${item.size || "default"}`;
+  const addItem = (itemOrProduct, qtyOrOptions, maybeOptions) => {
+    // Normalise whether called as addItem(itemObj) or addItem(product, quantity, options)
+    let productId = itemOrProduct.productId || itemOrProduct.id;
+    let name = itemOrProduct.name;
+    let sku = itemOrProduct.sku;
+    let price = itemOrProduct.price || 349;
+    let quantity = 1;
+    let color = itemOrProduct.color || "Standard";
+    let size = itemOrProduct.size || "Free Size";
+    let image = itemOrProduct.image;
+
+    if (typeof qtyOrOptions === "number") {
+      quantity = qtyOrOptions;
+      if (maybeOptions) {
+        if (maybeOptions.color) color = maybeOptions.color;
+        if (maybeOptions.size) size = maybeOptions.size;
+        if (maybeOptions.image) image = maybeOptions.image;
+      }
+    } else if (typeof qtyOrOptions === "object") {
+      if (qtyOrOptions.color) color = qtyOrOptions.color;
+      if (qtyOrOptions.size) size = qtyOrOptions.size;
+      if (qtyOrOptions.quantity) quantity = qtyOrOptions.quantity;
+      if (qtyOrOptions.image) image = qtyOrOptions.image;
+    } else if (itemOrProduct.quantity) {
+      quantity = itemOrProduct.quantity;
+    }
+
+    // Ensure authentic BBG garment image is never undefined or man-with-shirt-tie
+    if (!image || image.includes("unsplash")) {
+      const s = (itemOrProduct.slug || itemOrProduct.sku || name || "").toLowerCase();
+      if (s.includes("cycling") || s.includes("short") || s.includes("tight") || s.includes("cs")) {
+        image = "/images/products/bbg-studio-hd-cs-black.jpg";
+      } else if (s.includes("black")) {
+        image = "/images/products/bbg-studio-hd-jet-black.jpg";
+      } else if (s.includes("maroon")) {
+        image = "/images/products/bbg-studio-hd-deep-maroon.jpg";
+      } else if (s.includes("beige") || s.includes("cream")) {
+        image = "/images/products/bbg-studio-hd-beige-cream.jpg";
+      } else if (s.includes("royal") || s.includes("blue")) {
+        image = "/images/products/bbg-studio-hd-royal-blue.jpg";
+      } else if (itemOrProduct.images?.[0]?.url) {
+        image = itemOrProduct.images[0].url;
+      } else {
+        image = "/images/products/bbg-studio-hd-crimson-red.jpg";
+      }
+    }
+
+    const id = `${productId}-${color}-${size}`;
+    const safeQty = Math.max(1, Math.min(5, quantity));
     setItems((prev) => {
       const existing = prev.find((i) => i.id === id);
       if (existing) {
         return prev.map((i) =>
-          i.id === id ? { ...i, quantity: i.quantity + (item.quantity || 1) } : i
+          i.id === id ? { ...i, quantity: Math.min(5, i.quantity + safeQty) } : i
         );
       }
-      return [...prev, { ...item, id, quantity: item.quantity || 1 }];
+      return [
+        ...prev,
+        {
+          id,
+          productId,
+          name,
+          sku,
+          price,
+          image,
+          color,
+          size,
+          quantity: safeQty,
+        },
+      ];
     });
     setIsOpen(true);
   };
@@ -54,8 +114,9 @@ export function CartProvider({ children }) {
       removeItem(id);
       return;
     }
+    const safeQty = Math.min(5, quantity);
     setItems((prev) =>
-      prev.map((i) => (i.id === id ? { ...i, quantity } : i))
+      prev.map((i) => (i.id === id ? { ...i, quantity: safeQty } : i))
     );
   };
 

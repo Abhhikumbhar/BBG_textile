@@ -16,7 +16,7 @@ export default async function CheckoutPage() {
     <div className="min-h-screen flex flex-col bg-[#FDFDFD]">
       <Header settings={settings || undefined} />
       <main className="flex-1">
-        <CheckoutClient whatsappNumber={settings?.whatsappNumber} />
+        <CheckoutClient />
       </main>
       <Footer settings={settings || undefined} />
     </div>

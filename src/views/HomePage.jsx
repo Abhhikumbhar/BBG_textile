@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import HeroVideo from "@/components/HeroVideo";
 import FlipkartBannerCarousel from "@/components/FlipkartBannerCarousel";
+import MillRatesModal from "@/components/MillRatesModal";
 import {
-  siteSettings,
-  categories,
+  getSiteSettings,
+  getCategories,
+  getAllProducts,
   getFeaturedProducts,
   getNewArrivalProducts,
 } from "@/lib/catalogService";
@@ -20,20 +22,22 @@ import {
   Layers,
   CheckCircle2,
   Phone,
+  Mail,
 } from "lucide-react";
-import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 export default function HomePage() {
-  const settings = siteSettings;
+  const [showMillRatesModal, setShowMillRatesModal] = useState(false);
+  const settings = getSiteSettings();
+  const categories = getCategories();
   const featuredProducts = getFeaturedProducts();
   const newArrivals = getNewArrivalProducts();
-  const cleanWhatsApp = (settings?.whatsappNumber || "918767322501").replace(/[^0-9]/g, "");
+  const supportEmail = settings?.email || "bbgtextilebharat1@gmail.com";
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FDFDFD]">
       <Header settings={settings} />
 
-      <main className="flex-1">
+      <main className="flex-1 pb-28 sm:pb-16">
         {/* FLIPKART-STYLE QUICK CATEGORIES BAR */}
         <section className="bg-white border-b border-gray-200/70 py-2.5 sm:py-3.5 overflow-x-auto scrollbar-none shadow-2xs">
           <div className="max-w-7xl mx-auto px-4 flex items-center gap-4 sm:gap-7 min-w-max sm:min-w-0 sm:justify-center">
@@ -117,23 +121,21 @@ export default function HomePage() {
               </span>
             </Link>
 
-            <a
-              href={`https://wa.me/${cleanWhatsApp}?text=${encodeURIComponent(
-                "Hello BBG Textile, I am looking for direct mill wholesale rate catalog."
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex flex-col items-center gap-1 group text-center shrink-0"
+            <button
+              type="button"
+              onClick={() => setShowMillRatesModal(true)}
+              className="flex flex-col items-center gap-1 group text-center shrink-0 cursor-pointer"
+              title="Click to open Mill Rates Enquiry Form"
             >
-              <div className="w-12 h-12 sm:w-15 sm:h-15 rounded-full p-0.5 bg-gradient-to-tr from-emerald-500 to-emerald-300 shadow-xs group-hover:scale-105 transition-transform flex items-center justify-center">
-                <div className="w-full h-full rounded-full bg-[#25D366] flex items-center justify-center text-white">
-                  <WhatsAppIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              <div className="w-12 h-12 sm:w-15 sm:h-15 rounded-full p-0.5 bg-gradient-to-tr from-amber-500 via-[#1A365D] to-[#2A4365] shadow-xs group-hover:scale-105 transition-transform flex items-center justify-center">
+                <div className="w-full h-full rounded-full bg-[#1A365D] flex items-center justify-center text-white">
+                  <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 </div>
               </div>
-              <span className="text-[11px] sm:text-xs font-semibold text-gray-800 group-hover:text-emerald-700">
+              <span className="text-[11px] sm:text-xs font-semibold text-gray-800 group-hover:text-[#1A365D]">
                 Mill Rates
               </span>
-            </a>
+            </button>
           </div>
         </section>
 
@@ -193,15 +195,13 @@ export default function HomePage() {
 
               <div className="flex items-center gap-4 pt-1">
                 <a
-                  href={`https://wa.me/${cleanWhatsApp}?text=${encodeURIComponent(
+                  href={`mailto:${supportEmail}?subject=${encodeURIComponent(
                     "Hello BBG Textile, I am interested in wholesale inquiry for Cotton Lycra Leggings."
                   )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="px-6 sm:px-8 py-2.5 sm:py-3.5 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 rounded-full font-bold text-xs sm:text-sm tracking-wide shadow-xl shadow-amber-500/25 hover:shadow-amber-500/40 hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2"
                 >
-                  <WhatsAppIcon className="w-4 h-4 text-slate-950" />
-                  <span>Wholesale Enquiries</span>
+                  <Mail className="w-4 h-4 text-slate-950" />
+                  <span>Email Wholesale Enquiries</span>
                   <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </a>
               </div>
@@ -326,7 +326,6 @@ export default function HomePage() {
                 <ProductCard
                   key={product.id}
                   product={product}
-                  whatsappNumber={settings?.whatsappNumber}
                 />
               ))}
             </div>
@@ -363,7 +362,6 @@ export default function HomePage() {
                   <ProductCard
                     key={product.id}
                     product={product}
-                    whatsappNumber={settings?.whatsappNumber}
                   />
                 ))}
               </div>
@@ -423,24 +421,23 @@ export default function HomePage() {
 
               <div className="flex flex-col sm:flex-row lg:flex-col gap-3.5 w-full sm:w-auto shrink-0 relative z-10">
                 <a
-                  href={`https://wa.me/${cleanWhatsApp}?text=${encodeURIComponent(
+                  href={`mailto:${supportEmail}?subject=${encodeURIComponent(
                     "Hello BBG Textile, I am a wholesale buyer looking for fabric quotation and bulk supply terms."
                   )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   className="px-7 py-4 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 rounded-2xl font-bold text-sm tracking-wide shadow-xl shadow-amber-500/25 hover:shadow-amber-500/40 hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2.5"
                 >
-                  <WhatsAppIcon className="w-4 h-4 text-slate-950" />
-                  <span>Enquire on WhatsApp</span>
+                  <Mail className="w-4 h-4 text-slate-950" />
+                  <span>Enquire via Email</span>
                   <ArrowRight className="w-4 h-4 text-slate-950" />
                 </a>
-                <Link
-                  to="/contact"
-                  className="px-7 py-4 bg-white hover:bg-amber-50/50 text-[#1A365D] border border-[#1A365D]/25 hover:border-[#1A365D]/50 rounded-2xl font-semibold text-sm shadow-sm hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2.5"
+                <button
+                  type="button"
+                  onClick={() => setShowMillRatesModal(true)}
+                  className="px-7 py-4 bg-white hover:bg-amber-50/50 text-[#1A365D] border border-[#1A365D]/25 hover:border-[#1A365D]/50 rounded-2xl font-semibold text-sm shadow-sm hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2.5 cursor-pointer"
                 >
                   <Phone className="w-4 h-4 text-amber-700" />
                   <span>Request Rate Card</span>
-                </Link>
+                </button>
               </div>
             </div>
           </div>
@@ -448,6 +445,12 @@ export default function HomePage() {
       </main>
 
       <Footer settings={settings} />
+
+      {/* Direct Mill Rates Enquiry Modal Form */}
+      <MillRatesModal
+        isOpen={showMillRatesModal}
+        onClose={() => setShowMillRatesModal(false)}
+      />
     </div>
   );
 }

@@ -9,8 +9,8 @@ import {
   Eye,
   Loader2,
   Calendar,
+  Mail,
 } from "lucide-react";
-import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 interface Order {
   id: string;
@@ -163,15 +163,13 @@ export default function OrdersAdminClient({ initialOrders = [] }: OrdersAdminCli
                             {ord.customerPhone}
                           </span>
                           <a
-                            href={`https://wa.me/${cleanPhone}?text=${encodeURIComponent(
-                              `Hello ${ord.customerName}, this is BBG Textile regarding your order #${ord.orderNumber}.`
+                            href={`mailto:${ord.customerEmail || "bbgtextilebharat1@gmail.com"}?subject=${encodeURIComponent(
+                              `Update regarding Order #${ord.orderNumber} - BBG Textile`
                             )}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-emerald-600 hover:text-emerald-800"
-                            title="Chat with Customer on WhatsApp"
+                            className="text-[#1A365D] hover:text-[#0F2444]"
+                            title="Email Customer"
                           >
-                            <WhatsAppIcon className="w-3.5 h-3.5" />
+                            <Mail className="w-3.5 h-3.5" />
                           </a>
                         </div>
                       </td>

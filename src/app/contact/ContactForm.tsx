@@ -17,9 +17,16 @@ export default function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setSuccess(null);
     setError(null);
+
+    const cleanPhone = formData.phone.replace(/\D/g, "");
+    if (cleanPhone.length !== 10) {
+      setError("Please enter a valid 10-digit mobile number.");
+      return;
+    }
+
+    setLoading(true);
 
     try {
       const res = await fetch("/api/public/enquiry", {
@@ -86,14 +93,19 @@ export default function ContactForm() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
-              Phone / WhatsApp Number *
+              Mobile Number (10 Digits) *
             </label>
             <input
               type="tel"
+              inputMode="numeric"
+              maxLength={10}
+              pattern="[0-9]{10}"
               required
               value={formData.phone}
-              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              placeholder="e.g. +91 87673 22501"
+              onChange={(e) =>
+                setFormData({ ...formData, phone: e.target.value.replace(/\D/g, "").slice(0, 10) })
+              }
+              placeholder="10-digit mobile number"
               className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1A365D] text-sm text-gray-900 transition-all"
             />
           </div>

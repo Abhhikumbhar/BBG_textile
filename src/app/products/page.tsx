@@ -36,7 +36,6 @@ export default async function ProductsPage() {
             categories={categories}
             initialProducts={initialData.products}
             initialPagination={initialData.pagination}
-            whatsappNumber={settings?.whatsappNumber}
           />
         </Suspense>
       </main>

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useCart } from "@/context/CartContext";
-import { siteSettings } from "@/lib/catalogService";
+import { siteSettings, decrementStockForOrder } from "@/lib/catalogService";
+import { pushOrderToCloud } from "@/lib/cloudSync";
+import { loadRazorpayScript, RAZORPAY_KEY_ID } from "@/lib/razorpay";
 import {
   ShieldCheck,
   ShoppingBag,
@@ -12,38 +14,59 @@ import {
   CreditCard,
   AlertCircle,
   CheckCircle2,
+  Mail,
 } from "lucide-react";
-import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 export default function CheckoutPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { items, subtotal, clearCart } = useCart();
+
+  const searchParams = new URLSearchParams(location.search);
+  const initialMethod = "ONLINE_RAZORPAY";
 
   const [formData, setFormData] = useState({
     customerName: "",
     customerPhone: "",
+    alternatePhone: "",
     customerEmail: "",
     shippingAddress: "",
     city: "Sangli",
     state: "Maharashtra",
     postalCode: "416416",
-    paymentMethod: "WHATSAPP_COD",
+    paymentMethod: initialMethod,
     notes: "",
   });
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const cleanWhatsApp = (siteSettings?.whatsappNumber || "918767322501").replace(/[^0-9]/g, "");
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (items.length === 0) {
       setError("Your cart is empty. Please add items before checking out.");
       return;
     }
-    if (!formData.customerName || !formData.customerPhone || !formData.shippingAddress) {
-      setError("Please fill in your name, phone number, and delivery address.");
+    const cleanPhone = formData.customerPhone.replace(/\D/g, "");
+    if (cleanPhone.length !== 10) {
+      setError("Please enter a valid 10-digit primary mobile number before proceeding.");
+      return;
+    }
+    const cleanAlt = (formData.alternatePhone || "").replace(/\D/g, "");
+    if (cleanAlt.length !== 10) {
+      setError("Please enter a valid 10-digit alternate mobile number before proceeding.");
+      return;
+    }
+    if (!formData.customerEmail || !formData.customerEmail.includes("@") || !formData.customerEmail.includes(".")) {
+      setError("Please enter a valid email address (e.g. name@company.com) before proceeding.");
+      return;
+    }
+    if (!formData.customerName || !formData.customerName.trim()) {
+      setError("Please enter your full name.");
+      return;
+    }
+    if (!formData.shippingAddress || !formData.shippingAddress.trim()) {
+      setError("Please enter your complete delivery address.");
       return;
     }
 
@@ -54,10 +77,115 @@ export default function CheckoutPage() {
     const randomSuffix = Math.floor(1000 + Math.random() * 9000);
     const orderNumber = `BBG-${new Date().getFullYear()}-${randomSuffix}`;
 
+    // --- OPTION A: PAY ONLINE VIA RAZORPAY ---
+    if (formData.paymentMethod === "ONLINE_RAZORPAY") {
+      try {
+        const loaded = await loadRazorpayScript();
+        if (!loaded || !window.Razorpay) {
+          throw new Error("Razorpay checkout is loading. Please check your connection and try again.");
+        }
+
+        const options = {
+          key: RAZORPAY_KEY_ID,
+          amount: Math.round(subtotal * 100), // amount in paise
+          currency: "INR",
+          name: "BBG Textile",
+          description: `Order #${orderNumber}`,
+          image: "/icon.png",
+          prefill: {
+            name: formData.customerName,
+            email: formData.customerEmail || "",
+            contact: formData.customerPhone,
+          },
+          theme: {
+            color: "#1A365D",
+          },
+          handler: function (response) {
+            const paymentId = response.razorpay_payment_id;
+
+            const orderData = {
+              orderNumber,
+              customerName: formData.customerName,
+              customerPhone: formData.customerPhone,
+              alternatePhone: formData.alternatePhone || "",
+              customerEmail: formData.customerEmail,
+              shippingAddress: formData.shippingAddress,
+              city: formData.city,
+              state: formData.state,
+              postalCode: formData.postalCode,
+              paymentMethod: "ONLINE_RAZORPAY",
+              paymentStatus: "PAID",
+              paymentId: paymentId,
+              notes: formData.notes,
+              items: [...items],
+              total: subtotal,
+              createdAt: new Date().toISOString(),
+            };
+
+            // Save order in localStorage and push to Cloud for Instant Admin visibility
+            try {
+              localStorage.setItem(`order_${orderNumber}`, JSON.stringify(orderData));
+              const pastOrders = JSON.parse(localStorage.getItem("bbg_orders") || "[]");
+              localStorage.setItem("bbg_orders", JSON.stringify([orderData, ...pastOrders]));
+              pushOrderToCloud(orderData);
+            } catch (err) {
+              console.error("Order storage error", err);
+            }
+
+            // Sync with backend API if available
+            fetch("/api/public/checkout", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                ...formData,
+                paymentMethod: "ONLINE_RAZORPAY",
+                paymentId: paymentId,
+                items: items.map((i) => ({
+                  productId: i.id,
+                  color: i.color,
+                  size: i.size,
+                  quantity: i.quantity,
+                })),
+              }),
+            }).catch(() => {});
+
+            // Decrement stock so after 5 orders the product automatically closes
+            decrementStockForOrder(items);
+
+            // Clear cart and redirect to order success page
+            clearCart();
+            setLoading(false);
+            navigate(`/order-success/${orderNumber}`);
+          },
+          modal: {
+            ondismiss: function () {
+              setLoading(false);
+            },
+          },
+        };
+
+        const rzp = new window.Razorpay(options);
+        rzp.on("payment.failed", function (response) {
+          setError(
+            `Payment could not be completed: ${response.error?.description || "Transaction declined"}. Please retry with UPI, Card or NetBanking.`
+          );
+          setLoading(false);
+        });
+        rzp.open();
+        return;
+      } catch (err) {
+        setError(err.message || "Failed to initialize online payment.");
+        setLoading(false);
+        return;
+      }
+    }
+
+    // --- OPTION B: CASH ON DELIVERY / BANK TRANSFER ---
     const orderData = {
       orderNumber,
       customerName: formData.customerName,
       customerPhone: formData.customerPhone,
+      alternatePhone: formData.alternatePhone || "",
       customerEmail: formData.customerEmail,
       shippingAddress: formData.shippingAddress,
       city: formData.city,
@@ -70,41 +198,20 @@ export default function CheckoutPage() {
       createdAt: new Date().toISOString(),
     };
 
-    // Save order in localStorage for confirmation screen
+    // Save order in localStorage and push to Cloud for Instant Admin visibility
     try {
       localStorage.setItem(`order_${orderNumber}`, JSON.stringify(orderData));
       const pastOrders = JSON.parse(localStorage.getItem("bbg_orders") || "[]");
       localStorage.setItem("bbg_orders", JSON.stringify([orderData, ...pastOrders]));
+      pushOrderToCloud(orderData);
     } catch (err) {
       console.error("Order storage error", err);
     }
 
-    // Build WhatsApp message
-    const itemSummary = items
-      .map(
-        (i, idx) =>
-          `${idx + 1}. *${i.name}* (Color: ${i.color || "Standard"}, Size: ${i.size || "Standard"}) x ${i.quantity} = ₹${(i.price * i.quantity).toLocaleString("en-IN")}`
-      )
-      .join("\n");
+    // Decrement stock so after 5 orders the product automatically closes
+    decrementStockForOrder(items);
 
-    const message = encodeURIComponent(
-      `*NEW ORDER RECEIVED — SBBG BHARAT TEXTILE*\n` +
-      `Order ID: *#${orderNumber}*\n\n` +
-      `*Customer Details:*\n` +
-      `• Name: ${formData.customerName}\n` +
-      `• Phone: ${formData.customerPhone}\n` +
-      `• Address: ${formData.shippingAddress}, ${formData.city}, ${formData.state} - ${formData.postalCode}\n\n` +
-      `*Ordered Items:*\n${itemSummary}\n\n` +
-      `*Total Amount:* ₹${subtotal.toLocaleString("en-IN")}\n` +
-      `*Payment Method:* ${formData.paymentMethod}\n` +
-      (formData.notes ? `*Notes:* ${formData.notes}\n\n` : `\n`) +
-      `Please confirm dispatch schedule.`
-    );
-
-    // Open WhatsApp in new tab
-    window.open(`https://wa.me/${cleanWhatsApp}?text=${message}`, "_blank");
-
-    // Clear cart and redirect to order success page
+    // Clear cart and redirect to order success page directly without opening WhatsApp
     clearCart();
     setLoading(false);
     navigate(`/order-success/${orderNumber}`);
@@ -127,7 +234,7 @@ export default function CheckoutPage() {
             Finalize Fabric Order
           </h1>
           <p className="text-gray-500 text-sm mb-10">
-            Submit your wholesale order and delivery address. Our trade coordinator will confirm dispatch via WhatsApp.
+            Submit your order and delivery address. Your invoice and dispatch schedule will be confirmed directly.
           </p>
 
           {error && (
@@ -162,30 +269,59 @@ export default function CheckoutPage() {
 
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
-                      WhatsApp / Mobile Number *
+                      Mobile Number (10 Digits) *
                     </label>
                     <input
                       type="tel"
+                      inputMode="numeric"
+                      maxLength={10}
+                      pattern="[0-9]{10}"
                       required
                       value={formData.customerPhone}
-                      onChange={(e) => setFormData({ ...formData, customerPhone: e.target.value })}
-                      placeholder="+91 98765 43210"
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, "").slice(0, 10);
+                        setFormData({ ...formData, customerPhone: val });
+                      }}
+                      placeholder="10-digit mobile number"
                       className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1A365D]"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
-                    Email Address (Optional)
-                  </label>
-                  <input
-                    type="email"
-                    value={formData.customerEmail}
-                    onChange={(e) => setFormData({ ...formData, customerEmail: e.target.value })}
-                    placeholder="name@company.com"
-                    className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1A365D]"
-                  />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+                      Alternate Mobile Number (10 Digits) *
+                    </label>
+                    <input
+                      type="tel"
+                      inputMode="numeric"
+                      maxLength={10}
+                      pattern="[0-9]{10}"
+                      required
+                      value={formData.alternatePhone}
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, "").slice(0, 10);
+                        setFormData({ ...formData, alternatePhone: val });
+                      }}
+                      placeholder="10-digit alternate number"
+                      className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1A365D]"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+                      Email Address *
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.customerEmail}
+                      onChange={(e) => setFormData({ ...formData, customerEmail: e.target.value })}
+                      placeholder="name@company.com"
+                      className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1A365D]"
+                    />
+                  </div>
                 </div>
 
                 <div>
@@ -244,44 +380,28 @@ export default function CheckoutPage() {
                 {/* Payment Option */}
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">
-                    Payment Preference
+                    Payment Method
                   </label>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <label className="flex items-center gap-3 p-4 rounded-2xl border border-amber-300 bg-amber-50/50 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="payment"
-                        checked={formData.paymentMethod === "WHATSAPP_COD"}
-                        onChange={() => setFormData({ ...formData, paymentMethod: "WHATSAPP_COD" })}
-                        className="text-[#1A365D] focus:ring-[#1A365D]"
-                      />
+                  <div className="p-4 rounded-2xl border-2 border-[#1A365D] bg-blue-50/70 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-[#1A365D] text-white flex items-center justify-center shrink-0">
+                        <CreditCard className="w-5 h-5 text-amber-300" />
+                      </div>
                       <div>
-                        <div className="text-xs font-bold text-gray-900">
-                          WhatsApp Confirmation / COD
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs sm:text-sm font-bold text-gray-900">
+                            Pay Online (Razorpay Gateway)
+                          </span>
+                          <span className="px-2 py-0.5 text-[9px] font-bold bg-[#1A365D] text-white rounded">
+                            Instant & Secure
+                          </span>
                         </div>
-                        <div className="text-[11px] text-gray-500">
-                          Confirm over WhatsApp before transport
+                        <div className="text-[11px] text-gray-600 mt-0.5">
+                          UPI, Google Pay, PhonePe, Paytm, Debit/Credit Card & NetBanking
                         </div>
                       </div>
-                    </label>
-
-                    <label className="flex items-center gap-3 p-4 rounded-2xl border border-gray-200 hover:bg-gray-50 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="payment"
-                        checked={formData.paymentMethod === "BANK_TRANSFER"}
-                        onChange={() => setFormData({ ...formData, paymentMethod: "BANK_TRANSFER" })}
-                        className="text-[#1A365D] focus:ring-[#1A365D]"
-                      />
-                      <div>
-                        <div className="text-xs font-bold text-gray-900">
-                          Direct Mill Bank / RTGS
-                        </div>
-                        <div className="text-[11px] text-gray-500">
-                          Invoice dispatched with GST details
-                        </div>
-                      </div>
-                    </label>
+                    </div>
+                    <CheckCircle2 className="w-5 h-5 text-[#1A365D] shrink-0" />
                   </div>
                 </div>
 
@@ -301,10 +421,14 @@ export default function CheckoutPage() {
                 <button
                   type="submit"
                   disabled={loading || items.length === 0}
-                  className="w-full py-4 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-bold rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2"
+                  className="w-full py-4 bg-[#1A365D] hover:bg-[#0F2444] text-white font-bold rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50"
                 >
-                  <WhatsAppIcon className="w-5 h-5 text-slate-950" />
-                  <span>{loading ? "Placing Order..." : "Place Order via WhatsApp"}</span>
+                  <CreditCard className="w-5 h-5 text-amber-300" />
+                  <span>
+                    {loading
+                      ? "Opening Secure Razorpay..."
+                      : `Pay Online & Place Order • ₹${subtotal.toLocaleString("en-IN")}`}
+                  </span>
                 </button>
               </form>
             </div>
@@ -348,7 +472,7 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <span>Transport Delivery</span>
-                  <span className="text-emerald-700 font-medium">To be quoted on WhatsApp</span>
+                  <span className="text-emerald-700 font-medium">Free Mill Dispatch</span>
                 </div>
                 <div className="pt-3 border-t border-gray-100 flex justify-between items-center">
                   <span className="font-bold text-gray-900">Total Payable</span>

@@ -10,7 +10,6 @@ import {
   ArrowRight,
   Clock,
 } from "lucide-react";
-import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 export default function Footer({ settings }) {
   const businessName = settings?.businessName || "SBBG BHARAT TEXTILE";
@@ -19,8 +18,6 @@ export default function Footer({ settings }) {
     "GROUND FLOOR, KHARE MALA, S.NO-204 PLOT NO 28, Kupwad MIDC Area, Madhavnagar, Sangli, Maharashtra - 416436, OLD KUPWAD ROAD, SANGLI - 416416";
   const phone = settings?.phone || "+91 87673 22501";
   const email = settings?.email || "bbgtextilebharat1@gmail.com";
-  const whatsapp = settings?.whatsappNumber || "918767322501";
-  const cleanWhatsApp = whatsapp.replace(/[^0-9]/g, "");
 
   return (
     <footer className="bg-[#0A121E] text-gray-300 pt-16 pb-12 border-t border-amber-500/15">
@@ -96,13 +93,11 @@ export default function Footer({ settings }) {
             </p>
             <div className="pt-2">
               <a
-                href={`https://wa.me/${cleanWhatsApp}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs shadow-sm transition-colors"
+                href={`mailto:${email}?subject=${encodeURIComponent("Enquiry — SBBG Bharat Textile Trade Team")}`}
+                className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-bold text-xs shadow-md transition-all"
               >
-                <WhatsAppIcon className="w-4 h-4" />
-                <span>Chat with Trade Team</span>
+                <Mail className="w-4 h-4 text-slate-950" />
+                <span>Chat with Email</span>
               </a>
             </div>
           </div>
@@ -136,6 +131,11 @@ export default function Footer({ settings }) {
               <li>
                 <Link to="/contact" className="hover:text-amber-400 transition-colors">
                   Contact & Works
+                </Link>
+              </li>
+              <li>
+                <Link to="/return-policy" className="hover:text-amber-400 transition-colors text-amber-300 font-medium">
+                  7-Day Return Policy
                 </Link>
               </li>
             </ul>
@@ -218,9 +218,13 @@ export default function Footer({ settings }) {
       {/* Copyright */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 border-t border-white/5 text-center sm:flex sm:justify-between sm:items-center text-xs text-gray-500">
         <p>© {new Date().getFullYear()} {businessName}. All rights reserved.</p>
-        <p className="mt-2 sm:mt-0">
-          Crafted with excellence in Sangli, Maharashtra • Made in Bharat
-        </p>
+        <div className="flex items-center justify-center gap-4 mt-2 sm:mt-0">
+          <Link to="/return-policy" className="hover:text-amber-400 transition-colors">
+            7-Day Returns & Refunds
+          </Link>
+          <span>•</span>
+          <span>Crafted in Sangli, Maharashtra</span>
+        </div>
       </div>
     </footer>
   );

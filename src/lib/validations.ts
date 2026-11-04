@@ -76,7 +76,7 @@ export const categorySchema = z.object({
 
 export const enquirySchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
-  phone: z.string().min(8, "Valid phone number is required"),
+  phone: z.string().regex(/^\d{10}$/, "10-digit phone number is required"),
   email: z.string().email("Valid email is required").optional().or(z.literal("")),
   message: z.string().min(5, "Please enter your message"),
   productId: z.string().nullable().optional(),
@@ -84,13 +84,17 @@ export const enquirySchema = z.object({
 
 export const checkoutSchema = z.object({
   customerName: z.string().min(2, "Full name is required"),
-  customerPhone: z.string().min(10, "10-digit phone number is required"),
-  customerEmail: z.string().email().optional().or(z.literal("")),
+  customerPhone: z.string().regex(/^\d{10}$/, "10-digit mobile number is required"),
+  alternatePhone: z.string().regex(/^\d{10}$/, "10-digit mobile number is required").optional().or(z.literal("")),
+  customerEmail: z.string().email("Valid email address is required"),
   shippingAddress: z.string().min(5, "Delivery address is required"),
   city: z.string().min(2, "City is required"),
   state: z.string().min(2, "State is required"),
   postalCode: z.string().min(5, "Postal code is required"),
-  paymentMethod: z.enum(["WHATSAPP_COD", "COD", "BANK_TRANSFER"]).default("WHATSAPP_COD"),
+  paymentMethod: z
+    .enum(["COD", "BANK_TRANSFER", "ONLINE_RAZORPAY", "RAZORPAY", "WHATSAPP_COD"])
+    .default("COD"),
+  paymentId: z.string().nullable().optional(),
   notes: z.string().optional(),
   items: z
     .array(

@@ -11,7 +11,6 @@ import {
   ArrowRight,
   Clock,
 } from "lucide-react";
-import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 interface FooterProps {
   settings?: {
@@ -34,8 +33,6 @@ export default function Footer({ settings }: FooterProps) {
     "GROUND FLOOR, KHARE MALA, S.NO-204 PLOT NO 28, Kupwad MIDC Area, Madhavnagar, Sangli, Maharashtra - 416436, OLD KUPWAD ROAD, SANGLI - 416416";
   const phone = settings?.phone || "+91 87673 22501";
   const email = settings?.email || "bbgtextilebharat1@gmail.com";
-  const whatsapp = settings?.whatsappNumber || "918767322501";
-  const cleanWhatsApp = whatsapp.replace(/[^0-9]/g, "");
 
   return (
     <footer className="bg-[#0A121E] text-gray-300 pt-16 pb-12 border-t border-amber-500/15">
@@ -105,13 +102,11 @@ export default function Footer({ settings }: FooterProps) {
             </p>
             <div className="flex items-center gap-3">
               <a
-                href={`https://wa.me/${cleanWhatsApp}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-xs font-semibold shadow-sm transition-colors"
+                href={`mailto:${email}?subject=${encodeURIComponent("Enquiry — SBBG Bharat Textile Trade Team")}`}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 rounded-lg text-xs font-bold shadow-md transition-all"
               >
-                <WhatsAppIcon className="w-4 h-4" />
-                <span>WhatsApp Business</span>
+                <Mail className="w-4 h-4 text-slate-950" />
+                <span>Chat with Email</span>
               </a>
             </div>
           </div>
@@ -165,6 +160,15 @@ export default function Footer({ settings }: FooterProps) {
                 >
                   <ArrowRight className="w-3.5 h-3.5 text-amber-400" />
                   Contact & Location
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/return-policy"
+                  className="text-amber-300 hover:text-white transition-colors flex items-center gap-1.5 font-medium"
+                >
+                  <ArrowRight className="w-3.5 h-3.5 text-amber-400" />
+                  7-Day Return Policy
                 </Link>
               </li>
             </ul>
@@ -266,14 +270,14 @@ export default function Footer({ settings }: FooterProps) {
           &copy; {new Date().getFullYear()} {businessName}. All rights reserved. Registered in Sangli, Maharashtra.
         </p>
         <div className="flex items-center space-x-6">
+          <Link href="/return-policy" className="hover:text-amber-400">
+            7-Day Returns & Refunds
+          </Link>
           <Link href="/about" className="hover:text-gray-400">
             About Us
           </Link>
           <Link href="/contact" className="hover:text-gray-400">
             Wholesale Enquiries
-          </Link>
-          <Link href="/admin/login" className="hover:text-gray-400">
-            Admin Portal
           </Link>
         </div>
       </div>

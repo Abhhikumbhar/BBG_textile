@@ -12,12 +12,11 @@ import {
   Building,
   ExternalLink,
 } from "lucide-react";
-import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 export const metadata = {
   title: "Contact Us & Sangli Works | BBG Textile",
   description:
-    "Contact BBG Textile in Kupwad MIDC, Sangli, Maharashtra. Submit a wholesale enquiry or reach out via WhatsApp.",
+    "Contact BBG Textile in Kupwad MIDC, Sangli, Maharashtra. Submit a wholesale enquiry or reach out via Email.",
 };
 
 export default async function ContactPage() {
@@ -27,8 +26,6 @@ export default async function ContactPage() {
     "GROUND FLOOR, KHARE MALA, S.NO-204 PLOT NO 28, Kupwad MIDC Area, Madhavnagar, Sangli, Maharashtra - 416436, OLD KUPWAD ROAD, SANGLI - 416416";
   const phone = settings?.phone || "+91 87673 22501";
   const email = settings?.email || "bbgtextilebharat1@gmail.com";
-  const whatsapp = settings?.whatsappNumber || "918767322501";
-  const cleanWhatsApp = whatsapp.replace(/[^0-9]/g, "");
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FDFDFD]">
@@ -57,33 +54,31 @@ export default async function ContactPage() {
 
             {/* RIGHT: Direct Details & Address Card (5 cols) */}
             <div className="lg:col-span-5 space-y-6">
-              {/* WhatsApp Quick Card */}
-              <div className="p-6 rounded-3xl bg-emerald-600 text-white shadow-lg">
+              {/* Direct Email Desk Card */}
+              <div className="p-6 rounded-3xl bg-[#1A365D] text-white shadow-lg">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="p-2.5 bg-white/20 rounded-xl">
-                    <WhatsAppIcon className="w-6 h-6 text-white" />
+                    <Mail className="w-6 h-6 text-white" />
                   </div>
                   <div>
                     <h3 className="font-serif text-lg font-bold">
-                      Direct WhatsApp Desk
+                      Direct Email Desk
                     </h3>
-                    <p className="text-emerald-100 text-xs">
-                      Instant reply during business hours
+                    <p className="text-blue-100 text-xs">
+                      {email}
                     </p>
                   </div>
                 </div>
-                <p className="text-emerald-50 text-sm mb-5 leading-relaxed">
-                  Have photos of the fabric weave or shade you require? Send them directly to our WhatsApp trade desk.
+                <p className="text-blue-50 text-sm mb-5 leading-relaxed">
+                  Have questions about fabric weaves, rates, or custom shade requirements? Send them directly to our trade email desk.
                 </p>
                 <a
-                  href={`https://wa.me/${cleanWhatsApp}?text=${encodeURIComponent(
+                  href={`mailto:${email}?subject=${encodeURIComponent(
                     "Hello BBG Textile, I would like to enquire about your fabric collection."
                   )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full py-3 bg-white hover:bg-emerald-50 text-emerald-900 rounded-xl font-bold text-sm text-center block transition-colors shadow-sm"
+                  className="w-full py-3 bg-white hover:bg-gray-100 text-[#1A365D] rounded-xl font-bold text-sm text-center block transition-colors shadow-sm"
                 >
-                  Chat with Us on WhatsApp &rarr;
+                  Send Direct Email &rarr;
                 </a>
               </div>
 

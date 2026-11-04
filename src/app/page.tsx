@@ -21,8 +21,8 @@ import {
   Layers,
   CheckCircle2,
   Phone,
+  Mail,
 } from "lucide-react";
-import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 export const revalidate = 60;
 
@@ -37,10 +37,6 @@ export default async function HomePage() {
     ]);
 
   const activeBanner = banners[0];
-  const cleanWhatsApp = (settings?.whatsappNumber || "918767322501").replace(
-    /[^0-9]/g,
-    ""
-  );
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FDFDFD]">
@@ -136,19 +132,15 @@ export default async function HomePage() {
             </Link>
 
             <a
-              href={`https://wa.me/${cleanWhatsApp}?text=${encodeURIComponent(
-                "Hello BBG Textile, I am looking for direct mill wholesale rate catalog."
-              )}`}
-              target="_blank"
-              rel="noopener noreferrer"
+              href="mailto:bbgtextilebharat1@gmail.com?subject=Direct%20Mill%20Wholesale%20Rate%20Catalog"
               className="flex flex-col items-center gap-1 group text-center shrink-0"
             >
-              <div className="w-12 h-12 sm:w-15 sm:h-15 rounded-full p-0.5 bg-gradient-to-tr from-emerald-500 to-emerald-300 shadow-xs group-hover:scale-105 transition-transform flex items-center justify-center">
-                <div className="w-full h-full rounded-full bg-[#25D366] flex items-center justify-center text-white">
-                  <WhatsAppIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
+              <div className="w-12 h-12 sm:w-15 sm:h-15 rounded-full p-0.5 bg-gradient-to-tr from-[#1A365D] to-[#2A4365] shadow-xs group-hover:scale-105 transition-transform flex items-center justify-center">
+                <div className="w-full h-full rounded-full bg-[#1A365D] flex items-center justify-center text-white">
+                  <Mail className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 </div>
               </div>
-              <span className="text-[11px] sm:text-xs font-semibold text-gray-800 group-hover:text-emerald-700">
+              <span className="text-[11px] sm:text-xs font-semibold text-gray-800 group-hover:text-[#1A365D]">
                 Mill Rates
               </span>
             </a>
@@ -224,14 +216,10 @@ export default async function HomePage() {
               {/* Action Button - Direct Wholesale Enquiry */}
               <div className="flex items-center gap-4 pt-1">
                 <a
-                  href={`https://wa.me/${cleanWhatsApp}?text=${encodeURIComponent(
-                    "Hello SBBG Textile Exporter, I am interested in wholesale inquiry for Cotton Lycra Leggings."
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="mailto:bbgtextilebharat1@gmail.com?subject=Wholesale%20Inquiry%20Cotton%20Lycra%20Leggings"
                   className="px-6 sm:px-8 py-2.5 sm:py-3.5 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 rounded-full font-bold text-xs sm:text-sm tracking-wide shadow-xl shadow-amber-500/25 hover:shadow-amber-500/40 hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2"
                 >
-                  <WhatsAppIcon className="w-4 h-4 text-slate-950" />
+                  <Mail className="w-4 h-4 text-slate-950" />
                   <span>Wholesale Enquiries</span>
                   <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </a>
@@ -364,7 +352,6 @@ export default async function HomePage() {
                   <ProductCard
                     key={product.id}
                     product={product}
-                    whatsappNumber={settings?.whatsappNumber}
                   />
                 ))}
               </div>
@@ -402,7 +389,6 @@ export default async function HomePage() {
                   <ProductCard
                     key={product.id}
                     product={product}
-                    whatsappNumber={settings?.whatsappNumber}
                   />
                 ))}
               </div>
@@ -463,15 +449,11 @@ export default async function HomePage() {
 
               <div className="flex flex-col sm:flex-row lg:flex-col gap-3.5 w-full sm:w-auto shrink-0 relative z-10">
                 <a
-                  href={`https://wa.me/${cleanWhatsApp}?text=${encodeURIComponent(
-                    "Hello BBG Textile, I am a wholesale buyer looking for fabric quotation and bulk supply terms."
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href="mailto:bbgtextilebharat1@gmail.com?subject=Wholesale%20Bulk%20Supply%20Enquiry"
                   className="px-7 py-4 bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 rounded-2xl font-bold text-sm tracking-wide shadow-xl shadow-amber-500/25 hover:shadow-amber-500/40 hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2.5"
                 >
-                  <WhatsAppIcon className="w-4 h-4 text-slate-950" />
-                  <span>Enquire on WhatsApp</span>
+                  <Mail className="w-4 h-4 text-slate-950" />
+                  <span>Enquire via Email</span>
                   <ArrowRight className="w-4 h-4 text-slate-950" />
                 </a>
                 <Link

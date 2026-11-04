@@ -19,7 +19,6 @@ import {
   PackageCheck,
   Users,
 } from "lucide-react";
-import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 export default function AboutPage() {
   const address =
@@ -27,8 +26,6 @@ export default function AboutPage() {
     "GROUND FLOOR, KHARE MALA, S.NO-204 PLOT NO 28, Kupwad MIDC Area, Madhavnagar, Sangli, Maharashtra - 416436, OLD KUPWAD ROAD, SANGLI - 416416";
   const phone = siteSettings?.phone || "+91 87673 22501";
   const email = siteSettings?.email || "bbgtextilebharat1@gmail.com";
-  const whatsapp = siteSettings?.whatsappNumber || "918767322501";
-  const cleanWhatsApp = whatsapp.replace(/[^0-9]/g, "");
 
   const specialtiesList = [
     "4-Way Stretch Cotton Lycra Churidar Leggings",
@@ -72,7 +69,7 @@ export default function AboutPage() {
     <div className="min-h-screen flex flex-col bg-[#FDFDFD]">
       <Header settings={siteSettings} />
 
-      <main className="flex-1 py-12 sm:py-16">
+      <main className="flex-1 py-12 sm:py-16 pb-28 sm:pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Hero Heading */}
           <div className="max-w-3xl mx-auto text-center mb-16">
@@ -91,7 +88,7 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16">
             <div className="bg-white p-6 rounded-3xl border border-gray-200 text-center shadow-xs">
               <div className="font-serif text-2xl sm:text-3xl font-bold text-[#1A365D] mb-1">
-                Since Early Years
+                Since Years
               </div>
               <div className="text-xs text-gray-500 font-medium">Textile Heritage</div>
             </div>
@@ -196,13 +193,11 @@ export default function AboutPage() {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a
-                href={`https://wa.me/${cleanWhatsApp}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto px-6 py-3.5 bg-[#25D366] hover:bg-[#20BD5A] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-md transition-colors"
+                href={`mailto:${email}?subject=${encodeURIComponent("Mill Visit & Wholesale Inquiry — SBBG Bharat Textile")}`}
+                className="w-full sm:w-auto px-6 py-3.5 bg-amber-500 hover:bg-amber-400 text-slate-950 rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-md transition-colors"
               >
-                <WhatsAppIcon className="w-4 h-4 text-white" />
-                <span>Contact via WhatsApp</span>
+                <Mail className="w-4 h-4 text-slate-950" />
+                <span>Contact via Email</span>
               </a>
               <Link
                 to="/contact"

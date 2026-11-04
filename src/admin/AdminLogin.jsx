@@ -6,7 +6,6 @@ import {
   Mail,
   AlertCircle,
   ArrowRight,
-  Crown,
 } from "lucide-react";
 import { getSiteSettings } from "@/lib/catalogService";
 
@@ -14,8 +13,8 @@ export default function AdminLogin() {
   const navigate = useNavigate();
   const settings = getSiteSettings();
 
-  const [email, setEmail] = useState("admin@gmail.com");
-  const [password, setPassword] = useState("admin@123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -34,7 +33,7 @@ export default function AdminLogin() {
       navigate("/admin");
     } else {
       setLoading(false);
-      setError("Invalid credentials. Default: admin@gmail.com / admin@123");
+      setError("Invalid credentials. Please enter a valid email and password.");
     }
   };
 
@@ -86,7 +85,7 @@ export default function AdminLogin() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1A365D]"
-                  placeholder="admin@gmail.com"
+                  placeholder="Enter admin email"
                 />
               </div>
             </div>
@@ -103,18 +102,9 @@ export default function AdminLogin() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full pl-10 pr-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1A365D]"
-                  placeholder="••••••••"
+                  placeholder="Enter password"
                 />
               </div>
-            </div>
-
-            <div className="p-3 bg-amber-50 rounded-xl border border-amber-200/80 text-[11px] text-amber-900 space-y-0.5">
-              <div className="font-bold flex items-center gap-1">
-                <Crown className="w-3.5 h-3.5 text-amber-700" />
-                <span>Default Credentials</span>
-              </div>
-              <div>Email: <strong>admin@gmail.com</strong></div>
-              <div>Password: <strong>admin@123</strong></div>
             </div>
 
             <button

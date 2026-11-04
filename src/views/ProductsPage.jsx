@@ -4,9 +4,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ProductCard from "@/components/ProductCard";
 import {
-  siteSettings,
-  categories,
-  allProducts,
+  getSiteSettings,
+  getCategories,
+  getAllProducts,
 } from "@/lib/catalogService";
 import {
   Search,
@@ -20,6 +20,9 @@ import {
 
 export default function ProductsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const allProducts = getAllProducts();
+  const categories = getCategories();
+  const siteSettings = getSiteSettings();
 
   const [search, setSearch] = useState(searchParams.get("search") || "");
   const selectedCategory = searchParams.get("category") || "";
@@ -99,7 +102,7 @@ export default function ProductsPage() {
     <div className="min-h-screen flex flex-col bg-[#FDFDFD]">
       <Header settings={siteSettings} />
 
-      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 w-full">
+      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14 w-full pb-28 sm:pb-16">
         {/* Page Title & Breadcrumbs */}
         <div className="mb-8">
           <h1 className="font-serif text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
@@ -257,7 +260,6 @@ export default function ProductsPage() {
               <ProductCard
                 key={product.id}
                 product={product}
-                whatsappNumber={siteSettings?.whatsappNumber}
               />
             ))}
           </div>

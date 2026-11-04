@@ -57,16 +57,74 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [items, isLoaded]);
 
-  const addItem = (item: Omit<CartItem, "id">) => {
-    const id = `${item.productId}_${item.color || "default"}_${item.size || "default"}`;
+  const addItem = (item: any, qty?: any, opts?: any) => {
+    let productId = item.productId || item.id;
+    let name = item.name;
+    let sku = item.sku;
+    let price = item.price || 349;
+    let quantity = 1;
+    let color = item.color || "Standard";
+    let size = item.size || "Free Size";
+    let image = item.image;
+
+    if (typeof qty === "number") {
+      quantity = qty;
+      if (opts) {
+        if (opts.color) color = opts.color;
+        if (opts.size) size = opts.size;
+        if (opts.image) image = opts.image;
+      }
+    } else if (typeof qty === "object") {
+      if (qty.color) color = qty.color;
+      if (qty.size) size = qty.size;
+      if (qty.quantity) quantity = qty.quantity;
+      if (qty.image) image = qty.image;
+    } else if (item.quantity) {
+      quantity = item.quantity;
+    }
+
+    if (!image || image.includes("unsplash")) {
+      const s = (item.slug || item.sku || name || "").toLowerCase();
+      if (s.includes("cycling") || s.includes("short") || s.includes("tight") || s.includes("cs")) {
+        image = "/images/products/bbg-studio-hd-cs-black.jpg";
+      } else if (s.includes("black")) {
+        image = "/images/products/bbg-studio-hd-jet-black.jpg";
+      } else if (s.includes("maroon")) {
+        image = "/images/products/bbg-studio-hd-deep-maroon.jpg";
+      } else if (s.includes("beige") || s.includes("cream")) {
+        image = "/images/products/bbg-studio-hd-beige-cream.jpg";
+      } else if (s.includes("royal") || s.includes("blue")) {
+        image = "/images/products/bbg-studio-hd-royal-blue.jpg";
+      } else if (item.images?.[0]?.url) {
+        image = item.images[0].url;
+      } else {
+        image = "/images/products/bbg-studio-hd-crimson-red.jpg";
+      }
+    }
+
+    const id = `${productId}_${color}_${size}`;
+    const safeQty = Math.max(1, Math.min(5, quantity));
     setItems((prev) => {
       const existing = prev.find((i) => i.id === id);
       if (existing) {
         return prev.map((i) =>
-          i.id === id ? { ...i, quantity: i.quantity + item.quantity } : i
+          i.id === id ? { ...i, quantity: Math.min(5, i.quantity + safeQty) } : i
         );
       }
-      return [...prev, { ...item, id }];
+      return [
+        ...prev,
+        {
+          id,
+          productId,
+          name,
+          sku,
+          price,
+          image,
+          color,
+          size,
+          quantity: safeQty,
+        },
+      ];
     });
     setIsOpen(true);
   };
@@ -80,8 +138,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       removeItem(id);
       return;
     }
+    const safeQty = Math.min(5, quantity);
     setItems((prev) =>
-      prev.map((i) => (i.id === id ? { ...i, quantity } : i))
+      prev.map((i) => (i.id === id ? { ...i, quantity: safeQty } : i))
     );
   };
 

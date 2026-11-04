@@ -15,8 +15,8 @@ import {
   Crown,
   User,
   ShieldCheck,
+  Mail,
 } from "lucide-react";
-import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 interface HeaderProps {
   settings?: {
@@ -61,8 +61,7 @@ export default function Header({ settings }: HeaderProps) {
 
   const businessName = settings?.businessName || "SBBG TEXTILE EXPORTER";
   const phone = settings?.phone || "+91 87673 22501";
-  const whatsapp = settings?.whatsappNumber || "918767322501";
-  const cleanWhatsApp = whatsapp.replace(/[^0-9]/g, "");
+  const email = "bbgtextilebharat1@gmail.com";
   const fullAddress =
     settings?.address ||
     "GROUND FLOOR, KHARE MALA, S.NO-204 PLOT NO 28, Kupwad MIDC Area, Madhavnagar, Sangli, Maharashtra - 416436";
@@ -132,13 +131,11 @@ export default function Header({ settings }: HeaderProps) {
             <span className="text-gray-600 select-none">•</span>
 
             <a
-              href={`https://wa.me/${cleanWhatsApp}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-emerald-400 hover:text-emerald-300 font-semibold transition-colors"
+              href={`mailto:${email}`}
+              className="flex items-center gap-1.5 text-amber-300 hover:text-white font-semibold transition-colors"
             >
-              <WhatsAppIcon className="w-3.5 h-3.5 shrink-0" />
-              <span>WhatsApp</span>
+              <Mail className="w-3.5 h-3.5 shrink-0" />
+              <span>{email}</span>
             </a>
           </div>
         </div>
@@ -190,15 +187,13 @@ export default function Header({ settings }: HeaderProps) {
           <div className="flex items-center gap-3 sm:gap-4">
             {/* Quick Enquiry Link */}
             <a
-              href={`https://wa.me/${cleanWhatsApp}?text=${encodeURIComponent(
+              href={`mailto:${email}?subject=${encodeURIComponent(
                 "Hello BBG Textile, I am interested in exploring your fabrics collection."
               )}`}
-              target="_blank"
-              rel="noopener noreferrer"
               className="hidden lg:inline-flex items-center gap-2 px-4 py-1.5 text-xs font-semibold text-[#1A365D] bg-gradient-to-r from-amber-100/90 via-amber-200/80 to-amber-100/90 hover:from-amber-200 hover:to-amber-300 border border-amber-300/80 rounded-full transition-all shadow-sm hover:shadow"
             >
-              <WhatsAppIcon className="w-3.5 h-3.5 text-emerald-700" />
-              <span>Wholesale Enquiry</span>
+              <Mail className="w-3.5 h-3.5 text-[#1A365D]" />
+              <span>Email Enquiry</span>
             </a>
 
             {/* Account / Login Button */}
@@ -280,36 +275,21 @@ export default function Header({ settings }: HeaderProps) {
               >
                 <div className="flex items-center gap-2.5">
                   <User className="w-5 h-5 text-amber-700" />
-                  <span>Login / Register (खाते लॉगिन करा)</span>
+                  <span>Login / Register</span>
                 </div>
                 <ChevronRight className="w-4 h-4 text-amber-700" />
               </Link>
 
-              {/* Admin Panel in Mobile Drawer */}
-              <Link
-                href="/admin"
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-between px-3.5 py-3 rounded-xl font-serif text-base tracking-wide font-medium bg-[#1A365D]/10 text-[#1A365D] border border-[#1A365D]/20 transition-colors"
-              >
-                <div className="flex items-center gap-2.5">
-                  <ShieldCheck className="w-5 h-5 text-[#1A365D]" />
-                  <span>Admin Panel</span>
-                </div>
-                <ChevronRight className="w-4 h-4 text-[#1A365D]" />
-              </Link>
-
               <div className="pt-3 border-t border-gray-100 flex flex-col gap-2.5">
                 <a
-                  href={`https://wa.me/${cleanWhatsApp}?text=${encodeURIComponent(
+                  href={`mailto:${email}?subject=${encodeURIComponent(
                     "Hello BBG Textile, I am visiting your website and have an enquiry regarding wholesale products."
                   )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-[#25D366] hover:bg-[#20BD5A] active:bg-[#1DA851] text-white rounded-xl text-sm font-bold shadow-md transition-all active:scale-[0.98]"
+                  className="flex items-center justify-center gap-2 w-full py-3 px-4 bg-[#1A365D] hover:bg-[#0F2444] text-white rounded-xl text-sm font-bold shadow-md transition-all active:scale-[0.98]"
                 >
-                  <WhatsAppIcon className="w-5 h-5 text-white" />
-                  <span>Enquire on WhatsApp</span>
+                  <Mail className="w-5 h-5 text-white" />
+                  <span>Enquire via Email</span>
                 </a>
                 <a
                   href={`tel:${phone}`}

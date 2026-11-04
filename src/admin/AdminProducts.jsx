@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AdminLayout from "./AdminLayout";
 import {
   getAllProducts,
@@ -6,9 +6,11 @@ import {
   saveProduct,
   deleteProduct,
 } from "@/lib/catalogService";
+import { syncProductsFromCloud, syncCategoriesFromCloud } from "@/lib/cloudSync";
 import {
   Package,
   Plus,
+  Minus,
   Search,
   Trash2,
   Edit2,
@@ -22,11 +24,20 @@ import {
 
 export default function AdminProducts() {
   const [products, setProducts] = useState(getAllProducts());
-  const categories = getCategories();
+  const [categories, setCategories] = useState(getCategories());
   const [search, setSearch] = useState("");
   const [selectedCat, setSelectedCat] = useState("");
   const [uploading, setUploading] = useState(false);
   const fileInputRef = React.useRef(null);
+
+  useEffect(() => {
+    syncProductsFromCloud().then((cloudProds) => {
+      if (cloudProds) setProducts(cloudProds);
+    });
+    syncCategoriesFromCloud().then((cloudCats) => {
+      if (cloudCats) setCategories(cloudCats);
+    });
+  }, []);
 
   const [showModal, setShowModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
@@ -38,7 +49,7 @@ export default function AdminProducts() {
     categoryId: "cat-churidar-leggings",
     price: 349,
     wholesalePrice: 180,
-    stockQuantity: 100,
+    stockQuantity: 50,
     stockStatus: "IN_STOCK",
     isFeatured: true,
     isNewArrival: false,
@@ -56,7 +67,7 @@ export default function AdminProducts() {
       categoryId: categories[0]?.slug || "churidar-leggings",
       price: 349,
       wholesalePrice: 180,
-      stockQuantity: 100,
+      stockQuantity: 50,
       stockStatus: "IN_STOCK",
       isFeatured: true,
       isNewArrival: false,
@@ -76,8 +87,8 @@ export default function AdminProducts() {
       categoryId: p.categorySlug || p.category?.slug || "churidar-leggings",
       price: p.price,
       wholesalePrice: p.wholesalePrice || 180,
-      stockQuantity: p.stockQuantity || 100,
-      stockStatus: p.stockStatus || "IN_STOCK",
+      stockQuantity: typeof p.stockQuantity === "number" ? p.stockQuantity : 5,
+      stockStatus: p.stockStatus || (p.stockQuantity <= 0 ? "OUT_OF_STOCK" : "IN_STOCK"),
       isFeatured: !!p.isFeatured,
       isNewArrival: !!p.isNewArrival,
       isBestSeller: !!p.isBestSeller,
@@ -187,6 +198,25 @@ export default function AdminProducts() {
     }
   };
 
+  const handleQuickStockChange = (productId, delta) => {
+    const list = [...products];
+    const idx = list.findIndex((item) => item.id === productId);
+    if (idx === -1) return;
+
+    const currentQty = typeof list[idx].stockQuantity === "number" ? list[idx].stockQuantity : 5;
+    const newQty = Math.max(0, currentQty + delta);
+    const newStatus = newQty <= 0 ? "OUT_OF_STOCK" : "IN_STOCK";
+
+    const updatedProduct = {
+      ...list[idx],
+      stockQuantity: newQty,
+      stockStatus: newStatus,
+    };
+
+    const updatedList = saveProduct(updatedProduct);
+    setProducts(updatedList);
+  };
+
   const filteredProducts = products.filter((p) => {
     const matchesSearch =
       !search ||
@@ -259,7 +289,7 @@ export default function AdminProducts() {
                   <th className="py-3 px-4">Category</th>
                   <th className="py-3 px-4">Retail Price</th>
                   <th className="py-3 px-4">Wholesale Rate</th>
-                  <th className="py-3 px-4">Status</th>
+                  <th className="py-3 px-4">Stock (+ / -)</th>
                   <th className="py-3 px-4 text-right">Actions</th>
                 </tr>
               </thead>
@@ -293,9 +323,61 @@ export default function AdminProducts() {
                       ₹{p.wholesalePrice || 180}
                     </td>
                     <td className="py-3 px-4">
-                      <span className="inline-block px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800">
-                        {p.stockStatus || "IN_STOCK"}
-                      </span>
+                      <div className="flex items-center gap-2.5">
+                        {/* Quick Stock Controls [- count +] */}
+                        <div className="inline-flex items-center border border-gray-200 rounded-xl overflow-hidden bg-white shadow-xs">
+                          <button
+                            type="button"
+                            onClick={() => handleQuickStockChange(p.id, -1)}
+                            disabled={(p.stockQuantity ?? 50) <= 0}
+                            className="w-7 h-7 flex items-center justify-center text-gray-700 hover:bg-gray-100 disabled:opacity-25 disabled:cursor-not-allowed font-bold transition-colors cursor-pointer"
+                            title="Decrease stock (-1)"
+                            aria-label="Decrease stock"
+                          >
+                            <Minus className="w-3.5 h-3.5 stroke-[2.5]" />
+                          </button>
+
+                          <span
+                            className={`px-2.5 py-1 text-xs font-mono font-bold min-w-[2.2rem] text-center ${
+                              (p.stockQuantity ?? 50) <= 0
+                                ? "text-red-600 bg-red-50/60"
+                                : (p.stockQuantity ?? 50) <= 10
+                                ? "text-amber-700 bg-amber-50/70"
+                                : "text-gray-900 bg-gray-50/60"
+                            }`}
+                            title={`Current stock: ${p.stockQuantity ?? 50}`}
+                          >
+                            {p.stockQuantity ?? 50}
+                          </span>
+
+                          <button
+                            type="button"
+                            onClick={() => handleQuickStockChange(p.id, +1)}
+                            className="w-7 h-7 flex items-center justify-center text-gray-700 hover:bg-gray-100 font-bold transition-colors cursor-pointer"
+                            title="Increase stock (+1)"
+                            aria-label="Increase stock"
+                          >
+                            <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
+                          </button>
+                        </div>
+
+                        {/* Status Badge */}
+                        <span
+                          className={`inline-block px-2.5 py-1 rounded-full text-[10px] font-bold ${
+                            (p.stockQuantity ?? 50) <= 0 || p.stockStatus === "OUT_OF_STOCK"
+                              ? "bg-red-100 text-red-800 border border-red-200"
+                              : (p.stockQuantity ?? 50) <= 10
+                              ? "bg-amber-100 text-amber-800 border border-amber-300"
+                              : "bg-emerald-100 text-emerald-800 border border-emerald-200"
+                          }`}
+                        >
+                          {(p.stockQuantity ?? 50) <= 0 || p.stockStatus === "OUT_OF_STOCK"
+                            ? "Out of Stock"
+                            : (p.stockQuantity ?? 50) <= 10
+                            ? "Limited Stock"
+                            : "In Stock"}
+                        </span>
+                      </div>
                     </td>
                     <td className="py-3 px-4 text-right space-x-2">
                       <button
@@ -406,6 +488,43 @@ export default function AdminProducts() {
                       onChange={(e) => setFormData({ ...formData, wholesalePrice: e.target.value })}
                       className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl"
                     />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">
+                      Stock Quantity (Default: 5)
+                    </label>
+                    <input
+                      type="number"
+                      min={0}
+                      value={formData.stockQuantity}
+                      onChange={(e) => {
+                        const val = Number(e.target.value);
+                        setFormData({
+                          ...formData,
+                          stockQuantity: val,
+                          stockStatus: val <= 0 ? "OUT_OF_STOCK" : "IN_STOCK",
+                        });
+                      }}
+                      className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl font-bold"
+                    />
+                    <p className="text-[10px] text-gray-400 mt-0.5">५ ऑर्डर झाल्यावर उत्पादन आपोआप क्लोज होईल</p>
+                  </div>
+
+                  <div>
+                    <label className="block font-bold text-gray-700 mb-1">
+                      Stock Status
+                    </label>
+                    <select
+                      value={formData.stockStatus}
+                      onChange={(e) => setFormData({ ...formData, stockStatus: e.target.value })}
+                      className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl font-bold"
+                    >
+                      <option value="IN_STOCK">IN_STOCK (ऑर्डर सुरू)</option>
+                      <option value="OUT_OF_STOCK">OUT_OF_STOCK (ऑर्डर बंद)</option>
+                    </select>
                   </div>
                 </div>
 

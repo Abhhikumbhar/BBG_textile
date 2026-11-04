@@ -50,7 +50,7 @@ export default async function CategoriesPage() {
                   <Image
                     src={
                       cat.imageUrl ||
-                      "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=800&q=80"
+                      "/images/products/bbg-studio-hd-crimson-red.jpg"
                     }
                     alt={cat.name}
                     fill

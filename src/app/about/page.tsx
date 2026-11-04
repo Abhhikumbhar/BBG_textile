@@ -20,7 +20,6 @@ import {
   PackageCheck,
   Users,
 } from "lucide-react";
-import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 export const metadata = {
   title: "About Us | BBG Textile Sangli",
@@ -35,8 +34,6 @@ export default async function AboutPage() {
     "GROUND FLOOR, KHARE MALA, S.NO-204 PLOT NO 28, Kupwad MIDC Area, Madhavnagar, Sangli, Maharashtra - 416436, OLD KUPWAD ROAD, SANGLI - 416416";
   const phone = settings?.phone || "+91 87673 22501";
   const email = settings?.email || "bbgtextilebharat1@gmail.com";
-  const whatsapp = settings?.whatsappNumber || "918767322501";
-  const cleanWhatsApp = whatsapp.replace(/[^0-9]/g, "");
 
   const specialtiesList = [
     "4-Way Stretch Cotton Lycra Churidar Leggings",
@@ -134,7 +131,7 @@ export default async function AboutPage() {
             {/* 3 Metrics Counter Badges */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto pt-6 border-t border-white/15">
               <div className="p-4 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
-                <div className="font-serif text-xl sm:text-2xl font-bold text-amber-400">Since Early Years</div>
+                <div className="font-serif text-xl sm:text-2xl font-bold text-amber-400">Since Years</div>
                 <div className="text-xs text-gray-300 mt-1 uppercase tracking-wider">Established Textile Heritage</div>
               </div>
               <div className="p-4 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10">
@@ -175,14 +172,10 @@ export default async function AboutPage() {
 
                 <div className="mt-8 flex flex-wrap gap-4">
                   <a
-                    href={`https://wa.me/${cleanWhatsApp}?text=${encodeURIComponent(
-                      "Hello BBG Textile, I am interested in wholesale fabric & leggings catalog. Please share details."
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-6 py-3.5 bg-[#25D366] hover:bg-[#20BD5A] text-white rounded-xl font-bold text-sm shadow-md transition-all inline-flex items-center gap-2 hover:shadow-lg"
+                    href={`mailto:${email}?subject=${encodeURIComponent("Wholesale Fabric & Leggings Supply Inquiry")}&body=${encodeURIComponent("Hello BBG Textile, I am interested in wholesale fabric & leggings catalog. Please share details.")}`}
+                    className="px-6 py-3.5 bg-[#1A365D] hover:bg-[#0F2444] text-white rounded-xl font-bold text-sm shadow-md transition-all inline-flex items-center gap-2 hover:shadow-lg"
                   >
-                    <WhatsAppIcon className="w-5 h-5 text-white" />
+                    <Mail className="w-5 h-5 text-white" />
                     <span>Inquire for Wholesale Supply</span>
                   </a>
                   <Link
@@ -462,19 +455,15 @@ export default async function AboutPage() {
 
               <div className="mt-6 flex flex-col sm:flex-row gap-3.5">
                 <a
-                  href={`https://wa.me/${cleanWhatsApp}?text=${encodeURIComponent(
-                    "Hello BBG Textile, I want to inquire about wholesale order / mill visit."
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 py-3.5 bg-[#25D366] hover:bg-[#20BD5A] text-white rounded-xl text-center text-xs sm:text-sm font-bold transition-all shadow-md flex items-center justify-center gap-2"
+                  href={`mailto:${email}?subject=${encodeURIComponent("Mill Visit / Wholesale Enquiry")}&body=${encodeURIComponent("Hello BBG Textile, I want to inquire about wholesale order / mill visit.")}`}
+                  className="flex-1 py-3.5 bg-[#1A365D] hover:bg-[#0F2444] text-white rounded-xl text-center text-xs sm:text-sm font-bold transition-all shadow-md flex items-center justify-center gap-2"
                 >
-                  <WhatsAppIcon className="w-5 h-5 text-white" />
-                  <span>WhatsApp Mill Representative</span>
+                  <Mail className="w-5 h-5 text-white" />
+                  <span>Email Mill Representative</span>
                 </a>
                 <Link
                   href="/contact"
-                  className="flex-1 py-3.5 bg-[#1A365D] hover:bg-[#2A4365] text-white rounded-xl text-center text-xs sm:text-sm font-bold transition-all shadow-md flex items-center justify-center gap-2"
+                  className="flex-1 py-3.5 bg-white hover:bg-gray-50 text-[#1A365D] border border-gray-300 rounded-xl text-center text-xs sm:text-sm font-bold transition-all shadow-sm flex items-center justify-center gap-2"
                 >
                   <span>Open Contact & Enquiry Form</span>
                 </Link>

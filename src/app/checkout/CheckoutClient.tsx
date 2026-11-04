@@ -15,24 +15,22 @@ import {
   Loader2,
   Trash2,
 } from "lucide-react";
+import { loadRazorpayScript, RAZORPAY_KEY_ID } from "@/lib/razorpay";
 
-export default function CheckoutClient({
-  whatsappNumber = "918767322501",
-}: {
-  whatsappNumber?: string;
-}) {
+export default function CheckoutClient() {
   const router = useRouter();
   const { items, subtotal, clearCart, removeItem, updateQuantity } = useCart();
 
   const [formData, setFormData] = useState({
     customerName: "",
     customerPhone: "",
+    alternatePhone: "",
     customerEmail: "",
     shippingAddress: "",
     city: "Sangli",
     state: "Maharashtra",
     postalCode: "416416",
-    paymentMethod: "WHATSAPP_COD" as "WHATSAPP_COD" | "COD" | "BANK_TRANSFER",
+    paymentMethod: "ONLINE_RAZORPAY" as "ONLINE_RAZORPAY" | "COD" | "BANK_TRANSFER",
     notes: "",
   });
 
@@ -46,8 +44,99 @@ export default function CheckoutClient({
       return;
     }
 
+    const cleanPhone = formData.customerPhone.replace(/\D/g, "");
+    if (cleanPhone.length !== 10) {
+      setError("Please enter a valid 10-digit primary mobile number before proceeding.");
+      return;
+    }
+
+    const cleanAlt = (formData.alternatePhone || "").replace(/\D/g, "");
+    if (cleanAlt.length !== 10) {
+      setError("Please enter a valid 10-digit alternate mobile number before proceeding.");
+      return;
+    }
+
+    if (!formData.customerEmail || !formData.customerEmail.includes("@") || !formData.customerEmail.includes(".")) {
+      setError("Please enter a valid email address (e.g. name@company.com) before proceeding.");
+      return;
+    }
+
     setLoading(true);
     setError(null);
+
+    // Online Razorpay Checkout
+    if (formData.paymentMethod === "ONLINE_RAZORPAY") {
+      try {
+        const loaded = await loadRazorpayScript();
+        if (!loaded || !(window as any).Razorpay) {
+          throw new Error("Razorpay payment gateway failed to load. Please try again.");
+        }
+
+        const options = {
+          key: RAZORPAY_KEY_ID,
+          amount: Math.round(subtotal * 100),
+          currency: "INR",
+          name: "BBG Textile",
+          description: "Online Fabric Order Checkout",
+          image: "/icon.png",
+          prefill: {
+            name: formData.customerName,
+            email: formData.customerEmail || "",
+            contact: formData.customerPhone,
+          },
+          theme: {
+            color: "#1A365D",
+          },
+          handler: async function (response: any) {
+            try {
+              const payload = {
+                ...formData,
+                paymentMethod: "ONLINE_RAZORPAY",
+                paymentId: response.razorpay_payment_id,
+                items: items.map((i) => ({
+                  productId: i.productId,
+                  color: i.color,
+                  size: i.size,
+                  quantity: i.quantity,
+                })),
+              };
+
+              const res = await fetch("/api/public/checkout", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+              });
+
+              const data = await res.json();
+              if (!res.ok) throw new Error(data.error || "Failed to record order");
+
+              clearCart();
+              router.push(`/order-success/${data.orderNumber}`);
+            } catch (err: any) {
+              setError(err.message || "Failed to complete order after payment.");
+              setLoading(false);
+            }
+          },
+          modal: {
+            ondismiss: function () {
+              setLoading(false);
+            },
+          },
+        };
+
+        const rzp = new (window as any).Razorpay(options);
+        rzp.on("payment.failed", function (response: any) {
+          setError(`Payment failed: ${response.error?.description || "Transaction declined"}`);
+          setLoading(false);
+        });
+        rzp.open();
+        return;
+      } catch (err: any) {
+        setError(err.message || "Failed to start online payment.");
+        setLoading(false);
+        return;
+      }
+    }
 
     try {
       const payload = {
@@ -157,34 +246,63 @@ export default function CheckoutClient({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
-                      Phone / WhatsApp Number *
+                      Mobile Number (10 Digits) *
                     </label>
                     <input
                       type="tel"
+                      inputMode="numeric"
+                      maxLength={10}
+                      pattern="[0-9]{10}"
                       required
                       value={formData.customerPhone}
                       onChange={(e) =>
-                        setFormData({ ...formData, customerPhone: e.target.value })
+                        setFormData({
+                          ...formData,
+                          customerPhone: e.target.value.replace(/\D/g, "").slice(0, 10),
+                        })
                       }
-                      placeholder="e.g. 8767322501"
+                      placeholder="10-digit mobile number"
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1A365D] text-sm"
                     />
                   </div>
 
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
-                      Email Address (Optional)
+                      Alternate Mobile Number (10 Digits) *
                     </label>
                     <input
-                      type="email"
-                      value={formData.customerEmail}
+                      type="tel"
+                      inputMode="numeric"
+                      maxLength={10}
+                      pattern="[0-9]{10}"
+                      required
+                      value={formData.alternatePhone}
                       onChange={(e) =>
-                        setFormData({ ...formData, customerEmail: e.target.value })
+                        setFormData({
+                          ...formData,
+                          alternatePhone: e.target.value.replace(/\D/g, "").slice(0, 10),
+                        })
                       }
-                      placeholder="e.g. anand@example.com"
+                      placeholder="10-digit alternate number"
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1A365D] text-sm"
                     />
                   </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
+                    Email Address *
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={formData.customerEmail}
+                    onChange={(e) =>
+                      setFormData({ ...formData, customerEmail: e.target.value })
+                    }
+                    placeholder="e.g. anand@example.com"
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1A365D] text-sm"
+                  />
                 </div>
               </div>
             </div>
@@ -283,7 +401,7 @@ export default function CheckoutClient({
               <div className="space-y-3">
                 <label
                   className={`flex items-start gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${
-                    formData.paymentMethod === "WHATSAPP_COD"
+                    formData.paymentMethod === "ONLINE_RAZORPAY"
                       ? "border-[#1A365D] bg-blue-50/50 ring-1 ring-[#1A365D]"
                       : "border-gray-200 hover:bg-gray-50"
                   }`}
@@ -291,51 +409,24 @@ export default function CheckoutClient({
                   <input
                     type="radio"
                     name="paymentMethod"
-                    value="WHATSAPP_COD"
-                    checked={formData.paymentMethod === "WHATSAPP_COD"}
+                    value="ONLINE_RAZORPAY"
+                    checked={formData.paymentMethod === "ONLINE_RAZORPAY"}
                     onChange={() =>
-                      setFormData({ ...formData, paymentMethod: "WHATSAPP_COD" })
+                      setFormData({ ...formData, paymentMethod: "ONLINE_RAZORPAY" })
                     }
                     className="mt-1 text-[#1A365D] focus:ring-[#1A365D]"
                   />
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="font-semibold text-sm text-gray-900">
-                        WhatsApp Verified Order (Recommended for B2B)
+                        Pay Online (Razorpay Gateway)
                       </span>
-                      <span className="px-2 py-0.5 text-[10px] font-bold bg-emerald-100 text-emerald-800 rounded">
-                        Fastest
+                      <span className="px-2 py-0.5 text-[10px] font-bold bg-[#1A365D] text-white rounded">
+                        Instant
                       </span>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">
-                      Place order now and our Sangli sales manager will connect on WhatsApp with transport details and trade invoice.
-                    </p>
-                  </div>
-                </label>
-
-                <label
-                  className={`flex items-start gap-3 p-4 rounded-2xl border cursor-pointer transition-all ${
-                    formData.paymentMethod === "COD"
-                      ? "border-[#1A365D] bg-blue-50/50 ring-1 ring-[#1A365D]"
-                      : "border-gray-200 hover:bg-gray-50"
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="paymentMethod"
-                    value="COD"
-                    checked={formData.paymentMethod === "COD"}
-                    onChange={() =>
-                      setFormData({ ...formData, paymentMethod: "COD" })
-                    }
-                    className="mt-1 text-[#1A365D] focus:ring-[#1A365D]"
-                  />
-                  <div>
-                    <span className="font-semibold text-sm text-gray-900">
-                      Cash on Delivery (Standard Courier)
-                    </span>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Pay cash upon delivery at your doorstep (available for eligible locations).
+                      Pay securely with UPI (GPay, PhonePe, Paytm), Credit/Debit Card, or NetBanking.
                     </p>
                   </div>
                 </label>
@@ -385,7 +476,7 @@ export default function CheckoutClient({
                       <Image
                         src={
                           item.image ||
-                          "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=200&q=80"
+                          "/images/products/bbg-studio-hd-crimson-red.jpg"
                         }
                         alt={item.name}
                         fill
@@ -457,8 +548,17 @@ export default function CheckoutClient({
                   </>
                 ) : (
                   <>
-                    <ShieldCheck className="w-5 h-5 text-amber-400" />
-                    <span>Confirm & Place Order</span>
+                    {formData.paymentMethod === "ONLINE_RAZORPAY" ? (
+                      <>
+                        <CreditCard className="w-5 h-5 text-amber-400" />
+                        <span>Pay Online & Place Order</span>
+                      </>
+                    ) : (
+                      <>
+                        <ShieldCheck className="w-5 h-5 text-amber-400" />
+                        <span>Confirm & Place Order</span>
+                      </>
+                    )}
                   </>
                 )}
               </button>

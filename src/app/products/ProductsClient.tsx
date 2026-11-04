@@ -46,12 +46,10 @@ export default function ProductsClient({
   categories,
   initialProducts = [],
   initialPagination = { page: 1, limit: 12, total: 0, totalPages: 1 },
-  whatsappNumber,
 }: {
   categories: Category[];
   initialProducts?: Product[];
   initialPagination?: { page: number; limit: number; total: number; totalPages: number };
-  whatsappNumber?: string;
 }) {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -540,7 +538,6 @@ export default function ProductsClient({
               <ProductCard
                 key={product.id}
                 product={product}
-                whatsappNumber={whatsappNumber}
               />
             ))}
           </div>

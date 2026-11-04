@@ -13,8 +13,8 @@ import {
   Clock,
   ArrowRight,
   Phone,
+  Mail,
 } from "lucide-react";
-import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 interface Props {
   params: Promise<{ orderNumber: string }>;
@@ -43,13 +43,10 @@ export default async function OrderSuccessPage({ params }: Props) {
     notFound();
   }
 
-  const cleanWhatsApp = (settings?.whatsappNumber || "918767322501").replace(
-    /[^0-9]/g,
-    ""
-  );
-
-  const whatsappMessage = encodeURIComponent(
-    `Hello BBG Textile,\n\nI have placed order *#${order.orderNumber}* on your website for ₹${order.total.toLocaleString(
+  const supportEmail = settings?.email || "bbgtextilebharat1@gmail.com";
+  const mailSubject = encodeURIComponent(`Order #${order.orderNumber} Confirmation Inquiry`);
+  const mailBody = encodeURIComponent(
+    `Hello BBG Textile,\n\nI have placed order #${order.orderNumber} on your website for ₹${order.total.toLocaleString(
       "en-IN"
     )}.\n\nCustomer: ${order.customerName}\nPhone: ${order.customerPhone}\nDelivery City: ${order.city}\n\nPlease confirm dispatch schedule.`
   );
@@ -80,13 +77,11 @@ export default async function OrderSuccessPage({ params }: Props) {
 
             <div className="mt-8 flex flex-col sm:flex-row justify-center gap-3">
               <a
-                href={`https://wa.me/${cleanWhatsApp}?text=${whatsappMessage}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-colors"
+                href={`mailto:${supportEmail}?subject=${mailSubject}&body=${mailBody}`}
+                className="px-6 py-3 bg-[#1A365D] hover:bg-[#0F2444] text-white rounded-xl text-xs font-bold flex items-center justify-center gap-2 shadow-sm transition-colors"
               >
-                <WhatsAppIcon className="w-4 h-4" />
-                <span>Confirm on WhatsApp Now</span>
+                <Mail className="w-4 h-4" />
+                <span>Email Dispatch Desk</span>
               </a>
 
               <PrintButton />
@@ -205,7 +200,7 @@ export default async function OrderSuccessPage({ params }: Props) {
                 1. Our order coordinator will verify roll lengths and shade batch.
               </p>
               <p>
-                2. If chosen WhatsApp COD or Bank Transfer, you will receive payment receipt and transporter parcel bilti copy on WhatsApp.
+                2. You will receive payment receipt and transporter parcel bilti copy on your registered email.
               </p>
             </div>
           </div>

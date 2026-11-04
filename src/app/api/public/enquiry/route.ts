@@ -52,7 +52,7 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error("Enquiry submission error:", error);
     return NextResponse.json(
-      { error: "Failed to submit enquiry. Please try again or WhatsApp us directly." },
+      { error: "Failed to submit enquiry. Please try again or email us directly." },
       { status: 500 }
     );
   }

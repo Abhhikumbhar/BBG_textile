@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
       state,
       postalCode,
       paymentMethod,
+      paymentId,
       notes,
       items,
     } = result.data;
@@ -36,7 +37,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json(
         {
           error:
-            "Online purchasing is currently in enquiry mode. Please click 'Enquire on WhatsApp' to place your wholesale order.",
+            "Online purchasing is currently in enquiry mode. Please click 'Enquire via Email' to place your wholesale order.",
         },
         { status: 400 }
       );
@@ -90,7 +91,7 @@ export async function POST(req: NextRequest) {
       if (!prod.isPurchasableOnline) {
         return NextResponse.json(
           {
-            error: `"${prod.name}" is an enquiry-only product. Please contact us via WhatsApp for bulk quoting.`,
+            error: `"${prod.name}" is an enquiry-only product. Please contact us via email for bulk quoting.`,
           },
           { status: 400 }
         );
@@ -186,9 +187,13 @@ export async function POST(req: NextRequest) {
           city,
           state,
           postalCode,
-          status: "PENDING",
-          paymentStatus: paymentMethod === "COD" ? "PENDING" : "PENDING",
+          status: (paymentMethod === "ONLINE_RAZORPAY" || paymentMethod === "RAZORPAY") ? "CONFIRMED" : "PENDING",
+          paymentStatus:
+            (paymentMethod === "ONLINE_RAZORPAY" || paymentMethod === "RAZORPAY") && paymentId
+              ? "PAID"
+              : "PENDING",
           paymentMethod,
+          paymentId: paymentId || null,
           subtotal: calculatedSubtotal,
           shippingFee,
           total,
@@ -208,8 +213,11 @@ export async function POST(req: NextRequest) {
           },
           statusHistory: {
             create: {
-              status: "PENDING",
-              comment: "Order placed by customer",
+              status: (paymentMethod === "ONLINE_RAZORPAY" || paymentMethod === "RAZORPAY") ? "CONFIRMED" : "PENDING",
+              comment:
+                paymentMethod === "ONLINE_RAZORPAY" || paymentMethod === "RAZORPAY"
+                  ? `Online payment successful via Razorpay (Txn ID: ${paymentId || "verified"})`
+                  : "Order placed by customer",
               changedBy: "Customer Online Checkout",
             },
           },

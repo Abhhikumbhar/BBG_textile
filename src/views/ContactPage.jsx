@@ -13,7 +13,6 @@ import {
   Send,
   CheckCircle2,
 } from "lucide-react";
-import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 export default function ContactPage() {
   const address =
@@ -21,8 +20,6 @@ export default function ContactPage() {
     "GROUND FLOOR, KHARE MALA, S.NO-204 PLOT NO 28, Kupwad MIDC Area, Madhavnagar, Sangli, Maharashtra - 416436, OLD KUPWAD ROAD, SANGLI - 416416";
   const phone = siteSettings?.phone || "+91 87673 22501";
   const email = siteSettings?.email || "bbgtextilebharat1@gmail.com";
-  const whatsapp = siteSettings?.whatsappNumber || "918767322501";
-  const cleanWhatsApp = whatsapp.replace(/[^0-9]/g, "");
 
   const [form, setForm] = useState({
     name: "",
@@ -32,21 +29,29 @@ export default function ContactPage() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const cleanPhone = form.phone.replace(/\D/g, "");
+    if (cleanPhone.length !== 10) {
+      setError("Please enter a valid 10-digit mobile number.");
+      return;
+    }
+    setError(null);
 
-    const text = encodeURIComponent(
-      `*NEW TRADE ENQUIRY — SBBG BHARAT TEXTILE*\n\n` +
+    const mailSubject = encodeURIComponent(`Trade Enquiry: ${form.name} — ${form.category}`);
+    const mailBody = encodeURIComponent(
+      `NEW TRADE ENQUIRY — SBBG BHARAT TEXTILE\n\n` +
       `• Name: ${form.name}\n` +
-      `• Phone: ${form.phone}\n` +
+      `• Mobile: ${form.phone}\n` +
       `• Email: ${form.email || "Not specified"}\n` +
       `• Product Interest: ${form.category}\n` +
       `• Message: ${form.message}\n\n` +
       `Please provide wholesale quotation & swatches.`
     );
 
-    window.open(`https://wa.me/${cleanWhatsApp}?text=${text}`, "_blank");
+    window.location.href = `mailto:${email}?subject=${mailSubject}&body=${mailBody}`;
     setSubmitted(true);
   };
 
@@ -54,7 +59,7 @@ export default function ContactPage() {
     <div className="min-h-screen flex flex-col bg-[#FDFDFD]">
       <Header settings={siteSettings} />
 
-      <main className="flex-1 py-12 sm:py-16">
+      <main className="flex-1 py-10 sm:py-16 pb-28 sm:pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <div className="max-w-3xl mb-12">
@@ -76,13 +81,19 @@ export default function ContactPage() {
                 Send an Instant Wholesale Enquiry
               </h2>
               <p className="text-xs sm:text-sm text-gray-500 mb-8">
-                Fill out the form below. We will immediately open your WhatsApp chat with your trade enquiry details ready to send.
+                Fill out the form below. We will immediately draft your trade enquiry to our sales email desk.
               </p>
+
+              {error && (
+                <div className="mb-6 p-4 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-xs sm:text-sm flex items-center gap-2">
+                  <span>{error}</span>
+                </div>
+              )}
 
               {submitted && (
                 <div className="mb-6 p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm flex items-center gap-2">
                   <CheckCircle2 className="w-5 h-5 shrink-0" />
-                  <span>Enquiry created! WhatsApp chat has been opened. Our team will respond shortly.</span>
+                  <span>Enquiry created! Email opened. Our team will respond shortly.</span>
                 </div>
               )}
 
@@ -104,14 +115,20 @@ export default function ContactPage() {
 
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-1.5">
-                      Phone / WhatsApp Number *
+                      Mobile Number (10 Digits) *
                     </label>
                     <input
                       type="tel"
+                      inputMode="numeric"
+                      maxLength={10}
+                      pattern="[0-9]{10}"
                       required
                       value={form.phone}
-                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                      placeholder="+91 98765 43210"
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, "").slice(0, 10);
+                        setForm({ ...form, phone: val });
+                      }}
+                      placeholder="10-digit mobile number"
                       className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1A365D]"
                     />
                   </div>
@@ -166,37 +183,35 @@ export default function ContactPage() {
                   type="submit"
                   className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2"
                 >
-                  <WhatsAppIcon className="w-4 h-4 text-slate-950" />
-                  <span>Send Enquiry via WhatsApp</span>
+                  <Mail className="w-4 h-4 text-slate-950" />
+                  <span>Send Enquiry via Email</span>
                 </button>
               </form>
             </div>
 
             {/* RIGHT: Direct Details & Address Card (5 cols) */}
             <div className="lg:col-span-5 space-y-6">
-              {/* WhatsApp Quick Card */}
-              <div className="p-6 rounded-3xl bg-emerald-500 text-white shadow-md space-y-3">
+              {/* Direct Email Desk Card */}
+              <div className="p-6 rounded-3xl bg-[#1A365D] text-white shadow-md space-y-3">
                 <div className="flex items-center gap-3">
                   <div className="p-2.5 bg-white/20 rounded-2xl">
-                    <WhatsAppIcon className="w-6 h-6 text-white" />
+                    <Mail className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-serif text-lg font-bold">Fast WhatsApp Response</h3>
-                    <p className="text-emerald-100 text-xs">Direct chat with trade desk</p>
+                    <h3 className="font-serif text-lg font-bold">Direct Email Desk</h3>
+                    <p className="text-blue-100 text-xs">{email}</p>
                   </div>
                 </div>
-                <p className="text-emerald-50 text-xs leading-relaxed">
-                  For instant mill quotations, swatches, or dispatch tracking, message us directly on WhatsApp.
+                <p className="text-blue-50 text-xs leading-relaxed">
+                  For instant mill quotations, swatches, rate cards, or dispatch tracking, message our email desk directly.
                 </p>
                 <a
-                  href={`https://wa.me/${cleanWhatsApp}?text=${encodeURIComponent(
+                  href={`mailto:${email}?subject=${encodeURIComponent(
                     "Hello BBG Textile, I am reaching out through your website contact page."
                   )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block w-full py-3 text-center bg-white text-emerald-700 font-bold rounded-xl text-xs shadow-sm hover:bg-emerald-50 transition-colors"
+                  className="block w-full py-3 text-center bg-white text-[#1A365D] font-bold rounded-xl text-xs shadow-sm hover:bg-gray-100 transition-colors"
                 >
-                  Open WhatsApp Chat
+                  Open Email Client
                 </a>
               </div>
 

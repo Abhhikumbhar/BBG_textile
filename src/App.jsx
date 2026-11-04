@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { CartProvider } from "@/context/CartContext";
 import { AuthProvider, useAuth } from "@/context/AuthContext";
+import { isAppMode } from "@/lib/isAppMode";
 import CartDrawer from "@/components/CartDrawer";
 import BottomNav from "@/components/BottomNav";
-import WhatsAppWidget from "@/components/WhatsAppWidget";
 
 // Storefront Pages
 import HomePage from "@/views/HomePage";
@@ -16,6 +16,8 @@ import CheckoutPage from "@/views/CheckoutPage";
 import OrderSuccessPage from "@/views/OrderSuccessPage";
 import AboutPage from "@/views/AboutPage";
 import ContactPage from "@/views/ContactPage";
+import ReturnPolicyPage from "@/views/ReturnPolicyPage";
+import TrackOrderPage from "@/views/TrackOrderPage";
 import AuthPage from "@/views/AuthPage";
 import AccountPage from "@/views/AccountPage";
 
@@ -40,24 +42,38 @@ function ScrollToTop() {
 function MainAppRoutes() {
   const location = useLocation();
   const pathname = location.pathname;
+  const navigate = useNavigate();
   const isAdmin = pathname.startsWith("/admin");
   const { user, isAuthenticated, guestMode, isLoaded } = useAuth();
+  const inApp = isAppMode();
 
   // If initial auth session is still checking, render clean luxury backdrop
   if (!isLoaded) {
     return (
-      <div className="min-h-screen bg-[#0B1220] flex items-center justify-center">
-        <div className="w-10 h-10 border-3 border-amber-400 border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen bg-[#FAF8F5] flex items-center justify-center">
+        <div className="w-10 h-10 border-3 border-amber-600 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
-  // First-time App Open Gate:
-  // When customer downloads/opens the app and is not logged in yet, show AuthPage first!
+  // 1. MOBILE APP GATEWAY:
+  // When running inside the Mobile App container (iOS/Android WKWebView, standalone, or ?app=true),
+  // and the user is NOT authenticated yet, and has NOT clicked "Continue as Guest" for this session:
+  // Show the luxury Welcome / Login page directly as the mobile app entrance!
   const isPublicAuthRoute = pathname === "/login" || pathname === "/register";
-  if (!isAuthenticated && !guestMode && !isAdmin && !isPublicAuthRoute) {
-    return <AuthPage initialMode="login" />;
+  if (inApp && !isAuthenticated && !guestMode && !isAdmin && !isPublicAuthRoute) {
+    return (
+      <AuthPage
+        initialMode="login"
+        onAuthSuccess={() => navigate("/")}
+        onGuestContinue={() => navigate("/")}
+      />
+    );
   }
+
+  // 2. WEBSITE (DESKTOP & BROWSER):
+  // Website users are NEVER blocked! They land directly on the Homepage (/),
+  // with clean "Sign In" and "Register" buttons in the top header.
 
   return (
     <>
@@ -73,6 +89,8 @@ function MainAppRoutes() {
         <Route path="/order-success/:orderNumber" element={<OrderSuccessPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/track-order" element={<TrackOrderPage />} />
+        <Route path="/return-policy" element={<ReturnPolicyPage />} />
 
         {/* Customer Auth & Account Routes */}
         <Route path="/login" element={<AuthPage initialMode="login" />} />
@@ -97,7 +115,6 @@ function MainAppRoutes() {
         <>
           <CartDrawer />
           <BottomNav />
-          <WhatsAppWidget />
         </>
       )}
     </>

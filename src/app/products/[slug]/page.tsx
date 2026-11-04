@@ -133,7 +133,6 @@ export default async function ProductDetailPage({ params }: Props) {
         <ProductDetailClient
           product={product}
           relatedProducts={relatedProducts}
-          whatsappNumber={settings?.whatsappNumber}
         />
       </main>
       <Footer settings={settings || undefined} />

@@ -4,7 +4,6 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Eye, Heart, ArrowRight } from "lucide-react";
-import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 import { useCart } from "@/context/CartContext";
 
 export interface ProductCardProps {
@@ -26,10 +25,9 @@ export interface ProductCardProps {
     images?: { url: string; altText?: string | null }[];
     variants?: { color?: string | null; size?: string | null }[];
   };
-  whatsappNumber?: string;
 }
 
-export default function ProductCard({ product, whatsappNumber = "918767322501" }: ProductCardProps) {
+export default function ProductCard({ product }: ProductCardProps) {
   const { addItem } = useCart();
   const [added, setAdded] = React.useState(false);
   const [isWishlisted, setIsWishlisted] = React.useState(false);
@@ -100,12 +98,7 @@ export default function ProductCard({ product, whatsappNumber = "918767322501" }
   const primaryImage =
     product.images?.[0]?.url ||
     getStudioImage() ||
-    "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=600&q=80";
-
-  const cleanWhatsApp = (whatsappNumber && whatsappNumber.trim() ? whatsappNumber : "918767322501").replace(/[^0-9]/g, "");
-  const whatsappText = encodeURIComponent(
-    `Hello BBG Textile, I am inquiring about *${product.name}* (SKU: ${product.sku}). Could you please share wholesale pricing and availability?`
-  );
+    "/images/products/bbg-studio-hd-crimson-red.jpg";
 
   const colors = Array.from(
     new Set(product.variants?.map((v) => v.color).filter(Boolean) as string[])
@@ -168,6 +161,11 @@ export default function ProductCard({ product, whatsappNumber = "918767322501" }
           {isOutOfStock && (
             <span className="px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase bg-red-600 text-white rounded-md shadow-sm">
               Out of Stock
+            </span>
+          )}
+          {!isOutOfStock && product.stockQuantity > 0 && product.stockQuantity <= 10 && (
+            <span className="px-2.5 py-1 text-[10px] font-bold tracking-wider uppercase bg-amber-600 text-white rounded-md shadow-sm">
+              Limited Stock
             </span>
           )}
         </div>
@@ -248,27 +246,16 @@ export default function ProductCard({ product, whatsappNumber = "918767322501" }
           </span>
         </div>
 
-        {/* Action Row: Mobile-Optimized View Details & WhatsApp Buttons */}
-        <div className="mt-auto pt-2 sm:pt-2.5 border-t border-[#EAE1D3] flex items-center gap-1.5 sm:gap-2">
+        {/* Action Row: Clean Full-Width View Details Button */}
+        <div className="mt-auto pt-2 sm:pt-2.5 border-t border-[#EAE1D3] flex items-center">
           <Link
             href={`/products/${product.slug}`}
             prefetch={true}
-            className="flex-1 py-2 sm:py-3 px-2 sm:px-3 bg-[#1A365D] hover:bg-[#0F2444] active:bg-[#0A192F] active:scale-[0.98] text-white rounded-lg sm:rounded-xl font-bold text-[11px] sm:text-sm text-center shadow-xs hover:shadow transition-all flex items-center justify-center gap-1 group/btn touch-manipulation min-h-[36px] sm:min-h-[44px]"
+            className="w-full py-2.5 sm:py-3 px-3 sm:px-4 bg-[#1A365D] hover:bg-[#0F2444] active:bg-[#0A192F] active:scale-[0.98] text-white rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm text-center shadow-xs hover:shadow transition-all flex items-center justify-center gap-1.5 group/btn touch-manipulation min-h-[38px] sm:min-h-[44px]"
           >
-            <span>View</span>
-            <ArrowRight className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-white/90 group-hover/btn:translate-x-0.5 transition-transform" />
+            <span>View Details</span>
+            <ArrowRight className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-white/90 group-hover/btn:translate-x-1 transition-transform" />
           </Link>
-          <a
-            href={`https://wa.me/${cleanWhatsApp}?text=${whatsappText}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="h-9 sm:h-11 px-2.5 sm:px-3.5 bg-[#25D366] hover:bg-[#20BD5A] active:bg-[#1DA851] active:scale-[0.98] text-white rounded-lg sm:rounded-xl shadow-xs hover:shadow flex items-center justify-center gap-1 shrink-0 transition-all hover:scale-105 touch-manipulation min-h-[36px] sm:min-h-[44px]"
-            title="Enquire on WhatsApp"
-            aria-label="Enquire on WhatsApp"
-          >
-            <WhatsAppIcon className="w-4 sm:w-5 h-4 sm:h-5 text-white" />
-            <span className="text-[11px] font-bold hidden md:inline">WhatsApp</span>
-          </a>
         </div>
       </div>
     </div>

@@ -22,8 +22,9 @@ import {
   ChevronLeft,
   Info,
   Phone,
+  CreditCard,
+  Mail,
 } from "lucide-react";
-import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 export default function ProductDetailPage() {
   const { slug } = useParams();
@@ -151,7 +152,7 @@ export default function ProductDetailPage() {
       ? product.images.map((img) => img.url)
       : [
           getStudioImage() ||
-          "https://images.unsplash.com/photo-1598033129183-c4f50c736f10?auto=format&fit=crop&w=800&q=80",
+          "/images/products/bbg-studio-hd-crimson-red.jpg",
         ];
 
   const activeImage = images[activeImageIndex] || images[0];
@@ -165,7 +166,13 @@ export default function ProductDetailPage() {
   const currentPrice =
     product.price + (matchedVariant ? matchedVariant.additionalPrice : 0);
 
+  const availableStock = typeof product.stockQuantity === "number" ? product.stockQuantity : 50;
+  const isOutOfStock = product.stockStatus === "OUT_OF_STOCK" || availableStock <= 0;
+  const maxOrderQuantity = Math.max(0, availableStock);
+
   const handleAddToCart = () => {
+    if (isOutOfStock || maxOrderQuantity <= 0) return;
+    const finalQty = Math.max(1, Math.min(maxOrderQuantity, quantity));
     addItem({
       productId: product.id,
       name: product.name,
@@ -174,22 +181,35 @@ export default function ProductDetailPage() {
       image: activeImage,
       color: selectedColor || undefined,
       size: selectedSize || undefined,
-      quantity,
+      quantity: finalQty,
     });
     setAdded(true);
     setTimeout(() => setAdded(false), 2000);
   };
 
-  const cleanWhatsApp = (siteSettings?.whatsappNumber || "918767322501").replace(/[^0-9]/g, "");
-  const whatsappMessage = encodeURIComponent(
-    `Hello SBBG Bharat Textile,\n\nI am interested in ordering:\n*${product.name}*\nSKU: ${product.sku}\nColor/Shade: ${selectedColor || "Standard"}\nSize: ${selectedSize || "Standard"}\nQuantity: ${quantity} units\n\nPlease confirm availability and wholesale quotation.`
-  );
+  const handleBuyNow = () => {
+    if (isOutOfStock || maxOrderQuantity <= 0) return;
+    const finalQty = Math.max(1, Math.min(maxOrderQuantity, quantity));
+    addItem({
+      productId: product.id,
+      name: product.name,
+      sku: product.sku,
+      price: currentPrice,
+      image: activeImage,
+      color: selectedColor || undefined,
+      size: selectedSize || undefined,
+      quantity: finalQty,
+    });
+    navigate("/checkout?method=online");
+  };
+
+  const supportEmail = siteSettings?.email || "bbgtextilebharat1@gmail.com";
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FDFDFD]">
       <Header settings={siteSettings} />
 
-      <main className="flex-1 py-8 sm:py-12">
+      <main className="flex-1 py-8 sm:py-12 pb-28 sm:pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Breadcrumbs */}
           <nav className="flex items-center gap-2 text-xs text-gray-500 mb-6">
@@ -379,57 +399,101 @@ export default function ProductDetailPage() {
 
               {/* Quantity */}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">
-                  Quantity
-                </label>
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden bg-white">
-                    <button
-                      onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                      className="px-3 py-2 text-gray-600 hover:bg-gray-100"
-                    >
-                      -
-                    </button>
-                    <span className="px-4 py-2 text-sm font-bold text-gray-900">
-                      {quantity}
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-xs font-bold uppercase tracking-wider text-gray-700">
+                    Quantity
+                  </label>
+                  {!isOutOfStock && availableStock > 0 && availableStock <= 10 && (
+                    <span className="inline-flex items-center gap-1.5 text-[11px] font-bold text-amber-900 bg-amber-50 px-2.5 py-1 rounded-lg border border-amber-300">
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                      Limited Stock
                     </span>
-                    <button
-                      onClick={() => setQuantity((q) => q + 1)}
-                      className="px-3 py-2 text-gray-600 hover:bg-gray-100"
-                    >
-                      +
-                    </button>
-                  </div>
-                  <span className="text-xs text-gray-500">
-                    Total: ₹{(currentPrice * quantity).toLocaleString("en-IN")}
-                  </span>
+                  )}
                 </div>
+
+                {isOutOfStock ? (
+                  <div className="p-3.5 bg-red-50 border border-red-200 rounded-2xl flex items-center gap-2.5 text-red-700">
+                    <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse shrink-0" />
+                    <div>
+                      <div className="text-xs font-bold uppercase tracking-wide">Out of Stock</div>
+                      <div className="text-[11px] text-red-600 mt-0.5">सध्या हा माल संपला आहे. नवीन स्टॉक लवकरच उपलब्ध होईल.</div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center border border-gray-200 rounded-xl overflow-hidden bg-white shadow-xs">
+                      <button
+                        type="button"
+                        onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                        disabled={quantity <= 1}
+                        className="px-3.5 py-2 text-gray-600 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        aria-label="Decrease quantity"
+                      >
+                        -
+                      </button>
+                      <span className="px-4 py-2 text-sm font-bold text-gray-900 min-w-[2.5rem] text-center">
+                        {quantity}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setQuantity((q) => Math.min(maxOrderQuantity, q + 1))}
+                        disabled={quantity >= maxOrderQuantity}
+                        className="px-3.5 py-2 text-gray-600 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                        aria-label="Increase quantity"
+                        title={quantity >= maxOrderQuantity ? "कमाल ५ नग मर्यादा / Max 5 units allowed" : "Add one"}
+                      >
+                        +
+                      </button>
+                    </div>
+                    <span className="text-xs text-gray-500">
+                      Total: ₹{(currentPrice * quantity).toLocaleString("en-IN")}
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 pt-2">
-                <button
-                  type="button"
-                  onClick={handleAddToCart}
-                  className="flex-1 py-3.5 px-6 rounded-2xl bg-[#1A365D] hover:bg-[#0F2444] text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2"
-                >
-                  <ShoppingBag className="w-4 h-4" />
-                  <span>{added ? "Added to Cart!" : "Add to Cart"}</span>
-                </button>
+              <div className="space-y-2.5 pt-2">
+                {isOutOfStock ? (
+                  <div className="w-full py-4 px-6 rounded-2xl bg-gray-100 text-gray-500 font-bold text-sm text-center border border-gray-300 shadow-inner flex items-center justify-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-red-500" />
+                    <span>Orders Closed (स्टॉक संपला आहे)</span>
+                  </div>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      onClick={handleBuyNow}
+                      className="w-full py-3.5 px-6 rounded-2xl bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 hover:from-amber-400 hover:to-amber-300 text-slate-950 font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <CreditCard className="w-4 h-4 text-slate-950" />
+                      <span>Buy Now & Pay Online (Razorpay)</span>
+                    </button>
 
-                <a
-                  href={`https://wa.me/${cleanWhatsApp}?text=${whatsappMessage}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="py-3.5 px-6 rounded-2xl bg-[#25D366] hover:bg-[#20BD5A] text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 text-center"
-                >
-                  <WhatsAppIcon className="w-4 h-4 text-white" />
-                  <span>Order on WhatsApp</span>
-                </a>
+                    <div className="flex flex-col gap-3">
+                      <button
+                        type="button"
+                        onClick={handleAddToCart}
+                        className="w-full py-3.5 px-6 rounded-2xl bg-[#1A365D] hover:bg-[#0F2444] text-white font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
+                      >
+                        <ShoppingBag className="w-4 h-4" />
+                        <span>{added ? "Added to Cart!" : "Add to Cart"}</span>
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
 
               {/* Value Guarantees */}
               <div className="pt-4 border-t border-gray-200 grid grid-cols-2 gap-3 text-xs text-gray-600">
+                <Link
+                  to="/return-policy"
+                  className="flex items-center gap-2 hover:text-[#1A365D] transition-colors col-span-2 p-2.5 rounded-xl bg-amber-50/70 border border-amber-200/80 font-bold text-amber-950"
+                >
+                  <RotateCcw className="w-4 h-4 text-amber-700 shrink-0" />
+                  <span>7 Days Easy Return & Exchange Guarantee</span>
+                  <span className="text-[10px] text-amber-700 font-normal underline ml-auto">Know more</span>
+                </Link>
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
                   <span>Colorfast Bio-Washed</span>
@@ -471,7 +535,6 @@ export default function ProductDetailPage() {
                   <ProductCard
                     key={rel.id}
                     product={rel}
-                    whatsappNumber={siteSettings?.whatsappNumber}
                   />
                 ))}
               </div>

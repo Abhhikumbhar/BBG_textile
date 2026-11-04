@@ -44,7 +44,7 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "wholesalePrice": 180,
     "isEnquiryOnly": false,
     "isPurchasableOnline": true,
-    "stockQuantity": 500,
+    "stockQuantity": 50,
     "stockStatus": "IN_STOCK",
     "isFeatured": true,
     "isNewArrival": true,
@@ -104,14 +104,14 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
         "id": "var-blk-1",
         "color": "Jet Black",
         "size": "Free Size (Fits 28 - 34 Inch Waist)",
-        "stockQuantity": 250,
+        "stockQuantity": 50,
         "additionalPrice": 0
       },
       {
         "id": "var-blk-2",
         "color": "Jet Black",
         "size": "Plus Size / XL-2XL (Fits 34 - 42 Inch Waist)",
-        "stockQuantity": 200,
+        "stockQuantity": 50,
         "additionalPrice": 40
       },
       {
@@ -133,7 +133,7 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "wholesalePrice": 140,
     "isEnquiryOnly": false,
     "isPurchasableOnline": true,
-    "stockQuantity": 400,
+    "stockQuantity": 50,
     "stockStatus": "IN_STOCK",
     "isFeatured": true,
     "isNewArrival": true,
@@ -207,21 +207,21 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
         "id": "var-womens-cotton-lycra-cycling-shorts-white-1",
         "color": "Pure White",
         "size": "Free Size (Fits 28 - 34 Inch Waist)",
-        "stockQuantity": 200,
+        "stockQuantity": 50,
         "additionalPrice": 0
       },
       {
         "id": "var-womens-cotton-lycra-cycling-shorts-white-2",
         "color": "Pure White",
         "size": "Plus Size / XL-2XL (Fits 34 - 42 Inch Waist)",
-        "stockQuantity": 150,
+        "stockQuantity": 50,
         "additionalPrice": 30
       },
       {
         "id": "var-womens-cotton-lycra-cycling-shorts-white-3",
         "color": "Pure White",
         "size": "Wholesale Pack (10 Pieces Bundle)",
-        "stockQuantity": 40,
+        "stockQuantity": 50,
         "additionalPrice": 1120
       }
     ]
@@ -236,7 +236,7 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "wholesalePrice": 140,
     "isEnquiryOnly": false,
     "isPurchasableOnline": true,
-    "stockQuantity": 400,
+    "stockQuantity": 50,
     "stockStatus": "IN_STOCK",
     "isFeatured": true,
     "isNewArrival": true,
@@ -310,21 +310,21 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
         "id": "var-womens-cotton-lycra-cycling-shorts-grey-1",
         "color": "Heather Grey",
         "size": "Free Size (Fits 28 - 34 Inch Waist)",
-        "stockQuantity": 200,
+        "stockQuantity": 50,
         "additionalPrice": 0
       },
       {
         "id": "var-womens-cotton-lycra-cycling-shorts-grey-2",
         "color": "Heather Grey",
         "size": "Plus Size / XL-2XL (Fits 34 - 42 Inch Waist)",
-        "stockQuantity": 150,
+        "stockQuantity": 50,
         "additionalPrice": 30
       },
       {
         "id": "var-womens-cotton-lycra-cycling-shorts-grey-3",
         "color": "Heather Grey",
         "size": "Wholesale Pack (10 Pieces Bundle)",
-        "stockQuantity": 40,
+        "stockQuantity": 50,
         "additionalPrice": 1120
       }
     ]
@@ -339,7 +339,7 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "wholesalePrice": 140,
     "isEnquiryOnly": false,
     "isPurchasableOnline": true,
-    "stockQuantity": 400,
+    "stockQuantity": 50,
     "stockStatus": "IN_STOCK",
     "isFeatured": true,
     "isNewArrival": true,
@@ -413,21 +413,21 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
         "id": "var-womens-cotton-lycra-cycling-shorts-beige-1",
         "color": "Beige / Nude",
         "size": "Free Size (Fits 28 - 34 Inch Waist)",
-        "stockQuantity": 200,
+        "stockQuantity": 50,
         "additionalPrice": 0
       },
       {
         "id": "var-womens-cotton-lycra-cycling-shorts-beige-2",
         "color": "Beige / Nude",
         "size": "Plus Size / XL-2XL (Fits 34 - 42 Inch Waist)",
-        "stockQuantity": 150,
+        "stockQuantity": 50,
         "additionalPrice": 30
       },
       {
         "id": "var-womens-cotton-lycra-cycling-shorts-beige-3",
         "color": "Beige / Nude",
         "size": "Wholesale Pack (10 Pieces Bundle)",
-        "stockQuantity": 40,
+        "stockQuantity": 50,
         "additionalPrice": 1120
       }
     ]
@@ -442,7 +442,7 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "wholesalePrice": 140,
     "isEnquiryOnly": false,
     "isPurchasableOnline": true,
-    "stockQuantity": 400,
+    "stockQuantity": 50,
     "stockStatus": "IN_STOCK",
     "isFeatured": true,
     "isNewArrival": true,
@@ -516,21 +516,21 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
         "id": "var-womens-cotton-lycra-cycling-shorts-teal-1",
         "color": "Peacock Teal Blue",
         "size": "Free Size (Fits 28 - 34 Inch Waist)",
-        "stockQuantity": 200,
+        "stockQuantity": 50,
         "additionalPrice": 0
       },
       {
         "id": "var-womens-cotton-lycra-cycling-shorts-teal-2",
         "color": "Peacock Teal Blue",
         "size": "Plus Size / XL-2XL (Fits 34 - 42 Inch Waist)",
-        "stockQuantity": 150,
+        "stockQuantity": 50,
         "additionalPrice": 30
       },
       {
         "id": "var-womens-cotton-lycra-cycling-shorts-teal-3",
         "color": "Peacock Teal Blue",
         "size": "Wholesale Pack (10 Pieces Bundle)",
-        "stockQuantity": 40,
+        "stockQuantity": 50,
         "additionalPrice": 1120
       }
     ]
@@ -545,7 +545,7 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "wholesalePrice": 140,
     "isEnquiryOnly": false,
     "isPurchasableOnline": true,
-    "stockQuantity": 400,
+    "stockQuantity": 50,
     "stockStatus": "IN_STOCK",
     "isFeatured": true,
     "isNewArrival": true,
@@ -619,21 +619,21 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
         "id": "var-womens-cotton-lycra-cycling-shorts-red-1",
         "color": "Bright Red",
         "size": "Free Size (Fits 28 - 34 Inch Waist)",
-        "stockQuantity": 200,
+        "stockQuantity": 50,
         "additionalPrice": 0
       },
       {
         "id": "var-womens-cotton-lycra-cycling-shorts-red-2",
         "color": "Bright Red",
         "size": "Plus Size / XL-2XL (Fits 34 - 42 Inch Waist)",
-        "stockQuantity": 150,
+        "stockQuantity": 50,
         "additionalPrice": 30
       },
       {
         "id": "var-womens-cotton-lycra-cycling-shorts-red-3",
         "color": "Bright Red",
         "size": "Wholesale Pack (10 Pieces Bundle)",
-        "stockQuantity": 40,
+        "stockQuantity": 50,
         "additionalPrice": 1120
       }
     ]
@@ -648,7 +648,7 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "wholesalePrice": 140,
     "isEnquiryOnly": false,
     "isPurchasableOnline": true,
-    "stockQuantity": 400,
+    "stockQuantity": 50,
     "stockStatus": "IN_STOCK",
     "isFeatured": true,
     "isNewArrival": true,
@@ -722,21 +722,21 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
         "id": "var-womens-cotton-lycra-cycling-shorts-royal-blue-1",
         "color": "Royal Blue",
         "size": "Free Size (Fits 28 - 34 Inch Waist)",
-        "stockQuantity": 200,
+        "stockQuantity": 50,
         "additionalPrice": 0
       },
       {
         "id": "var-womens-cotton-lycra-cycling-shorts-royal-blue-2",
         "color": "Royal Blue",
         "size": "Plus Size / XL-2XL (Fits 34 - 42 Inch Waist)",
-        "stockQuantity": 150,
+        "stockQuantity": 50,
         "additionalPrice": 30
       },
       {
         "id": "var-womens-cotton-lycra-cycling-shorts-royal-blue-3",
         "color": "Royal Blue",
         "size": "Wholesale Pack (10 Pieces Bundle)",
-        "stockQuantity": 40,
+        "stockQuantity": 50,
         "additionalPrice": 1120
       }
     ]
@@ -751,7 +751,7 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "wholesalePrice": 140,
     "isEnquiryOnly": false,
     "isPurchasableOnline": true,
-    "stockQuantity": 400,
+    "stockQuantity": 50,
     "stockStatus": "IN_STOCK",
     "isFeatured": true,
     "isNewArrival": true,
@@ -825,21 +825,21 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
         "id": "var-womens-cotton-lycra-cycling-shorts-maroon-1",
         "color": "Deep Maroon",
         "size": "Free Size (Fits 28 - 34 Inch Waist)",
-        "stockQuantity": 200,
+        "stockQuantity": 50,
         "additionalPrice": 0
       },
       {
         "id": "var-womens-cotton-lycra-cycling-shorts-maroon-2",
         "color": "Deep Maroon",
         "size": "Plus Size / XL-2XL (Fits 34 - 42 Inch Waist)",
-        "stockQuantity": 150,
+        "stockQuantity": 50,
         "additionalPrice": 30
       },
       {
         "id": "var-womens-cotton-lycra-cycling-shorts-maroon-3",
         "color": "Deep Maroon",
         "size": "Wholesale Pack (10 Pieces Bundle)",
-        "stockQuantity": 40,
+        "stockQuantity": 50,
         "additionalPrice": 1120
       }
     ]
@@ -854,7 +854,7 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "wholesalePrice": 140,
     "isEnquiryOnly": false,
     "isPurchasableOnline": true,
-    "stockQuantity": 400,
+    "stockQuantity": 50,
     "stockStatus": "IN_STOCK",
     "isFeatured": true,
     "isNewArrival": true,
@@ -928,21 +928,21 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
         "id": "var-womens-cotton-lycra-cycling-shorts-black-1",
         "color": "Jet Black",
         "size": "Free Size (Fits 28 - 34 Inch Waist)",
-        "stockQuantity": 200,
+        "stockQuantity": 50,
         "additionalPrice": 0
       },
       {
         "id": "var-womens-cotton-lycra-cycling-shorts-black-2",
         "color": "Jet Black",
         "size": "Plus Size / XL-2XL (Fits 34 - 42 Inch Waist)",
-        "stockQuantity": 150,
+        "stockQuantity": 50,
         "additionalPrice": 30
       },
       {
         "id": "var-womens-cotton-lycra-cycling-shorts-black-3",
         "color": "Jet Black",
         "size": "Wholesale Pack (10 Pieces Bundle)",
-        "stockQuantity": 40,
+        "stockQuantity": 50,
         "additionalPrice": 1120
       }
     ]
@@ -957,7 +957,7 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "wholesalePrice": 180,
     "isEnquiryOnly": false,
     "isPurchasableOnline": true,
-    "stockQuantity": 400,
+    "stockQuantity": 50,
     "stockStatus": "IN_STOCK",
     "isFeatured": true,
     "isNewArrival": true,
@@ -1031,14 +1031,14 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
         "id": "var-womens-cotton-lycra-churidar-leggings-teal-1",
         "color": "Peacock Teal Blue",
         "size": "Free Size (Fits 28 - 34 Inch Waist)",
-        "stockQuantity": 250,
+        "stockQuantity": 50,
         "additionalPrice": 0
       },
       {
         "id": "var-womens-cotton-lycra-churidar-leggings-teal-2",
         "color": "Peacock Teal Blue",
         "size": "Plus Size / XL-2XL (Fits 34 - 42 Inch Waist)",
-        "stockQuantity": 180,
+        "stockQuantity": 50,
         "additionalPrice": 40
       },
       {
@@ -1060,7 +1060,7 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "wholesalePrice": 180,
     "isEnquiryOnly": false,
     "isPurchasableOnline": true,
-    "stockQuantity": 400,
+    "stockQuantity": 50,
     "stockStatus": "IN_STOCK",
     "isFeatured": true,
     "isNewArrival": true,
@@ -1134,14 +1134,14 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
         "id": "var-womens-cotton-lycra-churidar-leggings-grey-1",
         "color": "Heather Grey",
         "size": "Free Size (Fits 28 - 34 Inch Waist)",
-        "stockQuantity": 250,
+        "stockQuantity": 50,
         "additionalPrice": 0
       },
       {
         "id": "var-womens-cotton-lycra-churidar-leggings-grey-2",
         "color": "Heather Grey",
         "size": "Plus Size / XL-2XL (Fits 34 - 42 Inch Waist)",
-        "stockQuantity": 180,
+        "stockQuantity": 50,
         "additionalPrice": 40
       },
       {
@@ -1163,7 +1163,7 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "wholesalePrice": 180,
     "isEnquiryOnly": false,
     "isPurchasableOnline": true,
-    "stockQuantity": 400,
+    "stockQuantity": 50,
     "stockStatus": "IN_STOCK",
     "isFeatured": true,
     "isNewArrival": true,
@@ -1237,14 +1237,14 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
         "id": "var-womens-cotton-lycra-churidar-leggings-white-1",
         "color": "Pure White",
         "size": "Free Size (Fits 28 - 34 Inch Waist)",
-        "stockQuantity": 250,
+        "stockQuantity": 50,
         "additionalPrice": 0
       },
       {
         "id": "var-womens-cotton-lycra-churidar-leggings-white-2",
         "color": "Pure White",
         "size": "Plus Size / XL-2XL (Fits 34 - 42 Inch Waist)",
-        "stockQuantity": 180,
+        "stockQuantity": 50,
         "additionalPrice": 40
       },
       {
@@ -1266,7 +1266,7 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "wholesalePrice": 180,
     "isEnquiryOnly": false,
     "isPurchasableOnline": true,
-    "stockQuantity": 400,
+    "stockQuantity": 50,
     "stockStatus": "IN_STOCK",
     "isFeatured": true,
     "isNewArrival": true,
@@ -1340,14 +1340,14 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
         "id": "var-womens-cotton-lycra-churidar-leggings-beige-1",
         "color": "Beige / Cream",
         "size": "Free Size (Fits 28 - 34 Inch Waist)",
-        "stockQuantity": 250,
+        "stockQuantity": 50,
         "additionalPrice": 0
       },
       {
         "id": "var-womens-cotton-lycra-churidar-leggings-beige-2",
         "color": "Beige / Cream",
         "size": "Plus Size / XL-2XL (Fits 34 - 42 Inch Waist)",
-        "stockQuantity": 180,
+        "stockQuantity": 50,
         "additionalPrice": 40
       },
       {
@@ -1369,7 +1369,7 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "wholesalePrice": 180,
     "isEnquiryOnly": false,
     "isPurchasableOnline": true,
-    "stockQuantity": 400,
+    "stockQuantity": 50,
     "stockStatus": "IN_STOCK",
     "isFeatured": true,
     "isNewArrival": true,
@@ -1443,14 +1443,14 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
         "id": "var-womens-cotton-lycra-churidar-leggings-black-classic-1",
         "color": "Jet Black",
         "size": "Free Size (Fits 28 - 34 Inch Waist)",
-        "stockQuantity": 250,
+        "stockQuantity": 50,
         "additionalPrice": 0
       },
       {
         "id": "var-womens-cotton-lycra-churidar-leggings-black-classic-2",
         "color": "Jet Black",
         "size": "Plus Size / XL-2XL (Fits 34 - 42 Inch Waist)",
-        "stockQuantity": 180,
+        "stockQuantity": 50,
         "additionalPrice": 40
       },
       {
@@ -1472,7 +1472,7 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "wholesalePrice": 180,
     "isEnquiryOnly": false,
     "isPurchasableOnline": true,
-    "stockQuantity": 400,
+    "stockQuantity": 50,
     "stockStatus": "IN_STOCK",
     "isFeatured": true,
     "isNewArrival": true,
@@ -1546,14 +1546,14 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
         "id": "var-womens-cotton-lycra-churidar-leggings-royal-blue-1",
         "color": "Royal Blue",
         "size": "Free Size (Fits 28 - 34 Inch Waist)",
-        "stockQuantity": 250,
+        "stockQuantity": 50,
         "additionalPrice": 0
       },
       {
         "id": "var-womens-cotton-lycra-churidar-leggings-royal-blue-2",
         "color": "Royal Blue",
         "size": "Plus Size / XL-2XL (Fits 34 - 42 Inch Waist)",
-        "stockQuantity": 180,
+        "stockQuantity": 50,
         "additionalPrice": 40
       },
       {
@@ -1575,7 +1575,7 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "wholesalePrice": 180,
     "isEnquiryOnly": false,
     "isPurchasableOnline": true,
-    "stockQuantity": 400,
+    "stockQuantity": 50,
     "stockStatus": "IN_STOCK",
     "isFeatured": true,
     "isNewArrival": true,
@@ -1642,14 +1642,14 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
         "id": "var-womens-cotton-lycra-churidar-leggings-maroon-1",
         "color": "Deep Maroon",
         "size": "Free Size (Fits 28 - 34 Inch Waist)",
-        "stockQuantity": 250,
+        "stockQuantity": 50,
         "additionalPrice": 0
       },
       {
         "id": "var-womens-cotton-lycra-churidar-leggings-maroon-2",
         "color": "Deep Maroon",
         "size": "Plus Size / XL-2XL (Fits 34 - 42 Inch Waist)",
-        "stockQuantity": 180,
+        "stockQuantity": 50,
         "additionalPrice": 40
       },
       {
@@ -1671,7 +1671,7 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
     "wholesalePrice": 180,
     "isEnquiryOnly": false,
     "isPurchasableOnline": true,
-    "stockQuantity": 400,
+    "stockQuantity": 50,
     "stockStatus": "IN_STOCK",
     "isFeatured": true,
     "isNewArrival": true,
@@ -1745,14 +1745,14 @@ export const STATIC_PRODUCTS_CATALOG: CatalogProduct[] = [
         "id": "var-womens-cotton-lycra-churidar-leggings-red-1",
         "color": "Crimson Red",
         "size": "Free Size (Fits 28 - 34 Inch Waist)",
-        "stockQuantity": 250,
+        "stockQuantity": 50,
         "additionalPrice": 0
       },
       {
         "id": "var-womens-cotton-lycra-churidar-leggings-red-2",
         "color": "Crimson Red",
         "size": "Plus Size / XL-2XL (Fits 34 - 42 Inch Waist)",
-        "stockQuantity": 180,
+        "stockQuantity": 50,
         "additionalPrice": 40
       },
       {

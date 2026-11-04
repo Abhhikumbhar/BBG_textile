@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import AdminLayout from "./AdminLayout";
 import { getEnquiries } from "@/lib/catalogService";
 import { MessageSquare, Phone, Mail, User, Clock } from "lucide-react";
-import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 export default function AdminEnquiries() {
   const [enquiries, setEnquiries] = useState(getEnquiries());
@@ -53,15 +52,15 @@ export default function AdminEnquiries() {
 
                 <div className="pt-2 flex justify-end">
                   <a
-                    href={`https://wa.me/${(e.phone || "").replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
-                      `Hello ${e.name}, this is from SBBG Bharat Textile regarding your trade enquiry.`
+                    href={`mailto:${e.email || "bbgtextilebharat1@gmail.com"}?subject=${encodeURIComponent(
+                      `Response to Trade Enquiry - SBBG Bharat Textile`
+                    )}&body=${encodeURIComponent(
+                      `Hello ${e.name},\n\nThank you for contacting SBBG Bharat Textile regarding your trade enquiry.\n\n`
                     )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-3.5 py-1.5 bg-[#25D366] hover:bg-[#20BD5A] text-white rounded-xl text-xs font-bold inline-flex items-center gap-1.5"
+                    className="px-3.5 py-1.5 bg-[#1A365D] hover:bg-[#0F2444] text-white rounded-xl text-xs font-bold inline-flex items-center gap-1.5 transition-colors"
                   >
-                    <WhatsAppIcon className="w-3.5 h-3.5" />
-                    <span>Reply on WhatsApp</span>
+                    <Mail className="w-3.5 h-3.5" />
+                    <span>Reply via Email</span>
                   </a>
                 </div>
               </div>

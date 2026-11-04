@@ -7,6 +7,7 @@ import {
   Menu,
   X,
   Phone,
+  Mail,
   MapPin,
   ChevronRight,
   Crown,
@@ -14,7 +15,6 @@ import {
   ShieldCheck,
   LogOut,
 } from "lucide-react";
-import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 export default function Header({ settings }) {
   const location = useLocation();
@@ -47,8 +47,7 @@ export default function Header({ settings }) {
   ];
 
   const businessName = settings?.businessName || "SBBG BHARAT TEXTILE";
-  const whatsapp = settings?.whatsappNumber || "918767322501";
-  const cleanWhatsApp = whatsapp.replace(/[^0-9]/g, "");
+  const email = settings?.email || "bbgtextilebharat1@gmail.com";
 
   return (
     <>
@@ -62,25 +61,16 @@ export default function Header({ settings }) {
             </span>
             <p className="text-[11px] sm:text-xs font-medium tracking-wide text-amber-200/90 truncate">
               {settings?.announcementText ||
-                "Direct Mill Wholesale & Export — Sangli Works: +91 87673 22501"}
+                "Direct Mill Wholesale & Export — Sangli Works: bbgtextilebharat1@gmail.com"}
             </p>
           </div>
           <div className="hidden sm:flex items-center gap-4 text-xs">
-            {isAdmin && (
-              <Link
-                to="/admin"
-                className="flex items-center gap-1 font-bold text-amber-300 hover:text-amber-200 transition-colors"
-              >
-                <Crown className="w-3.5 h-3.5 text-amber-400" />
-                <span>Admin Panel</span>
-              </Link>
-            )}
             <a
-              href={`tel:${settings?.phoneNumber || "8767322501"}`}
+              href={`mailto:${email}`}
               className="flex items-center gap-1.5 text-gray-300 hover:text-white transition-colors"
             >
-              <Phone className="w-3.5 h-3.5 text-amber-400" />
-              <span>+91 87673 22501</span>
+              <Mail className="w-3.5 h-3.5 text-amber-400" />
+              <span>{email}</span>
             </a>
           </div>
         </div>
@@ -143,17 +133,14 @@ export default function Header({ settings }) {
 
             {/* Right Action Icons */}
             <div className="flex items-center gap-2 sm:gap-3">
-              {/* WhatsApp Quick Link */}
+              {/* Email Direct Contact */}
               <a
-                href={`https://wa.me/${cleanWhatsApp}?text=${encodeURIComponent(
-                  "Hello BBG Textile, I am visiting your website and have an enquiry."
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20 text-xs font-medium transition-all"
+                href={`mailto:${email}`}
+                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 hover:bg-amber-500/20 text-xs font-medium transition-all"
+                title={`Email: ${email}`}
               >
-                <WhatsAppIcon className="w-3.5 h-3.5" />
-                <span>Chat</span>
+                <Mail className="w-3.5 h-3.5" />
+                <span>Email Us</span>
               </a>
 
               {/* User Account / Profile Button */}
@@ -171,13 +158,21 @@ export default function Header({ settings }) {
                   </span>
                 </Link>
               ) : (
-                <Link
-                  to="/login"
-                  className="hidden sm:inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full bg-amber-500/15 border border-amber-400/30 text-amber-300 hover:bg-amber-500/25 text-xs font-bold transition-colors"
-                >
-                  <User className="w-3.5 h-3.5" />
-                  <span>Login</span>
-                </Link>
+                <div className="hidden sm:flex items-center gap-2">
+                  <Link
+                    to="/login"
+                    className="inline-flex items-center gap-1 py-1.5 px-3 rounded-full text-xs font-semibold text-gray-300 hover:text-amber-300 hover:bg-white/5 border border-transparent hover:border-white/10 transition-colors"
+                  >
+                    <span>Sign In</span>
+                  </Link>
+                  <Link
+                    to="/register"
+                    className="inline-flex items-center gap-1.5 py-1.5 px-3.5 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-[#0B1220] text-xs font-bold shadow-sm shadow-amber-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                  >
+                    <User className="w-3.5 h-3.5" />
+                    <span>Register</span>
+                  </Link>
+                </div>
               )}
 
               {/* Cart Button */}
@@ -235,39 +230,44 @@ export default function Header({ settings }) {
               })}
 
               {/* Account Link in Mobile Menu */}
-              <Link
-                to={isAuthenticated ? "/account" : "/login"}
-                className="flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium text-amber-300 bg-amber-400/10 border border-amber-400/20"
-              >
-                <div className="flex items-center gap-2">
-                  <User className="w-4 h-4 text-amber-400" />
-                  <span>{isAuthenticated ? `माझे खाते (${user?.name})` : "लॉगिन / Register करा"}</span>
-                </div>
-                <ChevronRight className="w-4 h-4 text-amber-400" />
-              </Link>
-
-              {isAdmin && (
+              {isAuthenticated ? (
                 <Link
-                  to="/admin"
-                  className="flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-bold text-amber-400 bg-amber-500/20 border border-amber-500/40"
+                  to="/account"
+                  className="flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium text-amber-300 bg-amber-400/10 border border-amber-400/20"
                 >
                   <div className="flex items-center gap-2">
-                    <Crown className="w-4 h-4 text-amber-400" />
-                    <span>Admin Dashboard</span>
+                    <User className="w-4 h-4 text-amber-400" />
+                    <span>My Account ({user?.name || "User"})</span>
                   </div>
                   <ChevronRight className="w-4 h-4 text-amber-400" />
                 </Link>
+              ) : (
+                <div className="grid grid-cols-2 gap-2 pt-1">
+                  <Link
+                    to="/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-bold text-amber-300 bg-amber-400/10 border border-amber-400/25 hover:bg-amber-400/20 transition-colors"
+                  >
+                    <User className="w-3.5 h-3.5" />
+                    <span>Sign In</span>
+                  </Link>
+                  <Link
+                    to="/register"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="flex items-center justify-center gap-1.5 py-2.5 px-3 rounded-xl text-xs font-bold text-[#0B1220] bg-gradient-to-r from-amber-400 to-amber-500 shadow-sm transition-all"
+                  >
+                    <span>Register</span>
+                  </Link>
+                </div>
               )}
 
               <div className="pt-4 border-t border-white/10 flex flex-col gap-2">
                 <a
-                  href={`https://wa.me/${cleanWhatsApp}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-xs shadow-sm transition-colors"
+                  href={`mailto:${email}`}
+                  className="flex items-center justify-center gap-2 w-full py-2.5 rounded-xl bg-amber-500/15 border border-amber-400/30 text-amber-300 hover:bg-amber-500/25 font-medium text-xs shadow-sm transition-colors"
                 >
-                  <WhatsAppIcon className="w-4 h-4" />
-                  <span>Enquire on WhatsApp</span>
+                  <Mail className="w-4 h-4" />
+                  <span>Email: {email}</span>
                 </a>
               </div>
             </div>

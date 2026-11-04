@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import AdminLayout from "./AdminLayout";
 import {
   getCategories,
@@ -6,6 +6,7 @@ import {
   deleteCategory,
   getAllProducts,
 } from "@/lib/catalogService";
+import { syncCategoriesFromCloud } from "@/lib/cloudSync";
 import { Layers, Plus, Trash2, Edit2, X, Upload, Loader2, Image as ImageIcon } from "lucide-react";
 
 export default function AdminCategories() {
@@ -13,6 +14,12 @@ export default function AdminCategories() {
   const products = getAllProducts();
   const [showModal, setShowModal] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
+
+  useEffect(() => {
+    syncCategoriesFromCloud().then((cloudCats) => {
+      if (cloudCats) setCategoriesList(cloudCats);
+    });
+  }, []);
 
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");

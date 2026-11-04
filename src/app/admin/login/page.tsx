@@ -10,15 +10,14 @@ import {
   Mail,
   Loader2,
   AlertCircle,
-  Sparkles,
   ArrowRight,
   Crown,
 } from "lucide-react";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("admin@gmail.com");
-  const [password, setPassword] = useState("admin@123");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -106,7 +105,7 @@ export default function AdminLoginPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@gmail.com"
+                  placeholder="Enter admin email"
                   className="w-full pl-10 pr-4 py-3 bg-slate-50/70 border border-slate-200 rounded-xl text-slate-900 text-sm font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all placeholder:text-slate-400"
                 />
               </div>
@@ -123,7 +122,7 @@ export default function AdminLoginPage() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••••••"
+                  placeholder="Enter password"
                   className="w-full pl-10 pr-4 py-3 bg-slate-50/70 border border-slate-200 rounded-xl text-slate-900 text-sm font-medium focus:bg-white focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 transition-all placeholder:text-slate-400"
                 />
               </div>
@@ -148,36 +147,6 @@ export default function AdminLoginPage() {
               )}
             </button>
           </form>
-
-          {/* Quick Fill Credentials Helper Card */}
-          <div className="mt-6 pt-6 border-t border-slate-100 text-xs">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-1.5 text-amber-800 font-bold">
-                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                <span>Admin Login Credentials:</span>
-              </div>
-              <button
-                type="button"
-                onClick={() => {
-                  setEmail("admin@gmail.com");
-                  setPassword("admin@123");
-                }}
-                className="text-[11px] text-amber-800 hover:text-amber-900 font-bold underline underline-offset-2 transition-colors cursor-pointer bg-amber-500/10 px-2.5 py-1 rounded-md border border-amber-600/20"
-              >
-                Auto Fill
-              </button>
-            </div>
-            <div className="bg-amber-50/70 p-3.5 rounded-xl border border-amber-200/80 font-mono text-xs space-y-1.5 shadow-xs">
-              <div className="flex justify-between items-center">
-                <span className="text-slate-500 font-sans">Email:</span>
-                <span className="font-bold text-slate-900 select-all">admin@gmail.com</span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-slate-500 font-sans">Password:</span>
-                <span className="font-bold text-slate-900 select-all">admin@123</span>
-              </div>
-            </div>
-          </div>
 
           <div className="mt-6 text-center">
             <Link

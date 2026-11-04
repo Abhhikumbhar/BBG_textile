@@ -11,8 +11,8 @@ import {
   Check,
   AlertCircle,
   Loader2,
+  Mail,
 } from "lucide-react";
-import WhatsAppIcon from "@/components/icons/WhatsAppIcon";
 
 interface OrderDetailAdminProps {
   order: any;
@@ -85,15 +85,15 @@ export default function OrderDetailAdminClient({
           </button>
 
           <a
-            href={`https://wa.me/${cleanPhone}?text=${encodeURIComponent(
-              `Hello ${order.customerName}, this is BBG Textile regarding your order #${order.orderNumber}. Your order status is currently: ${order.status}.`
+            href={`mailto:${order.customerEmail || "bbgtextilebharat1@gmail.com"}?subject=${encodeURIComponent(
+              `Order Update #${order.orderNumber} - BBG Textile`
+            )}&body=${encodeURIComponent(
+              `Hello ${order.customerName},\n\nThis is BBG Textile regarding your order #${order.orderNumber}. Your order status is currently: ${order.status}.\n\nThank you!`
             )}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-sm"
+            className="px-4 py-2 bg-[#1A365D] hover:bg-[#0F2444] text-white rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors shadow-sm"
           >
-            <WhatsAppIcon className="w-3.5 h-3.5" />
-            <span>WhatsApp Customer</span>
+            <Mail className="w-3.5 h-3.5" />
+            <span>Email Customer</span>
           </a>
         </div>
       </div>
