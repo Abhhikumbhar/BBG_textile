@@ -79,3 +79,55 @@ main section[class~="bg-gray-50"] {
     transform: translateX(150%);
   }
 }
+
+/* ============================================================
+   A4 TAX INVOICE & CASH MEMO PRINT STYLES
+   Ensures pristine PDF saving and standard A4 printing
+   ============================================================ */
+@media print {
+  /* Hide website chrome, navigation, footers, buttons and non-printable elements */
+  nav,
+  header,
+  footer,
+  aside,
+  .no-print,
+  button:not(.allow-print),
+  .fixed:not(#bbg-official-tax-invoice),
+  .sticky {
+    display: none !important;
+  }
+
+  /* Reset document background to pure white for crisp ink/PDF export */
+  html, body {
+    background: #ffffff !important;
+    background-image: none !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Target the printable invoice container */
+  #bbg-official-tax-invoice {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 10mm !important;
+    border: 2px solid #111827 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    page-break-inside: avoid !important;
+  }
+
+  #bbg-official-tax-invoice * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  @page {
+    size: A4 portrait;
+    margin: 6mm;
+  }
+}

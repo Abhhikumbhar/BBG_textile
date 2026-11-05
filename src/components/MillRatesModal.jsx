@@ -51,8 +51,8 @@ export default function MillRatesModal({ isOpen, onClose, defaultProduct = "" })
       return;
     }
 
-    if (formData.alternatePhone && !/^\d{10}$/.test(formData.alternatePhone)) {
-      setError("Alternate contact number must be exactly 10 digits.");
+    if (!formData.alternatePhone || !/^\d{10}$/.test(formData.alternatePhone)) {
+      setError("Please enter a valid 10-digit alternate mobile number.");
       return;
     }
 
@@ -226,17 +226,18 @@ export default function MillRatesModal({ isOpen, onClose, defaultProduct = "" })
 
                 <div>
                   <label className="block text-xs font-semibold text-gray-700 mb-1.5">
-                    Alternate Phone <span className="text-gray-400 font-normal">(Optional)</span>
+                    Alternate Mobile Number (10 Digits) <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <input
                       type="tel"
+                      required
                       maxLength={10}
                       value={formData.alternatePhone}
                       onChange={(e) =>
                         handlePhoneChange("alternatePhone", e.target.value)
                       }
-                      placeholder="Secondary contact number"
+                      placeholder="10-digit alternate number"
                       className="w-full pl-9 pr-3.5 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1A365D]/20 focus:border-[#1A365D] text-xs font-medium text-gray-900 font-mono transition-all placeholder:text-gray-400"
                     />
                     <Phone className="w-4 h-4 text-gray-400 absolute left-3 top-3" />

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import AdminLayout from "./AdminLayout";
 import { getOrders, updateOrderStatus, recordOrderRefund } from "@/lib/catalogService";
 import { syncOrdersFromCloud } from "@/lib/cloudSync";
+import OfficialTaxInvoice from "@/components/OfficialTaxInvoice";
 import {
   ShoppingBag,
   Eye,
@@ -21,11 +22,13 @@ import {
   Search,
   MapPin,
   ExternalLink,
+  FileText,
 } from "lucide-react";
 
 export default function AdminOrders() {
   const [orders, setOrders] = useState(getOrders());
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [invoiceModalOrder, setInvoiceModalOrder] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [isSyncing, setIsSyncing] = useState(false);
@@ -300,17 +303,28 @@ export default function AdminOrders() {
                         {getStatusBadge(o.status, o.paymentStatus)}
                       </td>
                       <td className="py-3 px-4 text-right">
-                        <button
-                          onClick={() => {
-                            setSelectedOrder(o);
-                            setCourierName(o.courierName || "");
-                            setTrackingNumber(o.trackingNumber || "");
-                          }}
-                          className="px-3 py-1.5 bg-[#1A365D] hover:bg-[#0F2444] text-white rounded-xl font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
-                        >
-                          <Eye className="w-3.5 h-3.5" />
-                          <span>View & Dispatch</span>
-                        </button>
+                        <div className="flex items-center justify-end gap-1.5">
+                          <button
+                            type="button"
+                            onClick={() => setInvoiceModalOrder(o)}
+                            className="px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-950 border border-amber-200 rounded-xl font-extrabold text-[11px] inline-flex items-center gap-1 transition-colors cursor-pointer"
+                            title="View / Save Tax Invoice (PDF)"
+                          >
+                            <Printer className="w-3.5 h-3.5 text-amber-800" />
+                            <span>Bill</span>
+                          </button>
+                          <button
+                            onClick={() => {
+                              setSelectedOrder(o);
+                              setCourierName(o.courierName || "");
+                              setTrackingNumber(o.trackingNumber || "");
+                            }}
+                            className="px-3 py-1.5 bg-[#1A365D] hover:bg-[#0F2444] text-white rounded-xl font-bold inline-flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs"
+                          >
+                            <Eye className="w-3.5 h-3.5" />
+                            <span>View & Dispatch</span>
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
@@ -524,13 +538,26 @@ export default function AdminOrders() {
                 )}
 
                 <button
-                  onClick={() => window.print()}
-                  className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer"
+                  type="button"
+                  onClick={() => setInvoiceModalOrder(selectedOrder)}
+                  className="px-4 py-2 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-stone-950 rounded-xl text-xs font-extrabold inline-flex items-center gap-1.5 cursor-pointer shadow-xs"
                 >
-                  <Printer className="w-4 h-4" />
-                  <span>Print Invoice</span>
+                  <Printer className="w-4 h-4 text-stone-950" />
+                  <span>Print Tax Invoice (A4 / PDF)</span>
                 </button>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Dedicated Official Tax Invoice Modal */}
+        {invoiceModalOrder && (
+          <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
+            <div className="bg-white rounded-3xl max-w-4xl w-full max-h-[92vh] overflow-y-auto p-4 sm:p-6 shadow-2xl relative">
+              <OfficialTaxInvoice
+                order={invoiceModalOrder}
+                onClose={() => setInvoiceModalOrder(null)}
+              />
             </div>
           </div>
         )}
