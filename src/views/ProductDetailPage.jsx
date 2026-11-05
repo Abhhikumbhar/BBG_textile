@@ -9,6 +9,7 @@ import {
   getRelatedProducts,
   siteSettings,
 } from "@/lib/catalogService";
+import { STATIC_PRODUCTS_CATALOG } from "@/lib/catalog";
 import {
   ShoppingBag,
   Share2,
@@ -74,8 +75,12 @@ export default function ProductDetailPage() {
   const colors = Array.from(
     new Set(product.variants?.map((v) => v.color).filter(Boolean))
   );
+  const rawSizes = [
+    product.size,
+    ...(product.variants?.map((v) => v.size) || []),
+  ].filter(Boolean);
   const sizes = Array.from(
-    new Set(product.variants?.map((v) => v.size).filter(Boolean))
+    new Set(rawSizes.length > 0 ? rawSizes : ["Free Size"])
   );
 
   const [selectedColor, setSelectedColor] = useState(colors[0] || "");
@@ -147,13 +152,30 @@ export default function ProductDetailPage() {
     return null;
   };
 
-  const images =
-    product.images && product.images.length > 0
-      ? product.images.map((img) => img.url)
-      : [
-          getStudioImage() ||
-          "/images/products/bbg-studio-hd-crimson-red.jpg",
-        ];
+  // Merge images: always ensure all available gallery angles are loaded
+  const defaultStaticProd = STATIC_PRODUCTS_CATALOG.find(
+    (p) => p.id === product.id || p.sku === product.sku || p.slug === product.slug
+  );
+
+  let rawImages = [];
+  if (product.images && product.images.length > 1) {
+    rawImages = product.images.map((img) => (typeof img === "string" ? img : img.url));
+  } else if (defaultStaticProd && defaultStaticProd.images && defaultStaticProd.images.length > 0) {
+    const staticUrls = defaultStaticProd.images.map((img) => (typeof img === "string" ? img : img.url));
+    if (product.images?.[0]?.url && !staticUrls.includes(product.images[0].url)) {
+      rawImages = [product.images[0].url, ...staticUrls];
+    } else {
+      rawImages = staticUrls;
+    }
+  } else if (product.images && product.images.length > 0) {
+    rawImages = product.images.map((img) => (typeof img === "string" ? img : img.url));
+  } else {
+    rawImages = [
+      getStudioImage() || "/images/products/bbg-studio-hd-crimson-red.jpg",
+    ];
+  }
+
+  const images = Array.from(new Set(rawImages.filter(Boolean)));
 
   const activeImage = images[activeImageIndex] || images[0];
 
@@ -223,11 +245,11 @@ export default function ProductDetailPage() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             {/* LEFT: Image Gallery (7 cols) */}
             <div className="lg:col-span-7 space-y-4">
-              <div className="relative aspect-[4/3] sm:aspect-[16/12] bg-[#FAF6EE] rounded-3xl overflow-hidden border border-[#E8DFD3] shadow-md">
+              <div className="relative aspect-[3/4] max-h-[640px] bg-[#FAF6EE] rounded-3xl overflow-hidden border border-[#E8DFD3] shadow-md flex items-center justify-center">
                 <img
                   src={activeImage}
                   alt={product.name}
-                  className="w-full h-full object-cover object-[15%_center] transition-all duration-300"
+                  className="w-full h-full object-contain sm:object-cover object-top transition-all duration-300"
                 />
 
                 {/* Badges */}
@@ -253,7 +275,7 @@ export default function ProductDetailPage() {
                           prev > 0 ? prev - 1 : images.length - 1
                         )
                       }
-                      className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-gray-800 shadow-md flex items-center justify-center transition-all"
+                      className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-gray-800 shadow-lg flex items-center justify-center transition-all z-10 cursor-pointer"
                       aria-label="Previous image"
                     >
                       <ChevronLeft className="w-5 h-5" />
@@ -264,12 +286,19 @@ export default function ProductDetailPage() {
                           prev < images.length - 1 ? prev + 1 : 0
                         )
                       }
-                      className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-gray-800 shadow-md flex items-center justify-center transition-all"
+                      className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-gray-800 shadow-lg flex items-center justify-center transition-all z-10 cursor-pointer"
                       aria-label="Next image"
                     >
                       <ChevronRight className="w-5 h-5" />
                     </button>
                   </>
+                )}
+
+                {/* Image counter indicator */}
+                {images.length > 1 && (
+                  <div className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-xs text-white text-[11px] font-semibold px-2.5 py-1 rounded-full z-10 pointer-events-none">
+                    {activeImageIndex + 1} / {images.length}
+                  </div>
                 )}
               </div>
 
@@ -277,22 +306,22 @@ export default function ProductDetailPage() {
               {images.length > 1 && (
                 <div
                   ref={thumbnailsRef}
-                  className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none"
+                  className="flex items-center gap-2.5 overflow-x-auto py-1 px-0.5 scrollbar-thin"
                 >
                   {images.map((img, idx) => (
                     <button
                       key={idx}
                       onClick={() => setActiveImageIndex(idx)}
-                      className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden shrink-0 border-2 transition-all ${
+                      className={`relative w-16 h-20 sm:w-20 sm:h-24 rounded-2xl overflow-hidden shrink-0 border-2 transition-all cursor-pointer ${
                         idx === activeImageIndex
-                          ? "border-[#1A365D] ring-2 ring-[#1A365D]/30 scale-105"
-                          : "border-gray-200 opacity-70 hover:opacity-100"
+                          ? "border-[#1A365D] ring-2 ring-[#1A365D]/30 scale-102 shadow-md"
+                          : "border-gray-200 opacity-70 hover:opacity-100 bg-[#FAF6EE]"
                       }`}
                     >
                       <img
                         src={img}
                         alt={`View ${idx + 1}`}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover object-top"
                       />
                     </button>
                   ))}

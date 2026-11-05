@@ -22,11 +22,35 @@ import {
   Loader2,
 } from "lucide-react";
 
+export const AVAILABLE_SIZES = [
+  "Free Size (28 - 34)",
+  "Plus Size / XL-2XL (34 - 42)",
+  "Free Size",
+  "S (28)",
+  "M (30)",
+  "L (32)",
+  "XL (34)",
+  "2XL (36)",
+  "3XL (38)",
+  "4XL (40)",
+  "Wholesale Pack (10 Pcs)",
+  "Universal Stretch",
+];
+
+export const getProductSize = (p) => {
+  if (p?.size) return p.size;
+  if (p?.variants && p.variants.length > 0 && p.variants[0]?.size) {
+    return p.variants[0].size;
+  }
+  return "Free Size (28 - 34)";
+};
+
 export default function AdminProducts() {
   const [products, setProducts] = useState(getAllProducts());
   const [categories, setCategories] = useState(getCategories());
   const [search, setSearch] = useState("");
   const [selectedCat, setSelectedCat] = useState("");
+  const [selectedSizeFilter, setSelectedSizeFilter] = useState("");
   const [uploading, setUploading] = useState(false);
   const fileInputRef = React.useRef(null);
 
@@ -47,6 +71,7 @@ export default function AdminProducts() {
     slug: "",
     sku: "",
     categoryId: "cat-churidar-leggings",
+    size: "Free Size (28 - 34)",
     price: 349,
     wholesalePrice: 180,
     stockQuantity: 50,
@@ -65,6 +90,7 @@ export default function AdminProducts() {
       slug: "",
       sku: `BBG-${Math.floor(100 + Math.random() * 900)}`,
       categoryId: categories[0]?.slug || "churidar-leggings",
+      size: "Free Size (28 - 34)",
       price: 349,
       wholesalePrice: 180,
       stockQuantity: 50,
@@ -85,9 +111,10 @@ export default function AdminProducts() {
       slug: p.slug,
       sku: p.sku,
       categoryId: p.categorySlug || p.category?.slug || "churidar-leggings",
+      size: getProductSize(p),
       price: p.price,
       wholesalePrice: p.wholesalePrice || 180,
-      stockQuantity: typeof p.stockQuantity === "number" ? p.stockQuantity : 5,
+      stockQuantity: typeof p.stockQuantity === "number" ? p.stockQuantity : 50,
       stockStatus: p.stockStatus || (p.stockQuantity <= 0 ? "OUT_OF_STOCK" : "IN_STOCK"),
       isFeatured: !!p.isFeatured,
       isNewArrival: !!p.isNewArrival,
@@ -153,11 +180,58 @@ export default function AdminProducts() {
       formData.slug ||
       formData.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 
+    const selectedSize = formData.size || "Free Size (28 - 34)";
+    const variants = editingProduct?.variants?.length
+      ? editingProduct.variants.map((v) => ({ ...v, size: selectedSize }))
+      : [
+          {
+            color: "Standard",
+            size: selectedSize,
+            additionalPrice: 0,
+            stockQuantity: Number(formData.stockQuantity) || 50,
+          },
+        ];
+
+    // Preserve full image gallery when saving or editing
+    const existingImgs = editingProduct?.images || [];
+    let finalImages = [];
+    if (existingImgs.length > 0) {
+      const isCustomNewImage = !existingImgs.some((img) => img.url === formData.imageUrl);
+      if (isCustomNewImage) {
+        finalImages = [
+          {
+            id: `img-${Date.now()}`,
+            url: formData.imageUrl,
+            isPrimary: true,
+            displayOrder: 0,
+          },
+          ...existingImgs.map((img, i) => ({ ...img, isPrimary: false, displayOrder: i + 1 })),
+        ];
+      } else {
+        const primary = existingImgs.find((img) => img.url === formData.imageUrl) || existingImgs[0];
+        const rest = existingImgs.filter((img) => img !== primary);
+        finalImages = [
+          { ...primary, isPrimary: true, displayOrder: 0 },
+          ...rest.map((img, i) => ({ ...img, isPrimary: false, displayOrder: i + 1 })),
+        ];
+      }
+    } else {
+      finalImages = [
+        {
+          id: `img-${Date.now()}`,
+          url: formData.imageUrl,
+          isPrimary: true,
+          displayOrder: 0,
+        },
+      ];
+    }
+
     const productPayload = {
       id: editingProduct?.id || `prod-${Date.now()}`,
       name: formData.name,
       slug,
       sku: formData.sku,
+      size: selectedSize,
       price: Number(formData.price),
       wholesalePrice: Number(formData.wholesalePrice),
       stockQuantity: Number(formData.stockQuantity),
@@ -171,18 +245,9 @@ export default function AdminProducts() {
         name: categories.find((c) => c.slug === formData.categoryId)?.name || "Bottom Wear",
         slug: formData.categoryId,
       },
-      images: [
-        {
-          id: `img-${Date.now()}`,
-          url: formData.imageUrl,
-          isPrimary: true,
-          displayOrder: 0,
-        },
-      ],
+      images: finalImages,
       description: formData.description,
-      variants: editingProduct?.variants || [
-        { color: "Standard", size: "Free Size", additionalPrice: 0, stockQuantity: 100 },
-      ],
+      variants,
       createdAt: editingProduct?.createdAt || new Date().toISOString(),
     };
 
@@ -203,7 +268,7 @@ export default function AdminProducts() {
     const idx = list.findIndex((item) => item.id === productId);
     if (idx === -1) return;
 
-    const currentQty = typeof list[idx].stockQuantity === "number" ? list[idx].stockQuantity : 5;
+    const currentQty = typeof list[idx].stockQuantity === "number" ? list[idx].stockQuantity : 50;
     const newQty = Math.max(0, currentQty + delta);
     const newStatus = newQty <= 0 ? "OUT_OF_STOCK" : "IN_STOCK";
 
@@ -211,6 +276,33 @@ export default function AdminProducts() {
       ...list[idx],
       stockQuantity: newQty,
       stockStatus: newStatus,
+    };
+
+    const updatedList = saveProduct(updatedProduct);
+    setProducts(updatedList);
+  };
+
+  const handleQuickSizeChange = (productId, newSize) => {
+    const list = [...products];
+    const idx = list.findIndex((item) => item.id === productId);
+    if (idx === -1) return;
+
+    const currentVariants =
+      list[idx].variants && list[idx].variants.length > 0
+        ? list[idx].variants.map((v) => ({ ...v, size: newSize }))
+        : [
+            {
+              color: "Standard",
+              size: newSize,
+              additionalPrice: 0,
+              stockQuantity: list[idx].stockQuantity || 50,
+            },
+          ];
+
+    const updatedProduct = {
+      ...list[idx],
+      size: newSize,
+      variants: currentVariants,
     };
 
     const updatedList = saveProduct(updatedProduct);
@@ -226,7 +318,10 @@ export default function AdminProducts() {
       !selectedCat ||
       p.categorySlug === selectedCat ||
       p.category?.slug === selectedCat;
-    return matchesSearch && matchesCat;
+    const matchesSize =
+      !selectedSizeFilter ||
+      getProductSize(p).toLowerCase().includes(selectedSizeFilter.toLowerCase());
+    return matchesSearch && matchesCat && matchesSize;
   });
 
   return (
@@ -265,18 +360,33 @@ export default function AdminProducts() {
             />
           </div>
 
-          <select
-            value={selectedCat}
-            onChange={(e) => setSelectedCat(e.target.value)}
-            className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-700 focus:outline-none"
-          >
-            <option value="">All Categories ({products.length})</option>
-            {categories.map((c) => (
-              <option key={c.id} value={c.slug}>
-                {c.name}
-              </option>
-            ))}
-          </select>
+          <div className="flex items-center gap-2">
+            <select
+              value={selectedCat}
+              onChange={(e) => setSelectedCat(e.target.value)}
+              className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-700 focus:outline-none"
+            >
+              <option value="">All Categories ({products.length})</option>
+              {categories.map((c) => (
+                <option key={c.id} value={c.slug}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+
+            <select
+              value={selectedSizeFilter}
+              onChange={(e) => setSelectedSizeFilter(e.target.value)}
+              className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-700 focus:outline-none"
+            >
+              <option value="">All Sizes</option>
+              {AVAILABLE_SIZES.map((sz) => (
+                <option key={sz} value={sz}>
+                  {sz}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
 
         {/* Products Table */}
@@ -287,6 +397,7 @@ export default function AdminProducts() {
                 <tr className="bg-gray-50/80 border-b border-gray-200 text-gray-500 uppercase tracking-wider font-semibold">
                   <th className="py-3 px-4">Item</th>
                   <th className="py-3 px-4">Category</th>
+                  <th className="py-3 px-4">Size (आकार)</th>
                   <th className="py-3 px-4">Retail Price</th>
                   <th className="py-3 px-4">Wholesale Rate</th>
                   <th className="py-3 px-4">Stock (+ / -)</th>
@@ -315,6 +426,25 @@ export default function AdminProducts() {
                     </td>
                     <td className="py-3 px-4 text-gray-600 font-medium">
                       {p.category?.name || p.categorySlug || "Bottom Wear"}
+                    </td>
+                    <td className="py-3 px-4">
+                      <div className="inline-block">
+                        <select
+                          value={getProductSize(p)}
+                          onChange={(e) => handleQuickSizeChange(p.id, e.target.value)}
+                          className="px-2.5 py-1.5 bg-gray-50 hover:bg-white border border-gray-300 rounded-xl text-xs font-semibold text-gray-800 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#1A365D] transition-all shadow-2xs"
+                          title="Change size"
+                        >
+                          {p.size && !AVAILABLE_SIZES.includes(p.size) && (
+                            <option value={p.size}>{p.size}</option>
+                          )}
+                          {AVAILABLE_SIZES.map((sz) => (
+                            <option key={sz} value={sz}>
+                              {sz}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </td>
                     <td className="py-3 px-4 font-bold text-gray-900">
                       ₹{p.price}
@@ -448,7 +578,7 @@ export default function AdminProducts() {
 
                   <div>
                     <label className="block font-bold text-gray-700 mb-1">
-                      Category
+                      Category *
                     </label>
                     <select
                       value={formData.categoryId}
@@ -462,6 +592,27 @@ export default function AdminProducts() {
                       ))}
                     </select>
                   </div>
+                </div>
+
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">
+                    Size / आकार (Dropdown) *
+                  </label>
+                  <select
+                    value={formData.size}
+                    onChange={(e) => setFormData({ ...formData, size: e.target.value })}
+                    className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl font-medium text-xs text-gray-800"
+                  >
+                    {formData.size && !AVAILABLE_SIZES.includes(formData.size) && (
+                      <option value={formData.size}>{formData.size}</option>
+                    )}
+                    {AVAILABLE_SIZES.map((sz) => (
+                      <option key={sz} value={sz}>
+                        {sz}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="text-[10px] text-gray-400 mt-1">उत्पादनाचा मुख्य आकार किंवा प्रकार निवडा</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3">

@@ -130,7 +130,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <Link
         href={`/products/${product.slug}`}
         prefetch={true}
-        className="relative block aspect-[7/6] bg-gradient-to-b from-[#F8F4EE] to-[#EFE8DE] overflow-hidden rounded-t-2xl"
+        className="relative block aspect-[3/4] bg-gradient-to-b from-[#F8F4EE] to-[#EFE8DE] overflow-hidden rounded-t-2xl"
       >
         <Image
           src={primaryImage}
@@ -138,7 +138,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           fill
           unoptimized={primaryImage.startsWith("data:")}
           sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
-          className="object-cover object-[15%_center] group-hover:scale-105 transition-transform duration-500 ease-out"
+          className="object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out"
         />
 
         {/* Top-Left Badges (Clean, Reference Design) */}

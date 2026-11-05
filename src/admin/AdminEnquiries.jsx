@@ -36,17 +36,34 @@ export default function AdminEnquiries() {
                 className="bg-white p-5 rounded-3xl border border-gray-200 shadow-xs space-y-3"
               >
                 <div className="flex items-center justify-between">
-                  <div className="font-bold text-sm text-gray-900">{e.name}</div>
-                  <span className="text-[10px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded-full">
+                  <div>
+                    <div className="font-bold text-sm text-gray-900">{e.name}</div>
+                    {e.createdAt && (
+                      <div className="text-[10px] text-gray-400">
+                        {new Date(e.createdAt).toLocaleString("en-IN")}
+                      </div>
+                    )}
+                  </div>
+                  <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                    e.category === "Customer Order" 
+                      ? "bg-emerald-100 text-emerald-800 border border-emerald-200"
+                      : "bg-amber-100 text-amber-800"
+                  }`}>
                     {e.category || "General"}
                   </span>
                 </div>
 
                 <div className="text-xs text-gray-600 space-y-1">
-                  <div>Phone: <strong>{e.phone}</strong></div>
+                  <div>
+                    Phone: <strong>{e.phone}</strong>
+                    {e.alternatePhone && <span className="text-gray-400 ml-1.5">| Alt: {e.alternatePhone}</span>}
+                  </div>
                   {e.email && <div>Email: {e.email}</div>}
-                  <div className="p-3 bg-gray-50 rounded-xl mt-2 text-gray-700">
-                    "{e.message}"
+                  {e.requirement && (
+                    <div>Requirement: <strong className="text-gray-800">{e.requirement}</strong> {e.quantity && `(Qty: ${e.quantity})`}</div>
+                  )}
+                  <div className="p-3 bg-gray-50 rounded-xl mt-2 text-gray-700 whitespace-pre-line">
+                    "{e.message || "Customer enquiry submitted."}"
                   </div>
                 </div>
 

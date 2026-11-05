@@ -12,7 +12,33 @@ export function getAllProducts() {
   try {
     const custom = localStorage.getItem("bbg_custom_products");
     if (custom) {
-      const parsed = JSON.parse(custom);
+      let parsed = JSON.parse(custom);
+
+      // Auto-heal products that lost their multi-angle gallery during admin edits
+      parsed = parsed.map((p) => {
+        const staticMatch = STATIC_PRODUCTS_CATALOG.find(
+          (sp) => sp.id === p.id || sp.sku === p.sku || sp.slug === p.slug
+        );
+        let images = p.images;
+        if (
+          (!images || images.length <= 1) &&
+          staticMatch &&
+          staticMatch.images &&
+          staticMatch.images.length > 1
+        ) {
+          if (images && images.length === 1 && images[0]?.url) {
+            const extra = staticMatch.images.filter((si) => si.url !== images[0].url);
+            images = [images[0], ...extra];
+          } else {
+            images = staticMatch.images;
+          }
+        }
+        return {
+          ...p,
+          images: images || staticMatch?.images || [],
+        };
+      });
+
       const stockV3 = localStorage.getItem("bbg_stock_qty_v3");
       if (!stockV3) {
         const migrated = parsed.map((p) => {

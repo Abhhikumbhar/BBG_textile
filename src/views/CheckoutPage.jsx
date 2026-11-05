@@ -3,7 +3,7 @@ import { useNavigate, Link, useLocation } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { useCart } from "@/context/CartContext";
-import { siteSettings, decrementStockForOrder } from "@/lib/catalogService";
+import { siteSettings, decrementStockForOrder, addEnquiry } from "@/lib/catalogService";
 import { pushOrderToCloud } from "@/lib/cloudSync";
 import { loadRazorpayScript, RAZORPAY_KEY_ID } from "@/lib/razorpay";
 import {
@@ -128,6 +128,20 @@ export default function CheckoutPage() {
               const pastOrders = JSON.parse(localStorage.getItem("bbg_orders") || "[]");
               localStorage.setItem("bbg_orders", JSON.stringify([orderData, ...pastOrders]));
               pushOrderToCloud(orderData);
+
+              // Also register as an Enquiry so it is visible in both Orders and Wholesale Enquiries
+              addEnquiry({
+                id: `ENQ-${orderNumber}`,
+                name: formData.customerName,
+                phone: formData.customerPhone,
+                alternatePhone: formData.alternatePhone || "",
+                email: formData.customerEmail,
+                requirement: `Order #${orderNumber} (${items.length} items)`,
+                quantity: items.reduce((acc, i) => acc + (Number(i.quantity) || 1), 0),
+                message: `Order #${orderNumber} placed for ₹${subtotal} via Online Razorpay.\nItems: ${items.map((i) => `${i.name || i.title || "Product"} (Qty: ${i.quantity})`).join(", ")}\nDelivery: ${formData.shippingAddress}, ${formData.city}, ${formData.state} - ${formData.postalCode}`,
+                category: "Customer Order",
+                createdAt: new Date().toISOString(),
+              });
             } catch (err) {
               console.error("Order storage error", err);
             }
@@ -204,6 +218,20 @@ export default function CheckoutPage() {
       const pastOrders = JSON.parse(localStorage.getItem("bbg_orders") || "[]");
       localStorage.setItem("bbg_orders", JSON.stringify([orderData, ...pastOrders]));
       pushOrderToCloud(orderData);
+
+      // Also register as an Enquiry so it is visible in both Orders and Wholesale Enquiries
+      addEnquiry({
+        id: `ENQ-${orderNumber}`,
+        name: formData.customerName,
+        phone: formData.customerPhone,
+        alternatePhone: formData.alternatePhone || "",
+        email: formData.customerEmail,
+        requirement: `Order #${orderNumber} (${items.length} items)`,
+        quantity: items.reduce((acc, i) => acc + (Number(i.quantity) || 1), 0),
+        message: `Order #${orderNumber} placed for ₹${subtotal} via Cash on Delivery.\nItems: ${items.map((i) => `${i.name || i.title || "Product"} (Qty: ${i.quantity})`).join(", ")}\nDelivery: ${formData.shippingAddress}, ${formData.city}, ${formData.state} - ${formData.postalCode}`,
+        category: "Customer Order",
+        createdAt: new Date().toISOString(),
+      });
     } catch (err) {
       console.error("Order storage error", err);
     }

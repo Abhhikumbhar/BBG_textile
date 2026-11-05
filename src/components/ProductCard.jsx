@@ -93,12 +93,12 @@ export default function ProductCard({ product }) {
       {/* Clean Image Container */}
       <Link
         to={`/products/${product.slug}`}
-        className="relative block aspect-[7/6] bg-gradient-to-b from-[#F8F4EE] to-[#EFE8DE] overflow-hidden rounded-t-2xl"
+        className="relative block aspect-[3/4] bg-gradient-to-b from-[#F8F4EE] to-[#EFE8DE] overflow-hidden rounded-t-2xl"
       >
         <img
           src={primaryImage}
           alt={product.images?.[0]?.altText || product.name}
-          className="w-full h-full object-cover object-[15%_center] group-hover:scale-105 transition-transform duration-500 ease-out"
+          className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500 ease-out"
           loading="lazy"
         />
 
